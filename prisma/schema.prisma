@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model periode {
+  id_periode Int         @id @default(autoincrement())
+  nama       String      @db.VarChar(20)
+  mahasiswa  mahasiswa[]
+}
+
+model user {
+  id_user    Int         @id @default(autoincrement())
+  username   String      @unique(map: "username") @db.VarChar(50)
+  password   String      @db.VarChar(100)
+  tipe       Int         @db.TinyInt
+  created_at DateTime    @default(now()) @db.DateTime(0)
+  mahasiswa  mahasiswa[]
+}
+
+model mahasiswa {
+  id_mahasiswa Int      @id @default(autoincrement())
+  id_user      Int?
+  id_periode   Int
+  nama         String   @db.VarChar(50)
+  nim          String   @db.VarChar(20)
+  jurusan      String   @db.VarChar(100)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  user         user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  periode      periode  @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
+  lrk          lrk[]
+}
+
+model lrk {
+  id_lrk       Int       @id @default(autoincrement())
+  id_mahasiswa Int
+  potensi      String    @db.LongText
+  program      String    @db.VarChar(500)
+  sasaran      String    @db.VarChar(500)
+  metode       String    @db.LongText
+  luaran       String    @db.LongText
+  created_at   DateTime  @default(now()) @db.DateTime(0)
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+}
