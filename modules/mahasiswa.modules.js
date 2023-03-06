@@ -87,6 +87,9 @@ class _mahasiswa {
                 where: {
                     username: body.nim,
                 },
+                select: {
+                    id_user: true,
+                },
             });
 
             if (check) {

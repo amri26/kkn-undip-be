@@ -33,16 +33,32 @@ model mahasiswa {
   user         user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
   periode      periode  @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
   lrk          lrk[]
+  lpk          lpk[]
 }
 
 model lrk {
   id_lrk       Int       @id @default(autoincrement())
   id_mahasiswa Int
-  potensi      String    @db.LongText
-  program      String    @db.VarChar(500)
-  sasaran      String    @db.VarChar(500)
-  metode       String    @db.LongText
-  luaran       String    @db.LongText
+  potensi      String    @db.Text
+  program      String    @db.Text
+  sasaran      String    @db.Text
+  metode       String    @db.Text
+  luaran       String    @db.Text
   created_at   DateTime  @default(now()) @db.DateTime(0)
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  lpk          lpk[]
+}
+
+model lpk {
+  id_lpk       Int       @id @default(autoincrement())
+  id_lrk       Int
+  id_mahasiswa Int
+  metode       String    @db.Text
+  pelaksanaan  String    @db.Text
+  capaian      String    @db.Text
+  hambatan     String    @db.Text
+  kelanjutan   String    @db.Text
+  created_at   DateTime  @default(now()) @db.DateTime(0)
+  lrk          lrk       @relation(fields: [id_lrk], references: [id_lrk], onDelete: Cascade, onUpdate: Cascade)
   mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }

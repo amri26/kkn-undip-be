@@ -1,27 +1,29 @@
-const multer = require("multer");
-const path = require("path");
+const { google } = require("googleapis");
+const stream = require("stream");
 
-const fileName = ["application/pdf"];
+require("dotenv").config();
 
-const upload = (dest, name) => {
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path.join(`${__dirname}`, `/../public/${dest}`));
-    },
-    filename: (req, file, cb) => {
-      let filename = "";
+upload = async (fileObject) => {
+    const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
-      if (fileName.includes(file.mimetype)) {
-        const mime = file.mimetype.split("/");
-        const extension = mime[mime.length - 1];
-        filename = `${name}_${Date.now()}.${extension}`;
-      }
+    const auth = new google.auth.GoogleAuth({
+        keyFile: process.env.KEYFILEPATH,
+        scopes: SCOPES,
+    });
 
-      cb(null, filename);
-    },
-  });
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(fileObject.buffer);
 
-  return storage;
+    await google.drive({ version: "v3", auth }).files.create({
+        media: {
+            mimeType: fileObject.mimeType,
+            body: bufferStream,
+        },
+        requestBody: {
+            name: fileObject.originalname,
+            parents: [process.env.DRIVE_FOLDER_ID],
+        },
+    });
 };
 
 module.exports = upload;
