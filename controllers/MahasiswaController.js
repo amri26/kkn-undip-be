@@ -3,11 +3,23 @@ const modules = require("../modules/mahasiswa.modules");
 const response = require("../helpers/response");
 const { userSession, verifyAdmin } = require("../helpers/middleware");
 
+const multer = require("multer");
+const upload = multer();
+
 const app = Router();
 
-app.post("/", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(res, await modules.addMahasiswa(req.body));
-});
+app.post(
+    "/",
+    upload.single("file"),
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.addMahasiswa(req.file, req.body)
+        );
+    }
+);
 
 app.get(
     "/:id_periode/:jurusan",

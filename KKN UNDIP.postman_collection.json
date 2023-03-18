@@ -1,0 +1,288 @@
+{
+	"info": {
+		"_postman_id": "4272ff12-4523-4cb8-923d-9378e0b560c5",
+		"name": "KKN UNDIP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should be 201', () => {\r",
+							"   pm.response.to.have.status(201);\r",
+							"}); \r",
+							" \r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+							"}); \r",
+							" \r",
+							"pm.test('response body should have correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							" \r",
+							"    pm.expect(responseJson).to.ownProperty('status');\r",
+							"    pm.expect(responseJson).to.ownProperty('data');\r",
+							"\r",
+							"    pm.expect(responseJson.status).to.equals(true);\r",
+							"    pm.expect(responseJson.data).to.be.an('object');\r",
+							"});\r",
+							" \r",
+							"pm.test('response body data should have property with correct value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const { data } = responseJson;\r",
+							" \r",
+							"    pm.expect(data).to.have.ownProperty('token');\r",
+							"    pm.expect(data.accessToken).to.not.equals('');\r",
+							"    pm.expect(data.accessToken).to.not.equals(null);\r",
+							"    pm.expect(data).to.have.ownProperty('expiresAt');\r",
+							"    pm.expect(data.refreshToken).to.not.equals('');\r",
+							"    pm.expect(data.refreshToken).to.not.equals(null);\r",
+							"\r",
+							"    pm.environment.set('token', data.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD MAHASISWA",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+						},
+						{
+							"key": "id_periode",
+							"value": "1",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/mahasiswa",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"mahasiswa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST MAHASISWA",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/mahasiswa/:id_periode/:jurusan",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"mahasiswa",
+						":id_periode",
+						":jurusan"
+					],
+					"variable": [
+						{
+							"key": "id_periode",
+							"value": "1"
+						},
+						{
+							"key": "jurusan",
+							"value": "all"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD LRK",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/lrk",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"lrk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST LRK",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/lrk",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"lrk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD LPK",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_lrk\": 1,\r\n    \"metode\": \"Langkah awal untuk mengembangkan website ini adalah proses Design Thinking. Semua fungsionalitas aplikasi didata dan dibuatkan diagram untuk membantu memudahkan proses kedepannya. Kemudian setelah didapatkan desain sistem yang diinginkan, selanjutnya adalah proses pengembangan aplikasi sampai jadi. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"pelaksanaan\": \"Program ini dilaksanakan pada: Hari/Tanggal : 14 Januari – 6 Februari 2023 Waktu : 08.00 – 20.00 Program “Pengembangan Website E-Katalog UMKM Desa Tlogoharjo” merupakan program kerja bertema teknologi berwujud pembuatan website untuk pendataan UMKM penduduk Desa Tlogoharjo. Dengan aplikasi ini, dapat mempermudah masyarakat untuk mengetahui ada UMKM apa saja di Desa Tlogoharjo. Keberhasilan dari program ini dapat dilihat dari kemudahan Operator Desa menggunakan website ini. Semua fitur utama dalam website ini dapat dicoba dan mendapatkan feedback yang sesuai. Output yang direncanakan adalah • Publikasi Rutin Media Sosial • Prototype produk • Reportase Media Berita\",\r\n    \"capaian\": \"Tercapai dengan tepat waktu, website sudah mempunyai fitur yang dibutuhkan namun masih belum bisa digunakan karena belum di hosting\",\r\n    \"hambatan\": \"- Pembuatan aplikasi membutuhkan waktu yang cukup - Untuk menghosting website juga membutuhkan biaya\",\r\n    \"kelanjutan\": \"Keberlanjutan program Pengembangan Website E-Katalog UMKM Desa Tlogoharjo ini dapat dilakukan oleh operator Desa Progowati yang nantinya diberi amanah untuk mengelola website E-Katalog UMKM Desa Tlogoharjo tersebut.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/lpk",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"lpk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST LPK",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/lpk",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"lpk"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
