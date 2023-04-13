@@ -1,4 +1,4 @@
-const prisma = require("../helpers/database");
+const { prisma, Role } = require("../helpers/database");
 const config = require("../config/app.config.json");
 const jwt = require("jsonwebtoken");
 
@@ -14,14 +14,14 @@ const userSession = async (req, res, next) => {
 
             const decoded = jwt.verify(token, config.jwt.secret);
 
-            const user = await prisma.user.findFirst({
+            const user = await prisma.user.findUnique({
                 where: {
                     id_user: decoded.id,
                 },
                 select: {
                     id_user: true,
                     username: true,
-                    tipe: true,
+                    role: true,
                 },
             });
 
@@ -29,7 +29,7 @@ const userSession = async (req, res, next) => {
                 req.user = {
                     id: user.id_user,
                     username: user.username,
-                    tipe: user.tipe,
+                    role: user.role,
                 };
 
                 next();
@@ -50,9 +50,38 @@ const userSession = async (req, res, next) => {
     }
 };
 
+const verifySuperAdmin = async (req, res, next) => {
+    try {
+        if (req.user.role === Role.SUPERADMIN) {
+            next();
+        } else {
+            res.status(401).send({
+                status: false,
+                error: "You're not authorized",
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            error,
+        });
+    }
+};
+
 const verifyAdmin = async (req, res, next) => {
     try {
-        if (req.user.tipe === 0) {
+        if (req.user.role === Role.ADMIN) {
+            const check = await prisma.admin.findFirst({
+                where: {
+                    id_user: req.user.id,
+                },
+                select: {
+                    nama: true,
+                },
+            });
+
+            req.user.nama = check.nama;
+
             next();
         } else {
             res.status(401).send({
@@ -70,7 +99,7 @@ const verifyAdmin = async (req, res, next) => {
 
 const verifyMahasiswa = async (req, res, next) => {
     try {
-        if (req.user.tipe === 1) {
+        if (req.user.role === Role.MAHASISWA) {
             next();
         } else {
             res.status(401).send({
@@ -86,4 +115,47 @@ const verifyMahasiswa = async (req, res, next) => {
     }
 };
 
-module.exports = { userSession, verifyAdmin, verifyMahasiswa };
+const verifyBappeda = async (req, res, next) => {
+    try {
+        if (req.user.role === Role.BAPPEDA) {
+            next();
+        } else {
+            res.status(401).send({
+                status: false,
+                error: "You're not authorized",
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            error,
+        });
+    }
+};
+
+const verifyDosen = async (req, res, next) => {
+    try {
+        if (req.user.role === Role.DOSEN) {
+            next();
+        } else {
+            res.status(401).send({
+                status: false,
+                error: "You're not authorized",
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            error,
+        });
+    }
+};
+
+module.exports = {
+    userSession,
+    verifySuperAdmin,
+    verifyAdmin,
+    verifyMahasiswa,
+    verifyBappeda,
+    verifyDosen,
+};

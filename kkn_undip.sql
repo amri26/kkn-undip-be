@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2023 at 01:16 PM
+-- Generation Time: Apr 13, 2023 at 05:42 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -22,46 +22,103 @@ SET time_zone = "+00:00";
 --
 
 --
--- Dumping data for table `lpk`
+-- Dumping data for table `admin`
 --
 
-INSERT INTO `lpk` (`id_lpk`, `id_lrk`, `metode`, `pelaksanaan`, `capaian`, `hambatan`, `kelanjutan`, `created_at`, `id_mahasiswa`) VALUES
-(1, 1, 'Langkah awal untuk mengembangkan website ini adalah proses Design Thinking. Semua fungsionalitas aplikasi didata dan dibuatkan diagram untuk membantu memudahkan proses kedepannya. Kemudian setelah didapatkan desain sistem yang diinginkan, selanjutnya adalah proses pengembangan aplikasi sampai jadi. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.', 'Program ini dilaksanakan pada:\r\nHari/Tanggal : 14 Januari – 6 Februari 2023\r\nWaktu : 08.00 – 20.00\r\nProgram “Pengembangan Website E-Katalog UMKM Desa Tlogoharjo” merupakan program kerja bertema teknologi berwujud pembuatan website untuk pendataan UMKM penduduk Desa Tlogoharjo. Dengan aplikasi ini, dapat mempermudah masyarakat untuk mengetahui ada UMKM apa saja di Desa Tlogoharjo.\r\nKeberhasilan dari program ini dapat dilihat dari kemudahan Operator Desa menggunakan website ini. Semua fitur utama dalam website ini dapat dicoba dan mendapatkan feedback yang sesuai.\r\nOutput yang direncanakan adalah\r\n• Publikasi Rutin Media Sosial\r\n• Prototype produk\r\n• Reportase Media Berita', 'Tercapai dengan tepat waktu, website sudah mempunyai fitur yang dibutuhkan namun masih belum bisa digunakan karena belum di hosting', '- Pembuatan aplikasi membutuhkan waktu yang cukup\r\n- Untuk menghosting website juga membutuhkan biaya', 'Keberlanjutan program Pengembangan Website E-Katalog UMKM Desa Tlogoharjo ini dapat dilakukan oleh operator Desa Progowati yang nantinya diberi amanah untuk mengelola website E-Katalog UMKM Desa Tlogoharjo tersebut.', '2023-03-02 06:10:17', 1),
-(2, 2, 'Langkah awal untuk mengembangkan website ini adalah proses Design Thinking. Semua fungsionalitas aplikasi didata dan dibuatkan diagram untuk membantu memudahkan proses kedepannya. Kemudian setelah didapatkan desain sistem yang diinginkan, selanjutnya adalah proses pengembangan aplikasi sampai jadi. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.', 'Program ini dilaksanakan pada: Hari/Tanggal : 14 Januari – 6 Februari 2023 Waktu : 08.00 – 20.00 Program “Pengembangan Website E-Katalog UMKM Desa Tlogoharjo” merupakan program kerja bertema teknologi berwujud pembuatan website untuk pendataan UMKM penduduk Desa Tlogoharjo. Dengan aplikasi ini, dapat mempermudah masyarakat untuk mengetahui ada UMKM apa saja di Desa Tlogoharjo. Keberhasilan dari program ini dapat dilihat dari kemudahan Operator Desa menggunakan website ini. Semua fitur utama dalam website ini dapat dicoba dan mendapatkan feedback yang sesuai. Output yang direncanakan adalah • Publikasi Rutin Media Sosial • Prototype produk • Reportase Media Berita', 'Tercapai dengan tepat waktu, website sudah mempunyai fitur yang dibutuhkan namun masih belum bisa digunakan karena belum di hosting', '- Pembuatan aplikasi membutuhkan waktu yang cukup - Untuk menghosting website juga membutuhkan biaya', 'Keberlanjutan program Pengembangan Website E-Katalog UMKM Desa Tlogoharjo ini dapat dilakukan oleh operator Desa Progowati yang nantinya diberi amanah untuk mengelola website E-Katalog UMKM Desa Tlogoharjo tersebut.', '2023-03-03 06:50:28', 2);
+INSERT INTO `admin` (`id_admin`, `id_user`, `nama`, `nip`, `created_at`) VALUES
+(1, 2, 'admin a', 'admin a', '2023-04-02 06:37:05');
 
 --
--- Dumping data for table `lrk`
+-- Dumping data for table `bappeda`
 --
 
-INSERT INTO `lrk` (`id_lrk`, `id_mahasiswa`, `potensi`, `program`, `sasaran`, `metode`, `luaran`, `created_at`) VALUES
-(1, 1, 'Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.', 'Pengembangan Website E-Katalog UMKM Desa Tlogoharjo', 'Seluruh masyarakat Desa Tlogoharjo', 'Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.', '1. Leaflet\r\n2. Modul PPT\r\n3. Reportase Media Berita (Elektronik)', '2023-03-02 04:21:36'),
-(2, 2, 'Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.', 'Pengembangan Website E-Katalog UMKM Desa Tlogoharjo', 'Seluruh masyarakat Desa Tlogoharjo', 'Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.', '1. Leaflet\r\n2. Modul PPT\r\n3. Reportase Media Berita (Elektronik)', '2023-03-03 06:48:04');
+INSERT INTO `bappeda` (`id_bappeda`, `id_user`, `id_kabupaten`, `nama`, `nisn`, `nama_pj`, `created_by`, `created_at`) VALUES
+(1, 5, 1, 'Bpd Cilacap', '111', 'admin a', 'admin a', '2023-04-02 07:03:30');
+
+--
+-- Dumping data for table `desa`
+--
+
+INSERT INTO `desa` (`id_desa`, `id_kecamatan`, `nama`) VALUES
+(1, 1, 'Sidaurip'),
+(2, 1, 'Gandrungmanis');
+
+--
+-- Dumping data for table `dosen`
+--
+
+INSERT INTO `dosen` (`id_dosen`, `id_user`, `nama`, `nip`, `created_at`) VALUES
+(1, 6, 'Dosen A', 'dosen a', '2023-04-02 07:06:59');
+
+--
+-- Dumping data for table `kabupaten`
+--
+
+INSERT INTO `kabupaten` (`id_kabupaten`, `nama`) VALUES
+(1, 'Cilacap');
+
+--
+-- Dumping data for table `kecamatan`
+--
+
+INSERT INTO `kecamatan` (`id_kecamatan`, `id_kabupaten`, `nama`) VALUES
+(1, 1, 'Gandrungmangu');
 
 --
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id_mahasiswa`, `created_at`, `id_user`, `nama`, `nim`, `jurusan`, `id_periode`) VALUES
-(1, '2023-03-01 10:47:23', 2, 'Tazki H. A.', '240601', 'IF', 1),
-(2, '2023-03-03 06:46:43', 3, 'Dummy 1', '240602', 'IP', 1),
-(3, '2023-03-18 11:53:04', 4, 'Dummy 2', '240603', 'IP', 1);
+INSERT INTO `mahasiswa` (`id_mahasiswa`, `id_user`, `id_periode`, `id_prodi`, `nama`, `nim`, `created_at`) VALUES
+(1, 3, 1, 'IF', 'Tazki', '240601', '2023-04-02 06:53:23'),
+(2, 4, 1, 'IP', 'Dummy', '240602', '2023-04-02 06:53:23');
 
 --
 -- Dumping data for table `periode`
 --
 
-INSERT INTO `periode` (`id_periode`, `nama`) VALUES
-(1, 'Tim I 2023');
+INSERT INTO `periode` (`id_periode`, `nama`, `status`) VALUES
+(1, 'Tim I 2023', 1);
+
+--
+-- Dumping data for table `potensi`
+--
+
+INSERT INTO `potensi` (`id_potensi`, `id_kecamatan`, `id_periode`, `potensi`, `status`, `created_at`) VALUES
+(1, 1, 1, 'Banyak UMKM di sekitar lapangan', 1, '2023-04-02 07:04:31');
+
+--
+-- Dumping data for table `prodi`
+--
+
+INSERT INTO `prodi` (`id_prodi`, `nama`) VALUES
+('IF', 'Informatika S1'),
+('IP', 'Ilmu Perpustakaan S1');
+
+--
+-- Dumping data for table `proposal`
+--
+
+INSERT INTO `proposal` (`id_proposal`, `id_potensi`, `id_dosen`, `proposal`, `status`, `created_at`) VALUES
+(1, 1, 1, 'Mengembangkan UMKM yang sesuai dengan kebutuhan Mahasiswa', NULL, '2023-04-13 03:39:08');
+
+--
+-- Dumping data for table `proposal_prodi`
+--
+
+INSERT INTO `proposal_prodi` (`id_proposal_prodi`, `id_proposal`, `id_prodi`, `jumlah`) VALUES
+(1, 1, 'IF', 10);
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `password`, `created_at`, `tipe`) VALUES
-(1, 'admin', '$2b$10$I0yRXLOei2SuSjwzocYXe.NT3G5XOAsTGLnAoYwBfEvMmqEaPLip.', '2023-03-01 13:56:11', 0),
-(2, '240601', '$2b$10$mOG71y2Bx7/SEwiNdeuCdOOYNx60CAYgvB1a82OhPTo7ALkpJzxGO', '2023-03-01 10:47:23', 1),
-(3, '240602', '$2b$10$hSOXfFk76M53/UiyRYSUiuFGHmwGkLYAEvVWJMidDEmAYBeIRpID6', '2023-03-03 06:46:43', 1),
-(4, '240603', '$2b$10$WGztxYQT36.4mO8K4oCb9.1T0XdW92w6QnTB9Wmt04E.Wb0Qu3BT6', '2023-03-18 11:53:04', 1);
+INSERT INTO `user` (`id_user`, `username`, `password`, `role`, `created_at`) VALUES
+(1, 'admin', '$2b$10$I0yRXLOei2SuSjwzocYXe.NT3G5XOAsTGLnAoYwBfEvMmqEaPLip.', 'SUPERADMIN', '2023-04-02 13:35:26'),
+(2, 'admin a', '$2b$10$LJ3NYZI.xFlEIUci7iF1audkAffHRV5Ll60gKAsvOPgPu75RinW1K', 'ADMIN', '2023-04-02 06:37:05'),
+(3, '240601', '$2b$10$9tZp7DPHPzWdgFJ3NtvqSuo/EeIl3m6puEvViSewwWHuHz8y/7rTe', 'MAHASISWA', '2023-04-02 06:53:23'),
+(4, '240602', '$2b$10$ab1mXijgQ0BfmEVzFSio.uwcb3GWcvMGugiIPWDiWh3c/eUA/5wXC', 'MAHASISWA', '2023-04-02 06:53:23'),
+(5, '111', '$2b$10$kX6iS8y1Xeb9Y8fgR4fuVu7QEhCK1nE7j2cMycZZAQlaf2kOYYV.a', 'BAPPEDA', '2023-04-02 07:03:30'),
+(6, 'dosen a', '$2b$10$U1QFEeH9NQew8aYJBWYNj.bwt2PVV8zmgvWQnD64egwLxn/DOdcMG', 'DOSEN', '2023-04-02 07:06:59');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

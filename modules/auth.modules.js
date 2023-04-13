@@ -1,4 +1,4 @@
-const prisma = require("../helpers/database");
+const { prisma } = require("../helpers/database");
 const config = require("../config/app.config.json");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -34,7 +34,7 @@ class _auth {
                     id_user: true,
                     username: true,
                     password: true,
-                    tipe: true,
+                    role: true,
                 },
             });
 
@@ -62,7 +62,7 @@ class _auth {
             const payload = {
                 id: checkUser.id_user,
                 username: checkUser.username,
-                tipe: checkUser.tipe,
+                role: checkUser.role,
             };
 
             const { secret, expired } = config.jwt;

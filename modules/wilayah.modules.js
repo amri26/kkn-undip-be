@@ -1,12 +1,30 @@
 const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
-class _lpk {
-    listLpk = async (id_user) => {
+class _wilayah {
+    listKabupaten = async () => {
+        try {
+            const list = await prisma.kabupaten.findMany();
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listKabupaten module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listKecamatan = async (id_kabupaten) => {
         try {
             const schema = Joi.number().required();
 
-            const validation = schema.validate(id_user);
+            const validation = schema.validate(id_kabupaten);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map(
@@ -20,26 +38,9 @@ class _lpk {
                 };
             }
 
-            const check = await prisma.mahasiswa.findFirst({
+            const list = await prisma.kecamatan.findMany({
                 where: {
-                    id_user,
-                },
-                select: {
-                    id_mahasiswa: true,
-                },
-            });
-
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
-
-            const list = await prisma.lpk.findMany({
-                where: {
-                    id_mahasiswa: check.id_mahasiswa,
+                    id_kabupaten,
                 },
             });
 
@@ -48,7 +49,7 @@ class _lpk {
                 data: list,
             };
         } catch (error) {
-            console.error("listLpk module error ", error);
+            console.error("listKecamatan module error ", error);
 
             return {
                 status: false,
@@ -57,7 +58,7 @@ class _lpk {
         }
     };
 
-    addLpk = async (id_user, body) => {
+    addKecamatan = async (id_user, body) => {
         try {
             body = {
                 id_user,
@@ -66,12 +67,14 @@ class _lpk {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
-                id_lrk: Joi.number().required(),
-                metode: Joi.string().required(),
-                pelaksanaan: Joi.string().required(),
-                capaian: Joi.string().required(),
-                hambatan: Joi.string().required(),
-                kelanjutan: Joi.string().required(),
+                id_periode: Joi.number().required(),
+                nama: Joi.string().required(),
+                potensi: Joi.string().required(),
+                desa: Joi.array().items(
+                    Joi.object({
+                        nama: Joi.string().required(),
+                    })
+                ),
             });
 
             const validation = schema.validate(body);
@@ -88,16 +91,16 @@ class _lpk {
                 };
             }
 
-            const checkMhs = await prisma.mahasiswa.findFirst({
+            const check = await prisma.bappeda.findFirst({
                 where: {
                     id_user,
                 },
                 select: {
-                    id_mahasiswa: true,
+                    id_kabupaten: true,
                 },
             });
 
-            if (!checkMhs) {
+            if (!check) {
                 return {
                     status: false,
                     code: 404,
@@ -105,32 +108,30 @@ class _lpk {
                 };
             }
 
-            const checkLrk = await prisma.lrk.findUnique({
-                where: {
-                    id_lrk: body.id_lrk,
+            const add = await prisma.kecamatan.create({
+                data: {
+                    id_kabupaten: check.id_kabupaten,
+                    nama: body.nama,
                 },
                 select: {
-                    id_mahasiswa: true,
+                    id_kecamatan: true,
                 },
             });
 
-            if (!checkLrk || checkMhs.id_mahasiswa !== checkLrk.id_mahasiswa) {
-                return {
-                    status: false,
-                    code: 403,
-                    error: "Forbidden",
-                };
-            }
+            body.desa.forEach(async (e) => {
+                await prisma.desa.create({
+                    data: {
+                        id_kecamatan: add.id_kecamatan,
+                        nama: e.nama,
+                    },
+                });
+            });
 
-            await prisma.lpk.create({
+            await prisma.potensi.create({
                 data: {
-                    id_mahasiswa: checkMhs.id_mahasiswa,
-                    id_lrk: body.id_lrk,
-                    metode: body.metode,
-                    pelaksanaan: body.pelaksanaan,
-                    capaian: body.capaian,
-                    hambatan: body.hambatan,
-                    kelanjutan: body.kelanjutan,
+                    id_kecamatan: add.id_kecamatan,
+                    id_periode: body.id_periode,
+                    potensi: body.potensi,
                 },
             });
 
@@ -139,7 +140,7 @@ class _lpk {
                 code: 201,
             };
         } catch (error) {
-            console.error("addLpk module error ", error);
+            console.error("addKecamatan module error ", error);
 
             return {
                 status: false,
@@ -149,4 +150,4 @@ class _lpk {
     };
 }
 
-module.exports = new _lpk();
+module.exports = new _wilayah();

@@ -1,4 +1,4 @@
-const prisma = require("../helpers/database");
+const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _lrk {

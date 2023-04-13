@@ -1,19 +1,19 @@
-const prisma = require("../helpers/database");
+const { prisma, Role } = require("../helpers/database");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
 
 class _mahasiswa {
-    listMahasiswa = async (id_periode, jurusan) => {
+    listMahasiswa = async (id_periode, id_prodi) => {
         try {
             const body = {
                 id_periode,
-                jurusan,
+                id_prodi,
             };
 
             const schema = Joi.object({
                 id_periode: Joi.number().required(),
-                jurusan: Joi.string().required(),
+                id_prodi: Joi.string().required(),
             });
 
             const validation = schema.validate(body);
@@ -32,11 +32,11 @@ class _mahasiswa {
 
             let list = {};
 
-            if (body.jurusan !== "all") {
+            if (body.id_prodi !== "all") {
                 list = await prisma.mahasiswa.findMany({
                     where: {
                         id_periode: body.id_periode,
-                        jurusan: body.jurusan,
+                        id_prodi: body.id_prodi,
                     },
                 });
             } else {
@@ -87,7 +87,7 @@ class _mahasiswa {
                 columnToKey: {
                     A: "nama",
                     B: "nim",
-                    C: "jurusan",
+                    C: "prodi",
                 },
             });
 
@@ -116,7 +116,10 @@ class _mahasiswa {
                     data: {
                         username: String(e.nim),
                         password: bcrypt.hashSync(String(e.nim), 10),
-                        tipe: 1,
+                        role: Role.MAHASISWA,
+                    },
+                    select: {
+                        id_user: true,
                     },
                 });
 
@@ -124,9 +127,9 @@ class _mahasiswa {
                     data: {
                         nama: e.nama,
                         nim: String(e.nim),
-                        jurusan: e.jurusan,
                         id_user: addUser.id_user,
                         id_periode: Number(body.id_periode),
+                        id_prodi: e.prodi,
                     },
                 });
             }

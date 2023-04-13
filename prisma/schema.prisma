@@ -7,31 +7,141 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SUPERADMIN
+  ADMIN
+  MAHASISWA
+  DOSEN
+  BAPPEDA
+  REVIEWER
+}
+
 model periode {
   id_periode Int         @id @default(autoincrement())
   nama       String      @db.VarChar(20)
+  status     Boolean     @default(false)
   mahasiswa  mahasiswa[]
+  potensi    potensi[]
+}
+
+model prodi {
+  id_prodi       String           @id @db.VarChar(20)
+  nama           String           @db.VarChar(20)
+  mahasiswa      mahasiswa[]
+  proposal_prodi proposal_prodi[]
+}
+
+model kabupaten {
+  id_kabupaten Int         @id @default(autoincrement())
+  nama         String      @db.VarChar(20)
+  kecamatan    kecamatan[]
+  bappeda      bappeda[]
+}
+
+model kecamatan {
+  id_kecamatan Int       @id @default(autoincrement())
+  id_kabupaten Int
+  nama         String    @db.VarChar(20)
+  kabupaten    kabupaten @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
+  desa         desa[]
+  potensi      potensi[]
+}
+
+model desa {
+  id_desa      Int       @id @default(autoincrement())
+  id_kecamatan Int
+  nama         String    @db.VarChar(20)
+  kecamatan    kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model potensi {
+  id_potensi   Int        @id @default(autoincrement())
+  id_kecamatan Int
+  id_periode   Int
+  potensi      String     @db.Text
+  status       Boolean?
+  created_at   DateTime   @default(now()) @db.DateTime(0)
+  kecamatan    kecamatan  @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
+  periode      periode    @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
+  proposal     proposal[]
+}
+
+model proposal {
+  id_proposal    Int              @id @default(autoincrement())
+  id_potensi     Int
+  id_dosen       Int
+  proposal       String           @db.Text
+  status         Boolean?
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  potensi        potensi          @relation(fields: [id_potensi], references: [id_potensi], onDelete: Cascade, onUpdate: Cascade)
+  dosen          dosen            @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
+  proposal_prodi proposal_prodi[]
+}
+
+model proposal_prodi {
+  id_proposal_prodi Int      @id @default(autoincrement())
+  id_proposal       Int
+  id_prodi          String
+  jumlah            Int
+  proposal          proposal @relation(fields: [id_proposal], references: [id_proposal], onDelete: Cascade, onUpdate: Cascade)
+  prodi             prodi    @relation(fields: [id_prodi], references: [id_prodi], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model user {
   id_user    Int         @id @default(autoincrement())
   username   String      @unique(map: "username") @db.VarChar(50)
   password   String      @db.VarChar(100)
-  tipe       Int         @db.TinyInt
+  role       Role
   created_at DateTime    @default(now()) @db.DateTime(0)
   mahasiswa  mahasiswa[]
+  bappeda    bappeda[]
+  admin      admin?
+  dosen      dosen?
+}
+
+model admin {
+  id_admin   Int      @id @default(autoincrement())
+  id_user    Int?     @unique
+  nama       String   @db.VarChar(50)
+  nip        String   @unique @db.VarChar(50)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  user       user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+}
+
+model bappeda {
+  id_bappeda   Int       @id @default(autoincrement())
+  id_user      Int?      @unique
+  id_kabupaten Int       @unique
+  nama         String    @db.VarChar(50)
+  nisn         String    @unique @db.VarChar(50)
+  nama_pj      String    @db.VarChar(50)
+  created_by   String    @db.VarChar(50)
+  created_at   DateTime  @default(now()) @db.DateTime(0)
+  user         user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  kabupaten    kabupaten @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model dosen {
+  id_dosen   Int        @id @default(autoincrement())
+  id_user    Int?       @unique
+  nama       String     @db.VarChar(50)
+  nip        String     @unique @db.VarChar(50)
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  user       user?      @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  proposal   proposal[]
 }
 
 model mahasiswa {
   id_mahasiswa Int      @id @default(autoincrement())
-  id_user      Int?
+  id_user      Int?     @unique
   id_periode   Int
+  id_prodi     String
   nama         String   @db.VarChar(50)
-  nim          String   @db.VarChar(20)
-  jurusan      String   @db.VarChar(100)
+  nim          String   @unique @db.VarChar(20)
   created_at   DateTime @default(now()) @db.DateTime(0)
   user         user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
   periode      periode  @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
+  prodi        prodi    @relation(fields: [id_prodi], references: [id_prodi], onDelete: Cascade, onUpdate: Cascade)
   lrk          lrk[]
   lpk          lpk[]
 }

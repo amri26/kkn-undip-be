@@ -22,7 +22,7 @@ app.post(
 );
 
 app.get(
-    "/:id_periode/:jurusan",
+    "/:id_periode/:id_prodi",
     userSession,
     verifyAdmin,
     async (req, res, next) => {
@@ -30,7 +30,7 @@ app.get(
             res,
             await modules.listMahasiswa(
                 Number(req.params.id_periode),
-                req.params.jurusan
+                req.params.id_prodi
             )
         );
     }
