@@ -1,42 +1,37 @@
 const { Router } = require("express");
 const modules = require("../modules/potensi.modules");
 const response = require("../helpers/response");
-const {
-    userSession,
-    verifyBappeda,
-    verifyAdmin,
-} = require("../helpers/middleware");
+const { userSession, verifyAdmin } = require("../helpers/middleware");
 
 const app = Router();
 
-app.post("/", userSession, verifyBappeda, async (req, res, next) => {
-    response.sendResponse(res, await modules.addPotensi(req.user.id, req.body));
-});
-
-app.get("/", userSession, async (req, res, next) => {
-    response.sendResponse(res, await modules.listPotensi(req.body));
+app.get("/:id_periode", userSession, async (req, res, next) => {
+    response.sendResponse(
+        res,
+        await modules.listPotensi(Number(req.params.id_periode))
+    );
 });
 
 app.put(
-    "/acc/:id_potensi",
+    "/acc/:id_kecamatan",
     userSession,
     verifyAdmin,
     async (req, res, next) => {
         response.sendResponse(
             res,
-            await modules.accPotensi(Number(req.params.id_potensi))
+            await modules.accPotensi(Number(req.params.id_kecamatan))
         );
     }
 );
 
 app.put(
-    "/dec/:id_potensi",
+    "/dec/:id_kecamatan",
     userSession,
     verifyAdmin,
     async (req, res, next) => {
         response.sendResponse(
             res,
-            await modules.decPotensi(Number(req.params.id_potensi))
+            await modules.decPotensi(Number(req.params.id_kecamatan))
         );
     }
 );

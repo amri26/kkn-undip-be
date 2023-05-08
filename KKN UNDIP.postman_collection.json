@@ -543,9 +543,6 @@
 			"item": [
 				{
 					"name": "LIST POTENSI",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -559,58 +556,20 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"id_kabupaten\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{url}}/potensi",
+							"raw": "{{url}}/potensi/:id_periode",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"potensi"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD POTENSI",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+								"potensi",
+								":id_periode"
+							],
+							"variable": [
 								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+									"key": "id_periode",
+									"value": "1"
 								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_kecamatan\": 2,\r\n    \"id_periode\": 1,\r\n    \"potensi\": \"Dekat dengan UNDIP\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/potensi",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"potensi"
 							]
 						}
 					},
@@ -632,18 +591,18 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/potensi/acc/:id_potensi",
+							"raw": "{{url}}/potensi/acc/:id_kecamatan",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"potensi",
 								"acc",
-								":id_potensi"
+								":id_kecamatan"
 							],
 							"variable": [
 								{
-									"key": "id_potensi",
+									"key": "id_kecamatan",
 									"value": "1"
 								}
 							]
@@ -667,18 +626,18 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/potensi/dec/:id_potensi",
+							"raw": "{{url}}/potensi/dec/:id_kecamatan",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"potensi",
 								"dec",
-								":id_potensi"
+								":id_kecamatan"
 							],
 							"variable": [
 								{
-									"key": "id_potensi",
+									"key": "id_kecamatan",
 									"value": "1"
 								}
 							]
@@ -708,7 +667,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_potensi\": 1,\r\n    \"proposal\": \"Mengembangkan UMKM yang sesuai dengan kebutuhan Mahasiswa\",\r\n    \"prodi\": [\r\n        {\r\n            \"id_prodi\": \"IF\",\r\n            \"jumlah\": 10\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"proposal\": \"Mengembangkan UMKM yang sesuai dengan kebutuhan Mahasiswa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

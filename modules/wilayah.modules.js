@@ -111,7 +111,10 @@ class _wilayah {
             const add = await prisma.kecamatan.create({
                 data: {
                     id_kabupaten: check.id_kabupaten,
+                    id_periode: body.id_periode,
                     nama: body.nama,
+                    potensi: body.potensi,
+                    status: 0,
                 },
                 select: {
                     id_kecamatan: true,
@@ -125,14 +128,6 @@ class _wilayah {
                         nama: e.nama,
                     },
                 });
-            });
-
-            await prisma.potensi.create({
-                data: {
-                    id_kecamatan: add.id_kecamatan,
-                    id_periode: body.id_periode,
-                    potensi: body.potensi,
-                },
             });
 
             return {

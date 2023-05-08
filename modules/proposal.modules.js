@@ -62,12 +62,8 @@ class _proposal {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
-                id_potensi: Joi.number().required(),
+                id_kecamatan: Joi.number().required(),
                 proposal: Joi.string().required(),
-                prodi: Joi.array().items({
-                    id_prodi: Joi.string().required(),
-                    jumlah: Joi.number().required(),
-                }),
             });
 
             const validation = schema.validate(body);
@@ -101,16 +97,16 @@ class _proposal {
                 };
             }
 
-            const checkPotensi = await prisma.potensi.findUnique({
+            const checkKecamatan = await prisma.kecamatan.findUnique({
                 where: {
-                    id_potensi: body.id_potensi,
+                    id_kecamatan: body.id_kecamatan,
                 },
                 select: {
                     status: true,
                 },
             });
 
-            if (checkPotensi.status !== true) {
+            if (checkKecamatan.status !== 1) {
                 return {
                     status: false,
                     code: 403,
@@ -118,28 +114,13 @@ class _proposal {
                 };
             }
 
-            const add = await prisma.proposal.create({
+            await prisma.proposal.create({
                 data: {
                     id_dosen: checkDosen.id_dosen,
-                    id_potensi: body.id_potensi,
+                    id_kecamatan: body.id_kecamatan,
                     proposal: body.proposal,
                 },
-                select: {
-                    id_proposal: true,
-                },
             });
-
-            for (let i = 0; i < body.prodi.length; i++) {
-                const e = body.prodi[i];
-
-                await prisma.proposal_prodi.create({
-                    data: {
-                        id_proposal: add.id_proposal,
-                        id_prodi: e.id_prodi,
-                        jumlah: e.jumlah,
-                    },
-                });
-            }
 
             return {
                 status: true,
