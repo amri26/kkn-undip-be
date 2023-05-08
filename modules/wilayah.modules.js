@@ -20,11 +20,14 @@ class _wilayah {
         }
     };
 
-    listKecamatan = async (id_kabupaten) => {
+    listKecamatan = async (body) => {
         try {
-            const schema = Joi.number().required();
+            const schema = Joi.object({
+                id_periode: Joi.number().required(),
+                id_kabupaten: Joi.number().required(),
+            });
 
-            const validation = schema.validate(id_kabupaten);
+            const validation = schema.validate(body);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map(
@@ -40,7 +43,8 @@ class _wilayah {
 
             const list = await prisma.kecamatan.findMany({
                 where: {
-                    id_kabupaten,
+                    id_periode: body.id_periode,
+                    id_kabupaten: body.id_kabupaten,
                 },
             });
 

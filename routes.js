@@ -8,6 +8,7 @@ const PotensiController = require("./controllers/PotensiController");
 const MahasiswaController = require("./controllers/MahasiswaController");
 const LrkController = require("./controllers/LrkController");
 const LpkController = require("./controllers/LpkController");
+const ReviewerController = require("./controllers/ReviewerController");
 
 const _routes = [
     ["/login", AuthController],
@@ -20,6 +21,7 @@ const _routes = [
     ["/mahasiswa", MahasiswaController],
     ["/lrk", LrkController],
     ["/lpk", LpkController],
+    ["/reviewer", ReviewerController],
 ];
 
 const routes = (app) => {

@@ -5,6 +5,7 @@ const {
     userSession,
     verifyDosen,
     verifyAdmin,
+    verifyReviewer,
 } = require("../helpers/middleware");
 
 const app = Router();
@@ -17,25 +18,49 @@ app.post("/", userSession, verifyDosen, async (req, res, next) => {
 });
 
 app.put(
-    "/acc/:id_proposal",
+    "/acc/reviewer/:id_proposal",
     userSession,
-    verifyAdmin,
+    verifyReviewer,
     async (req, res, next) => {
         response.sendResponse(
             res,
-            await modules.accProposal(Number(req.params.id_proposal))
+            await modules.accProposalReviewer(Number(req.params.id_proposal))
         );
     }
 );
 
 app.put(
-    "/dec/:id_proposal",
+    "/dec/reviewer/:id_proposal",
+    userSession,
+    verifyReviewer,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.decProposalReviewer(Number(req.params.id_proposal))
+        );
+    }
+);
+
+app.put(
+    "/acc/admin/:id_proposal",
     userSession,
     verifyAdmin,
     async (req, res, next) => {
         response.sendResponse(
             res,
-            await modules.decProposal(Number(req.params.id_proposal))
+            await modules.accProposalAdmin(Number(req.params.id_proposal))
+        );
+    }
+);
+
+app.put(
+    "/dec/admin/:id_proposal",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.decProposalAdmin(Number(req.params.id_proposal))
         );
     }
 );

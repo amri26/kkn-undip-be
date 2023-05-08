@@ -151,6 +151,24 @@ const verifyDosen = async (req, res, next) => {
     }
 };
 
+const verifyReviewer = async (req, res, next) => {
+    try {
+        if (req.user.role === Role.REVIEWER) {
+            next();
+        } else {
+            res.status(401).send({
+                status: false,
+                error: "You're not authorized",
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            error,
+        });
+    }
+};
+
 module.exports = {
     userSession,
     verifySuperAdmin,
@@ -158,4 +176,5 @@ module.exports = {
     verifyMahasiswa,
     verifyBappeda,
     verifyDosen,
+    verifyReviewer,
 };

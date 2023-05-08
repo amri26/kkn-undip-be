@@ -16,11 +16,8 @@ app.get("/", userSession, async (req, res, next) => {
     response.sendResponse(res, await modules.listKabupaten());
 });
 
-app.get("/:id_kabupaten", userSession, async (req, res, next) => {
-    response.sendResponse(
-        res,
-        await modules.listKecamatan(Number(req.params.id_kabupaten))
-    );
+app.get("/kecamatan", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listKecamatan(req.body));
 });
 
 module.exports = app;

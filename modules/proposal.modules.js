@@ -119,6 +119,7 @@ class _proposal {
                     id_dosen: checkDosen.id_dosen,
                     id_kecamatan: body.id_kecamatan,
                     proposal: body.proposal,
+                    status: 0,
                 },
             });
 
@@ -136,7 +137,7 @@ class _proposal {
         }
     };
 
-    accProposal = async (id_proposal) => {
+    accProposalReviewer = async (id_proposal) => {
         try {
             const schema = Joi.number().required();
 
@@ -154,12 +155,29 @@ class _proposal {
                 };
             }
 
+            const check = await prisma.proposal.findUnique({
+                where: {
+                    id_proposal,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (check.status === 2 || check.status === -2) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
             await prisma.proposal.update({
                 where: {
                     id_proposal,
                 },
                 data: {
-                    status: true,
+                    status: 1,
                 },
             });
 
@@ -168,7 +186,7 @@ class _proposal {
                 code: 204,
             };
         } catch (error) {
-            console.error("accProposal module error ", error);
+            console.error("accProposalReviewer module error ", error);
 
             return {
                 status: false,
@@ -177,7 +195,7 @@ class _proposal {
         }
     };
 
-    decProposal = async (id_proposal) => {
+    decProposalReviewer = async (id_proposal) => {
         try {
             const schema = Joi.number().required();
 
@@ -195,12 +213,29 @@ class _proposal {
                 };
             }
 
+            const check = await prisma.proposal.findUnique({
+                where: {
+                    id_proposal,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (check.status === 2 || check.status === -2) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
             await prisma.proposal.update({
                 where: {
                     id_proposal,
                 },
                 data: {
-                    status: false,
+                    status: -1,
                 },
             });
 
@@ -209,7 +244,123 @@ class _proposal {
                 code: 204,
             };
         } catch (error) {
-            console.error("decProposal module error ", error);
+            console.error("decProposalReviewer module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    accProposalAdmin = async (id_proposal) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_proposal);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.proposal.findUnique({
+                where: {
+                    id_proposal,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (check.status === -1 || check.status === 0) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.proposal.update({
+                where: {
+                    id_proposal,
+                },
+                data: {
+                    status: 2,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("accProposalAdmin module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    decProposalAdmin = async (id_proposal) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_proposal);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.proposal.findUnique({
+                where: {
+                    id_proposal,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (check.status === -1 || check.status === 0) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.proposal.update({
+                where: {
+                    id_proposal,
+                },
+                data: {
+                    status: -2,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("decProposalAdmin module error ", error);
 
             return {
                 status: false,
