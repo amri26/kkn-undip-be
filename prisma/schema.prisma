@@ -58,14 +58,25 @@ model desa {
 }
 
 model proposal {
-  id_proposal  Int       @id @default(autoincrement())
-  id_kecamatan Int
-  id_dosen     Int
-  proposal     String    @db.Text
-  status       Int       @db.TinyInt
-  created_at   DateTime  @default(now()) @db.DateTime(0)
-  kecamatan    kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
-  dosen        dosen     @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
+  id_proposal        Int                  @id @default(autoincrement())
+  id_kecamatan       Int
+  id_dosen           Int
+  proposal           String               @db.Text
+  status             Int                  @db.TinyInt
+  created_at         DateTime             @default(now()) @db.DateTime(0)
+  kecamatan          kecamatan            @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
+  dosen              dosen                @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
+  mahasiswa_proposal mahasiswa_proposal[]
+}
+
+model mahasiswa_proposal {
+  id_mahasiswa_proposal Int       @id @default(autoincrement())
+  id_mahasiswa          Int
+  id_proposal           Int
+  status                Int       @db.TinyInt
+  created_at            DateTime  @default(now()) @db.DateTime(0)
+  mahasiswa             mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  proposal              proposal  @relation(fields: [id_proposal], references: [id_proposal], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model user {
@@ -123,18 +134,19 @@ model dosen {
 }
 
 model mahasiswa {
-  id_mahasiswa Int      @id @default(autoincrement())
-  id_user      Int?     @unique
-  id_periode   Int
-  id_prodi     String
-  nama         String   @db.VarChar(50)
-  nim          String   @unique @db.VarChar(20)
-  created_at   DateTime @default(now()) @db.DateTime(0)
-  user         user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  periode      periode  @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
-  prodi        prodi    @relation(fields: [id_prodi], references: [id_prodi], onDelete: Cascade, onUpdate: Cascade)
-  lrk          lrk[]
-  lpk          lpk[]
+  id_mahasiswa       Int                  @id @default(autoincrement())
+  id_user            Int?                 @unique
+  id_periode         Int
+  id_prodi           String
+  nama               String               @db.VarChar(50)
+  nim                String               @unique @db.VarChar(20)
+  created_at         DateTime             @default(now()) @db.DateTime(0)
+  user               user?                @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  periode            periode              @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
+  prodi              prodi                @relation(fields: [id_prodi], references: [id_prodi], onDelete: Cascade, onUpdate: Cascade)
+  lrk                lrk[]
+  lpk                lpk[]
+  mahasiswa_proposal mahasiswa_proposal[]
 }
 
 model lrk {

@@ -16,7 +16,7 @@ app.get("/", userSession, async (req, res, next) => {
     response.sendResponse(res, await modules.listKabupaten());
 });
 
-app.get("/kecamatan", userSession, async (req, res, next) => {
+app.post("/kecamatan", userSession, async (req, res, next) => {
     response.sendResponse(res, await modules.listKecamatan(req.body));
 });
 

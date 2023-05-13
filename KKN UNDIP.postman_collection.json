@@ -173,9 +173,6 @@
 				},
 				{
 					"name": "LIST KECAMATAN",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -187,7 +184,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -763,6 +760,113 @@
 							],
 							"path": [
 								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DAFTAR LOKASI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_proposal\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/daftar_lokasi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"daftar_lokasi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACC MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/acc/:id_mahasiswa_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"acc",
+								":id_mahasiswa_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa_proposal",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEC MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/dec/:id_mahasiswa_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"dec",
+								":id_mahasiswa_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa_proposal",
+									"value": "1"
+								}
 							]
 						}
 					},
