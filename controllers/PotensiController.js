@@ -12,28 +12,4 @@ app.get("/:id_periode", userSession, async (req, res, next) => {
     );
 });
 
-app.put(
-    "/acc/:id_kecamatan",
-    userSession,
-    verifyAdmin,
-    async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.accPotensi(Number(req.params.id_kecamatan))
-        );
-    }
-);
-
-app.put(
-    "/dec/:id_kecamatan",
-    userSession,
-    verifyAdmin,
-    async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.decPotensi(Number(req.params.id_kecamatan))
-        );
-    }
-);
-
 module.exports = app;

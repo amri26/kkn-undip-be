@@ -1,5 +1,4 @@
-const { prisma, Prisma } = require("../helpers/database");
-const bcrypt = require("bcrypt");
+const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _bappeda {
@@ -21,19 +20,23 @@ class _bappeda {
         }
     };
 
-    addBappeda = async (created_by, body) => {
+    addKecamatan = async (id_user, body) => {
         try {
             body = {
-                created_by,
+                id_user,
                 ...body,
             };
 
             const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_periode: Joi.number().required(),
                 nama: Joi.string().required(),
-                nisn: Joi.string().required(),
-                kabupaten: Joi.string().required(),
-                nama_pj: Joi.string().required(),
-                created_by: Joi.string().required(),
+                potensi: Joi.string().required(),
+                desa: Joi.array().items(
+                    Joi.object({
+                        nama: Joi.string().required(),
+                    })
+                ),
             });
 
             const validation = schema.validate(body);
@@ -50,35 +53,43 @@ class _bappeda {
                 };
             }
 
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nisn,
-                    password: bcrypt.hashSync(body.nisn, 10),
-                    role: "BAPPEDA",
-                },
-                select: {
-                    id_user: true,
-                },
-            });
-
-            const addKabupaten = await prisma.kabupaten.create({
-                data: {
-                    nama: body.kabupaten,
+            const check = await prisma.bappeda.findFirst({
+                where: {
+                    id_user,
                 },
                 select: {
                     id_kabupaten: true,
                 },
             });
 
-            await prisma.bappeda.create({
+            if (!check) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const add = await prisma.kecamatan.create({
                 data: {
-                    id_user: addUser.id_user,
-                    id_kabupaten: addKabupaten.id_kabupaten,
+                    id_kabupaten: check.id_kabupaten,
+                    id_periode: body.id_periode,
                     nama: body.nama,
-                    nisn: body.nisn,
-                    nama_pj: body.nama_pj,
-                    created_by,
+                    potensi: body.potensi,
+                    status: 0,
                 },
+                select: {
+                    id_kecamatan: true,
+                },
+            });
+
+            body.desa.forEach(async (e) => {
+                await prisma.desa.create({
+                    data: {
+                        id_kecamatan: add.id_kecamatan,
+                        nama: e.nama,
+                    },
+                });
             });
 
             return {
@@ -86,17 +97,7 @@ class _bappeda {
                 code: 201,
             };
         } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
-
-            console.error("addBappeda module error ", error);
+            console.error("addKecamatan module error ", error);
 
             return {
                 status: false,

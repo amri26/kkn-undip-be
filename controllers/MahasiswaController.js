@@ -5,26 +5,9 @@ const {
     userSession,
     verifyAdmin,
     verifyMahasiswa,
-    verifyDosen,
 } = require("../helpers/middleware");
 
-const multer = require("multer");
-const upload = multer();
-
 const app = Router();
-
-app.post(
-    "/",
-    upload.single("file"),
-    userSession,
-    verifyAdmin,
-    async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.addMahasiswa(req.file, req.body)
-        );
-    }
-);
 
 app.get(
     "/:id_periode/:id_prodi",
@@ -49,36 +32,6 @@ app.post(
         response.sendResponse(
             res,
             await modules.daftarLokasi(req.user.id, req.body)
-        );
-    }
-);
-
-app.put(
-    "/acc/:id_mahasiswa_proposal",
-    userSession,
-    verifyDosen,
-    async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.accMahasiswa(
-                req.user.id,
-                Number(req.params.id_mahasiswa_proposal)
-            )
-        );
-    }
-);
-
-app.put(
-    "/dec/:id_mahasiswa_proposal",
-    userSession,
-    verifyDosen,
-    async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.decMahasiswa(
-                req.user.id,
-                Number(req.params.id_mahasiswa_proposal)
-            )
         );
     }
 );

@@ -1,10 +1,10 @@
 const AuthController = require("./controllers/AuthController");
+const SuperAdminController = require("./controllers/SuperAdminController");
 const AdminController = require("./controllers/AdminController");
 const DosenController = require("./controllers/DosenController");
 const ProposalController = require("./controllers/ProposalController");
 const BappedaController = require("./controllers/BappedaController");
 const WilayahController = require("./controllers/WilayahController");
-const PotensiController = require("./controllers/PotensiController");
 const MahasiswaController = require("./controllers/MahasiswaController");
 const LrkController = require("./controllers/LrkController");
 const LpkController = require("./controllers/LpkController");
@@ -12,12 +12,12 @@ const ReviewerController = require("./controllers/ReviewerController");
 
 const _routes = [
     ["/login", AuthController],
+    ["/superadmin", SuperAdminController],
     ["/admin", AdminController],
     ["/dosen", DosenController],
     ["/proposal", ProposalController],
     ["/bappeda", BappedaController],
     ["/wilayah", WilayahController],
-    ["/potensi", PotensiController],
     ["/mahasiswa", MahasiswaController],
     ["/lrk", LrkController],
     ["/lpk", LpkController],

@@ -1,5 +1,4 @@
-const { prisma, Prisma, Role } = require("../helpers/database");
-const bcrypt = require("bcrypt");
+const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _dosen {
@@ -21,11 +20,17 @@ class _dosen {
         }
     };
 
-    addDosen = async (body) => {
+    addProposal = async (id_user, body) => {
         try {
+            body = {
+                id_user,
+                ...body,
+            };
+
             const schema = Joi.object({
-                nama: Joi.string().required(),
-                nip: Joi.string().required(),
+                id_user: Joi.number().required(),
+                id_kecamatan: Joi.number().required(),
+                proposal: Joi.string().required(),
             });
 
             const validation = schema.validate(body);
@@ -42,22 +47,46 @@ class _dosen {
                 };
             }
 
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nip,
-                    password: bcrypt.hashSync(body.nip, 10),
-                    role: Role.DOSEN,
+            const checkDosen = await prisma.dosen.findFirst({
+                where: {
+                    id_user,
                 },
                 select: {
-                    id_user: true,
+                    id_dosen: true,
                 },
             });
 
-            await prisma.dosen.create({
+            if (!checkDosen) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkKecamatan = await prisma.kecamatan.findUnique({
+                where: {
+                    id_kecamatan: body.id_kecamatan,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (checkKecamatan.status !== 1) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.proposal.create({
                 data: {
-                    id_user: addUser.id_user,
-                    nama: body.nama,
-                    nip: body.nip,
+                    id_dosen: checkDosen.id_dosen,
+                    id_kecamatan: body.id_kecamatan,
+                    proposal: body.proposal,
+                    status: 0,
                 },
             });
 
@@ -66,17 +95,213 @@ class _dosen {
                 code: 201,
             };
         } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
+            console.error("addProposal module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    accMahasiswa = async (id_user, id_mahasiswa_kecamatan) => {
+        try {
+            const body = {
+                id_user,
+                id_mahasiswa_kecamatan,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_mahasiswa_kecamatan: Joi.number().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
             }
 
-            console.error("addDosen module error ", error);
+            const checkDosen = await prisma.dosen.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_dosen: true,
+                },
+            });
+
+            if (!checkDosen) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkMahasiswaKecamatan =
+                await prisma.mahasiswa_kecamatan.findUnique({
+                    where: {
+                        id_mahasiswa_kecamatan,
+                    },
+                    select: {
+                        id_kecamatan: true,
+                    },
+                });
+
+            const checkKecamatan = await prisma.kecamatan.findUnique({
+                where: {
+                    id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
+                },
+                select: {
+                    proposal: {
+                        where: {
+                            status: 1,
+                        },
+                        select: {
+                            id_dosen: true,
+                        },
+                    },
+                },
+            });
+
+            if (
+                !checkKecamatan.proposal.some(
+                    (i) => i.id_dosen === checkDosen.id_dosen
+                )
+            ) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.mahasiswa_kecamatan.update({
+                where: {
+                    id_mahasiswa_kecamatan,
+                },
+                data: {
+                    status: 1,
+                },
+            });
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("accMahasiswa module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    decMahasiswa = async (id_user, id_mahasiswa_kecamatan) => {
+        try {
+            const body = {
+                id_user,
+                id_mahasiswa_kecamatan,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_mahasiswa_kecamatan: Joi.number().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkDosen = await prisma.dosen.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_dosen: true,
+                },
+            });
+
+            if (!checkDosen) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkMahasiswaKecamatan =
+                await prisma.mahasiswa_kecamatan.findUnique({
+                    where: {
+                        id_mahasiswa_kecamatan,
+                    },
+                    select: {
+                        id_kecamatan: true,
+                    },
+                });
+
+            const checkKecamatan = await prisma.kecamatan.findUnique({
+                where: {
+                    id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
+                },
+                select: {
+                    proposal: {
+                        where: {
+                            status: 1,
+                        },
+                        select: {
+                            id_dosen: true,
+                        },
+                    },
+                },
+            });
+
+            if (
+                !checkKecamatan.proposal.some(
+                    (i) => i.id_dosen === checkDosen.id_dosen
+                )
+            ) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.mahasiswa_kecamatan.update({
+                where: {
+                    id_mahasiswa_kecamatan,
+                },
+                data: {
+                    status: -1,
+                },
+            });
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("decMahasiswa module error ", error);
 
             return {
                 status: false,
