@@ -6,6 +6,48 @@
 	},
 	"item": [
 		{
+			"name": "SUPERADMIN",
+			"item": [
+				{
+					"name": "ADD ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"admin a\",\r\n    \"nip\": \"admin a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/superadmin/admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"superadmin",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "ADMIN",
 			"item": [
 				{
@@ -36,7 +78,55 @@
 					"response": []
 				},
 				{
-					"name": "ADD ADMIN",
+					"name": "ADD MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+								},
+								{
+									"key": "id_periode",
+									"value": "1",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD MAHASISWA SINGLE",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -52,7 +142,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"admin a\",\r\n    \"nip\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\",\r\n    \"prodi\": \"Informatika\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -60,12 +150,401 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/admin",
+							"raw": "{{url}}/admin/mahasiswa/single",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"admin"
+								"admin",
+								"mahasiswa",
+								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD DOSEN SINGLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Dosen A\",\r\n    \"nip\": \"dosen a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/dosen/single",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"dosen",
+								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"bappeda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD BAPPEDA SINGLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"kabupaten\" : \"Semarang\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/bappeda/single",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"bappeda",
+								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"reviewer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD REVIEWER SINGLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Reviewer A\",\r\n    \"nip\": \"reviewer a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/reviewer/single",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"reviewer",
+								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACC KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/kecamatan/acc/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"kecamatan",
+								"acc",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEC KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/kecamatan/dec/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"kecamatan",
+								"dec",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACC PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/proposal/acc/:id_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"proposal",
+								"acc",
+								":id_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_proposal",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEC PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/proposal/dec/:id_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"proposal",
+								"dec",
+								":id_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_proposal",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -104,7 +583,7 @@
 					"response": []
 				},
 				{
-					"name": "ADD BAPPEDA",
+					"name": "ADD KECAMATAN",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -120,7 +599,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\r\n    \"nama\" : \"Bpd Cilacap\",\r\n    \"nisn\" : \"111\",\r\n    \"kabupaten\" : \"Cilacap\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -128,12 +607,267 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/bappeda",
+							"raw": "{{url}}/bappeda/kecamatan",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"bappeda"
+								"bappeda",
+								"kecamatan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DOSEN",
+			"item": [
+				{
+					"name": "LIST DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"proposal\": \"Membuat bazar dekat UMKM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/dosen/proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"proposal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACC MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/mahasiswa/acc/:id_mahasiswa_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"mahasiswa",
+								"acc",
+								":id_mahasiswa_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEC MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/mahasiswa/dec/:id_mahasiswa_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"mahasiswa",
+								"dec",
+								":id_mahasiswa_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MAHASISWA",
+			"item": [
+				{
+					"name": "LIST MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/:id_periode/:id_prodi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								":id_periode",
+								":id_prodi"
+							],
+							"variable": [
+								{
+									"key": "id_periode",
+									"value": "1"
+								},
+								{
+									"key": "id_prodi",
+									"value": "all"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DAFTAR LOKASI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_kecamatan\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/daftar_lokasi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"daftar_lokasi"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REVIEWER",
+			"item": [
+				{
+					"name": "LIST REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reviewer"
 							]
 						}
 					},
@@ -207,42 +941,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "ADD KECAMATAN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/wilayah",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"wilayah"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -282,597 +980,12 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "ACC POTENSI",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/potensi/acc/:id_kecamatan",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"potensi",
-								"acc",
-								":id_kecamatan"
-							],
-							"variable": [
-								{
-									"key": "id_kecamatan",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DEC POTENSI",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/potensi/dec/:id_kecamatan",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"potensi",
-								"dec",
-								":id_kecamatan"
-							],
-							"variable": [
-								{
-									"key": "id_kecamatan",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "REVIEWER",
-			"item": [
-				{
-					"name": "LIST REVIEWER",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/reviewer",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"reviewer"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD REVIEWER",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Reviewer A\",\r\n    \"nip\": \"reviewer a\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/reviewer",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"reviewer"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "DOSEN",
-			"item": [
-				{
-					"name": "LIST DOSEN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/dosen",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"dosen"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD DOSEN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Dosen A\",\r\n    \"nip\": \"dosen a\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/dosen",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"dosen"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "PROPOSAL",
-			"item": [
-				{
-					"name": "ADD PROPOSAL",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"proposal\": \"Mengembangkan UMKM yang sesuai dengan kebutuhan Mahasiswa\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"proposal"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ACC PROPOSAL REVIEWER",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/proposal/acc/reviewer/:id_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"proposal",
-								"acc",
-								"reviewer",
-								":id_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DEC PROPOSAL REVIEWER",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/proposal/dec/reviewer/:id_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"proposal",
-								"dec",
-								"reviewer",
-								":id_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ACC PROPOSAL ADMIN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/proposal/acc/admin/:id_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"proposal",
-								"acc",
-								"admin",
-								":id_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DEC PROPOSAL ADMIN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/proposal/dec/admin/:id_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"proposal",
-								"dec",
-								"admin",
-								":id_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "MAHASISWA",
-			"item": [
-				{
-					"name": "LIST MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/mahasiswa/:id_periode/:id_prodi",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"mahasiswa",
-								":id_periode",
-								":id_prodi"
-							],
-							"variable": [
-								{
-									"key": "id_periode",
-									"value": "1"
-								},
-								{
-									"key": "id_prodi",
-									"value": "all"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
-								},
-								{
-									"key": "id_periode",
-									"value": "1",
-									"type": "default"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/mahasiswa",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"mahasiswa"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DAFTAR LOKASI",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_proposal\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/mahasiswa/daftar_lokasi",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"mahasiswa",
-								"daftar_lokasi"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ACC MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/mahasiswa/acc/:id_mahasiswa_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"mahasiswa",
-								"acc",
-								":id_mahasiswa_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_mahasiswa_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DEC MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/mahasiswa/dec/:id_mahasiswa_proposal",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"mahasiswa",
-								"dec",
-								":id_mahasiswa_proposal"
-							],
-							"variable": [
-								{
-									"key": "id_mahasiswa_proposal",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "LRK",
