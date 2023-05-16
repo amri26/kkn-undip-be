@@ -28,20 +28,72 @@ app.post(
     }
 );
 
-app.post("/dosen", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(res, await modules.addDosen(req.body));
+app.post(
+    "/mahasiswa/single",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(res, await modules.addMahasiswaSingle(req.body));
+    }
+);
+
+app.post(
+    "/dosen",
+    upload.single("file"),
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(res, await modules.addDosen(req.file));
+    }
+);
+
+app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.addDosenSingle(req.body));
 });
 
-app.post("/bappeda", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(
-        res,
-        await modules.addBappeda(req.user.nama, req.body)
-    );
-});
+app.post(
+    "/bappeda",
+    upload.single("file"),
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.addBappeda(req.user.nama, req.file)
+        );
+    }
+);
 
-app.post("/reviewer", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(res, await modules.addReviewer(req.body));
-});
+app.post(
+    "/bappeda/single",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.addBappedaSingle(req.user.nama, req.body)
+        );
+    }
+);
+
+app.post(
+    "/reviewer",
+    upload.single("file"),
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(res, await modules.addReviewer(req.file));
+    }
+);
+
+app.post(
+    "/reviewer/single",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(res, await modules.addReviewerSingle(req.body));
+    }
+);
 
 app.put(
     "/kecamatan/acc/:id_kecamatan",

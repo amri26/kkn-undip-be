@@ -100,7 +100,7 @@ model bappeda {
   id_user      Int?      @unique
   id_kabupaten Int       @unique
   nama         String    @db.VarChar(50)
-  nisn         String    @unique @db.VarChar(50)
+  nb           String    @unique @db.VarChar(50)
   nama_pj      String    @db.VarChar(50)
   created_by   String    @db.VarChar(50)
   created_at   DateTime  @default(now()) @db.DateTime(0)

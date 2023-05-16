@@ -44,6 +44,9 @@ class _admin {
 
             const result = excelToJson({
                 source: file.buffer,
+                header: {
+                    rows: 1,
+                },
                 sheets: ["mahasiswa"],
                 columnToKey: {
                     A: "nama",
@@ -60,7 +63,6 @@ class _admin {
                         username: String(e.nim),
                     },
                     select: {
-                        id_user: true,
                         username: true,
                     },
                 });
@@ -90,7 +92,7 @@ class _admin {
                         nim: String(e.nim),
                         prodi: e.prodi,
                         id_user: addUser.id_user,
-                        id_periode: Number(body.id_periode),
+                        id_periode: body.id_periode,
                     },
                 });
             }
@@ -109,7 +111,143 @@ class _admin {
         }
     };
 
-    addDosen = async (body) => {
+    addMahasiswaSingle = async (body) => {
+        try {
+            const schema = Joi.object({
+                id_periode: Joi.number().required(),
+                nama: Joi.string().required(),
+                nim: Joi.string().required(),
+                prodi: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const addUser = await prisma.user.create({
+                data: {
+                    username: body.nim,
+                    password: bcrypt.hashSync(body.nim, 10),
+                    role: Role.MAHASISWA,
+                },
+                select: {
+                    id_user: true,
+                },
+            });
+
+            await prisma.mahasiswa.create({
+                data: {
+                    nama: body.nama,
+                    nim: body.nim,
+                    prodi: body.prodi,
+                    id_periode: body.id_periode,
+                    id_user: addUser.id_user,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === "P2002") {
+                    return {
+                        status: false,
+                        code: 409,
+                        error: "Data duplicate found",
+                    };
+                }
+            }
+
+            console.error("addMahasiswaSingle module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addDosen = async (file) => {
+        try {
+            const result = excelToJson({
+                source: file.buffer,
+                header: {
+                    rows: 1,
+                },
+                sheets: ["dosen"],
+                columnToKey: {
+                    A: "nama",
+                    B: "nip",
+                },
+            });
+
+            for (let i = 0; i < result.dosen.length; i++) {
+                const e = result.dosen[i];
+
+                const check = await prisma.user.findUnique({
+                    where: {
+                        username: String(e.nip),
+                    },
+                    select: {
+                        username: true,
+                    },
+                });
+
+                if (check) {
+                    return {
+                        status: false,
+                        code: 409,
+                        error: "Data duplicate found, NIP " + check.username,
+                    };
+                }
+
+                const addUser = await prisma.user.create({
+                    data: {
+                        username: String(e.nip),
+                        password: bcrypt.hashSync(String(e.nip), 10),
+                        role: Role.DOSEN,
+                    },
+                    select: {
+                        id_user: true,
+                    },
+                });
+
+                await prisma.dosen.create({
+                    data: {
+                        id_user: addUser.id_user,
+                        nama: e.nama,
+                        nip: String(e.nip),
+                    },
+                });
+            }
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addDosen module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addDosenSingle = async (body) => {
         try {
             const schema = Joi.object({
                 nama: Joi.string().required(),
@@ -164,7 +302,7 @@ class _admin {
                 }
             }
 
-            console.error("addDosen module error ", error);
+            console.error("addDosenSingle module error ", error);
 
             return {
                 status: false,
@@ -173,7 +311,105 @@ class _admin {
         }
     };
 
-    addBappeda = async (created_by, body) => {
+    addBappeda = async (created_by, file) => {
+        try {
+            const schema = Joi.string().required();
+
+            const validation = schema.validate(created_by);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const result = excelToJson({
+                source: file.buffer,
+                header: {
+                    rows: 1,
+                },
+                sheets: ["bappeda"],
+                columnToKey: {
+                    A: "nama",
+                    B: "nb",
+                    C: "kabupaten",
+                    D: "nama_pj",
+                },
+            });
+
+            for (let i = 0; i < result.bappeda.length; i++) {
+                const e = result.bappeda[i];
+
+                const check = await prisma.user.findUnique({
+                    where: {
+                        username: String(e.nb),
+                    },
+                    select: {
+                        username: true,
+                    },
+                });
+
+                if (check) {
+                    return {
+                        status: false,
+                        code: 409,
+                        error: "Data duplicate found, NB " + check.username,
+                    };
+                }
+
+                const addUser = await prisma.user.create({
+                    data: {
+                        username: String(e.nb),
+                        password: bcrypt.hashSync(String(e.nb), 10),
+                        role: Role.BAPPEDA,
+                    },
+                    select: {
+                        id_user: true,
+                    },
+                });
+
+                const addKabupaten = await prisma.kabupaten.create({
+                    data: {
+                        nama: e.kabupaten,
+                    },
+                    select: {
+                        id_kabupaten: true,
+                    },
+                });
+
+                await prisma.bappeda.create({
+                    data: {
+                        id_user: addUser.id_user,
+                        id_kabupaten: addKabupaten.id_kabupaten,
+                        nama: e.nama,
+                        nb: String(e.nb),
+                        nama_pj: e.nama_pj,
+                        created_by,
+                    },
+                });
+            }
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addBappeda module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addBappedaSingle = async (created_by, body) => {
         try {
             body = {
                 created_by,
@@ -182,7 +418,7 @@ class _admin {
 
             const schema = Joi.object({
                 nama: Joi.string().required(),
-                nisn: Joi.string().required(),
+                nb: Joi.string().required(),
                 kabupaten: Joi.string().required(),
                 nama_pj: Joi.string().required(),
                 created_by: Joi.string().required(),
@@ -204,9 +440,9 @@ class _admin {
 
             const addUser = await prisma.user.create({
                 data: {
-                    username: body.nisn,
-                    password: bcrypt.hashSync(body.nisn, 10),
-                    role: "BAPPEDA",
+                    username: body.nb,
+                    password: bcrypt.hashSync(body.nb, 10),
+                    role: Role.BAPPEDA,
                 },
                 select: {
                     id_user: true,
@@ -227,7 +463,7 @@ class _admin {
                     id_user: addUser.id_user,
                     id_kabupaten: addKabupaten.id_kabupaten,
                     nama: body.nama,
-                    nisn: body.nisn,
+                    nb: body.nb,
                     nama_pj: body.nama_pj,
                     created_by,
                 },
@@ -248,7 +484,7 @@ class _admin {
                 }
             }
 
-            console.error("addBappeda module error ", error);
+            console.error("addBappedaSingle module error ", error);
 
             return {
                 status: false,
@@ -257,7 +493,75 @@ class _admin {
         }
     };
 
-    addReviewer = async (body) => {
+    addReviewer = async (file) => {
+        try {
+            const result = excelToJson({
+                source: file.buffer,
+                header: {
+                    rows: 1,
+                },
+                sheets: ["reviewer"],
+                columnToKey: {
+                    A: "nama",
+                    B: "nip",
+                },
+            });
+
+            for (let i = 0; i < result.reviewer.length; i++) {
+                const e = result.reviewer[i];
+
+                const check = await prisma.user.findUnique({
+                    where: {
+                        username: String(e.nip),
+                    },
+                    select: {
+                        username: true,
+                    },
+                });
+
+                if (check) {
+                    return {
+                        status: false,
+                        code: 409,
+                        error: "Data duplicate found, NIP " + check.username,
+                    };
+                }
+
+                const addUser = await prisma.user.create({
+                    data: {
+                        username: String(e.nip),
+                        password: bcrypt.hashSync(String(e.nip), 10),
+                        role: Role.REVIEWER,
+                    },
+                    select: {
+                        id_user: true,
+                    },
+                });
+
+                await prisma.reviewer.create({
+                    data: {
+                        id_user: addUser.id_user,
+                        nama: e.nama,
+                        nip: String(e.nip),
+                    },
+                });
+            }
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addReviewer module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addReviewerSingle = async (body) => {
         try {
             const schema = Joi.object({
                 nama: Joi.string().required(),
@@ -312,7 +616,7 @@ class _admin {
                 }
             }
 
-            console.error("addReviewer module error ", error);
+            console.error("addReviewerSingle module error ", error);
 
             return {
                 status: false,
