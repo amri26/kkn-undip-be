@@ -1124,6 +1124,38 @@
 			]
 		},
 		{
+			"name": "PERIODE",
+			"item": [
+				{
+					"name": "LIST PERIODE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/periode",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"periode"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "LOGIN",
 			"event": [
 				{
