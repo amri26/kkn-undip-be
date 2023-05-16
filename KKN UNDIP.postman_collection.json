@@ -78,6 +78,34 @@
 					"response": []
 				},
 				{
+					"name": "LIST USER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD MAHASISWA",
 					"request": {
 						"auth": {
@@ -918,25 +946,34 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"id_kabupaten\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{url}}/wilayah/kecamatan",
+							"raw": "{{url}}/wilayah/kecamatan/:id_periode/:id_kabupaten?",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"wilayah",
-								"kecamatan"
+								"kecamatan",
+								":id_periode",
+								":id_kabupaten"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							],
+							"variable": [
+								{
+									"key": "id_periode",
+									"value": "1"
+								},
+								{
+									"key": "id_kabupaten",
+									"value": "1"
+								}
 							]
 						}
 					},

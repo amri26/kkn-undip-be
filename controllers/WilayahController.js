@@ -9,8 +9,18 @@ app.get("/", userSession, async (req, res, next) => {
     response.sendResponse(res, await modules.listKabupaten());
 });
 
-app.post("/kecamatan", userSession, async (req, res, next) => {
-    response.sendResponse(res, await modules.listKecamatan(req.body));
-});
+app.get(
+    "/kecamatan/:id_periode/:id_kabupaten?",
+    userSession,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.listKecamatan(
+                Number(req.params.id_periode),
+                req.params.id_kabupaten
+            )
+        );
+    }
+);
 
 module.exports = app;

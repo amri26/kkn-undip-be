@@ -15,6 +15,10 @@ app.get("/", userSession, verifySuperAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.listAdmin());
 });
 
+app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.listUser());
+});
+
 app.post(
     "/mahasiswa",
     upload.single("file"),

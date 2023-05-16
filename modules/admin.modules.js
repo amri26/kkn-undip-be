@@ -22,6 +22,31 @@ class _admin {
         }
     };
 
+    listUser = async () => {
+        try {
+            const list = await prisma.user.findMany({
+                select: {
+                    id_user: true,
+                    username: true,
+                    role: true,
+                    created_at: true,
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listUser module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addMahasiswa = async (file, body) => {
         try {
             const schema = Joi.object({
@@ -49,9 +74,9 @@ class _admin {
                 },
                 sheets: ["mahasiswa"],
                 columnToKey: {
-                    A: "nama",
-                    B: "nim",
-                    C: "prodi",
+                    B: "nama",
+                    C: "nim",
+                    D: "prodi",
                 },
             });
 
@@ -188,8 +213,8 @@ class _admin {
                 },
                 sheets: ["dosen"],
                 columnToKey: {
-                    A: "nama",
-                    B: "nip",
+                    B: "nama",
+                    C: "nip",
                 },
             });
 
@@ -336,10 +361,10 @@ class _admin {
                 },
                 sheets: ["bappeda"],
                 columnToKey: {
-                    A: "nama",
-                    B: "nb",
-                    C: "kabupaten",
-                    D: "nama_pj",
+                    B: "nama",
+                    C: "nb",
+                    D: "kabupaten",
+                    E: "nama_pj",
                 },
             });
 
@@ -502,8 +527,8 @@ class _admin {
                 },
                 sheets: ["reviewer"],
                 columnToKey: {
-                    A: "nama",
-                    B: "nip",
+                    B: "nama",
+                    C: "nip",
                 },
             });
 
