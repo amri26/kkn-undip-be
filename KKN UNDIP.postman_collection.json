@@ -51,6 +51,150 @@
 			"name": "ADMIN",
 			"item": [
 				{
+					"name": "ADD TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Tim I 2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SWITCH TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SWITCH GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST ADMIN",
 					"request": {
 						"auth": {
@@ -332,7 +476,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"kabupaten\" : \"Semarang\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -413,7 +557,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Reviewer A\",\r\n    \"nip\": \"reviewer a\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Reviewer C\",\r\n    \"nip\": \"reviewer c\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,6 +755,43 @@
 					"response": []
 				},
 				{
+					"name": "ADD KABUPATEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Cilacap\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/bappeda/kabupaten",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bappeda",
+								"kabupaten"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD KECAMATAN",
 					"request": {
 						"auth": {
@@ -627,7 +808,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"id_kabupaten\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -695,8 +876,29 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"proposal\": \"Membuat bazar dekat UMKM\"\r\n}",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/transkrip.pdf"
+								},
+								{
+									"key": "id_kecamatan",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "id_gelombang",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "proposal",
+									"value": "Membuat bazar dekat UMKM",
+									"type": "default"
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
@@ -809,18 +1011,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/mahasiswa/:id_tema/:id_prodi",
+							"raw": "{{url}}/mahasiswa/:id_periode/:id_prodi",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"mahasiswa",
-								":id_tema",
+								":id_periode",
 								":id_prodi"
 							],
 							"variable": [
 								{
-									"key": "id_tema",
+									"key": "id_periode",
 									"value": "1"
 								},
 								{
@@ -849,7 +1051,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_kecamatan\": 1\r\n}",
+							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"id_gelombang\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -949,14 +1151,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/wilayah/kecamatan/:id_tema/:id_kabupaten?",
+							"raw": "{{url}}/wilayah/kecamatan/:id_periode/:id_kabupaten?",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"wilayah",
 								"kecamatan",
-								":id_tema",
+								":id_periode",
 								":id_kabupaten"
 							],
 							"query": [
@@ -967,7 +1169,7 @@
 							],
 							"variable": [
 								{
-									"key": "id_tema",
+									"key": "id_periode",
 									"value": "1"
 								},
 								{
@@ -1000,17 +1202,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/potensi/:id_tema",
+							"raw": "{{url}}/potensi/:id_periode",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"potensi",
-								":id_tema"
+								":id_periode"
 							],
 							"variable": [
 								{
-									"key": "id_tema",
+									"key": "id_periode",
 									"value": "1"
 								}
 							]
@@ -1161,10 +1363,10 @@
 			]
 		},
 		{
-			"name": "PERIODE",
+			"name": "TEMA",
 			"item": [
 				{
-					"name": "LIST PERIODE",
+					"name": "LIST TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",
