@@ -35,6 +35,13 @@ model gelombang {
   mahasiswa_kecamatan mahasiswa_kecamatan[]
 }
 
+model dokumen {
+  id_dokumen Int        @id @default(autoincrement())
+  id_drive   String     @db.VarChar(100)
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  proposal   proposal[]
+}
+
 model kabupaten {
   id_kabupaten Int         @id @default(autoincrement())
   id_tema      Int
@@ -69,12 +76,14 @@ model proposal {
   id_kecamatan Int
   id_dosen     Int
   id_gelombang Int
+  id_dokumen   Int
   proposal     String    @db.Text
   status       Int       @db.TinyInt
   created_at   DateTime  @default(now()) @db.DateTime(0)
   kecamatan    kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
   dosen        dosen     @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
   gelombang    gelombang @relation(fields: [id_gelombang], references: [id_gelombang], onDelete: Cascade, onUpdate: Cascade)
+  dokumen      dokumen   @relation(fields: [id_dokumen], references: [id_dokumen], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model mahasiswa_kecamatan {

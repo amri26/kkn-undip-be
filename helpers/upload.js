@@ -1,3 +1,4 @@
+const { error } = require("console");
 const { google } = require("googleapis");
 const stream = require("stream");
 
@@ -8,8 +9,12 @@ const auth = new google.auth.GoogleAuth({
     scopes: SCOPES,
 });
 
-const uploadDrive = async (fileObject, parentsFolder) => {
+const uploadDrive = async (fileObject, fileType, parentsFolder) => {
     try {
+        const mime = fileObject.mimetype.split("/");
+        const extension = mime[mime.length - 1];
+        const filename = `${fileType}_${Date.now()}.${extension}`;
+
         const bufferStream = new stream.PassThrough();
         bufferStream.end(fileObject.buffer);
 
@@ -19,11 +24,15 @@ const uploadDrive = async (fileObject, parentsFolder) => {
                 body: bufferStream,
             },
             requestBody: {
-                name: fileObject.originalname,
+                name: filename,
                 parents: [parentsFolder],
             },
             fields: "id",
         });
+
+        if (file.status !== 200) {
+            throw error;
+        }
 
         return file;
     } catch (error) {
@@ -35,8 +44,12 @@ const downloadDrive = async (fileId) => {
     try {
         const file = await google.drive({ version: "v3", auth }).files.get({
             fileId,
-            alt: "media",
+            fields: "webContentLink", //"webContentLink,name,id"
         });
+
+        if (file.status !== 200) {
+            throw error;
+        }
 
         return file;
     } catch (error) {

@@ -1395,6 +1395,45 @@
 			]
 		},
 		{
+			"name": "DOKUMEN",
+			"item": [
+				{
+					"name": "GET DOKUMEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dokumen/:id_dokumen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dokumen",
+								":id_dokumen"
+							],
+							"variable": [
+								{
+									"key": "id_dokumen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "LOGIN",
 			"event": [
 				{

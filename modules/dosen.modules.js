@@ -104,14 +104,25 @@ class _dosen {
 
             const fileDrive = await uploadDrive(
                 file,
+                "PROPOSAL",
                 process.env.PROPOSAL_FOLDER_ID
             );
+
+            const add = await prisma.dokumen.create({
+                data: {
+                    id_drive: fileDrive.data.id,
+                },
+                select: {
+                    id_dokumen: true,
+                },
+            });
 
             await prisma.proposal.create({
                 data: {
                     id_dosen: checkDosen.id_dosen,
                     id_kecamatan: Number(body.id_kecamatan),
                     id_gelombang: Number(body.id_gelombang),
+                    id_dokumen: add.id_dokumen,
                     proposal: body.proposal,
                     status: 0,
                 },
