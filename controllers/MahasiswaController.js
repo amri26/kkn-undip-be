@@ -10,14 +10,14 @@ const {
 const app = Router();
 
 app.get(
-    "/:id_periode/:id_prodi",
+    "/:id_tema/:id_prodi",
     userSession,
     verifyAdmin,
     async (req, res, next) => {
         response.sendResponse(
             res,
             await modules.listMahasiswa(
-                Number(req.params.id_periode),
+                Number(req.params.id_tema),
                 req.params.id_prodi
             )
         );

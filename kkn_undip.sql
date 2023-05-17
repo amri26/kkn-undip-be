@@ -67,7 +67,7 @@ INSERT INTO `kabupaten` (`id_kabupaten`, `nama`) VALUES
 -- Dumping data for table `kecamatan`
 --
 
-INSERT INTO `kecamatan` (`id_kecamatan`, `id_kabupaten`, `nama`, `id_periode`, `potensi`, `status`) VALUES
+INSERT INTO `kecamatan` (`id_kecamatan`, `id_kabupaten`, `nama`, `id_tema`, `potensi`, `status`) VALUES
 (1, 1, 'Gandrungmangu', 1, 'Banyak UMKM di sekitar lapangan', -1),
 (2, 2, 'Gandrungmangu', 2, 'Banyak UMKM di sekitar lapangan', 0);
 
@@ -75,7 +75,7 @@ INSERT INTO `kecamatan` (`id_kecamatan`, `id_kabupaten`, `nama`, `id_periode`, `
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id_mahasiswa`, `id_user`, `id_periode`, `nama`, `nim`, `created_at`, `prodi`) VALUES
+INSERT INTO `mahasiswa` (`id_mahasiswa`, `id_user`, `id_tema`, `nama`, `nim`, `created_at`, `prodi`) VALUES
 (1, 3, 1, 'Tazki', '240601', '2023-04-02 06:53:23', 'IF'),
 (2, 4, 1, 'Dummy', '240602', '2023-04-02 06:53:23', 'IF'),
 (3, 18, 1, 'Mhs A', '240603', '2023-05-15 06:40:14', 'IF'),
@@ -90,10 +90,10 @@ INSERT INTO `mahasiswa_kecamatan` (`id_mahasiswa_kecamatan`, `id_mahasiswa`, `id
 (2, 2, 1, 0, '2023-05-15 06:17:48');
 
 --
--- Dumping data for table `periode`
+-- Dumping data for table `tema`
 --
 
-INSERT INTO `periode` (`id_periode`, `nama`, `status`) VALUES
+INSERT INTO `tema` (`id_tema`, `nama`, `status`) VALUES
 (1, 'Tim I 2023', 1),
 (2, 'Tim II 2023', 0);
 

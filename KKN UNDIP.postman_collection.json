@@ -129,7 +129,7 @@
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								},
 								{
-									"key": "id_periode",
+									"key": "id_tema",
 									"value": "1",
 									"type": "default"
 								}
@@ -170,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\",\r\n    \"prodi\": \"Informatika\"\r\n}",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\",\r\n    \"prodi\": \"Informatika\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -627,7 +627,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_periode\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -809,18 +809,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/mahasiswa/:id_periode/:id_prodi",
+							"raw": "{{url}}/mahasiswa/:id_tema/:id_prodi",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"mahasiswa",
-								":id_periode",
+								":id_tema",
 								":id_prodi"
 							],
 							"variable": [
 								{
-									"key": "id_periode",
+									"key": "id_tema",
 									"value": "1"
 								},
 								{
@@ -949,14 +949,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/wilayah/kecamatan/:id_periode/:id_kabupaten?",
+							"raw": "{{url}}/wilayah/kecamatan/:id_tema/:id_kabupaten?",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"wilayah",
 								"kecamatan",
-								":id_periode",
+								":id_tema",
 								":id_kabupaten"
 							],
 							"query": [
@@ -967,7 +967,7 @@
 							],
 							"variable": [
 								{
-									"key": "id_periode",
+									"key": "id_tema",
 									"value": "1"
 								},
 								{
@@ -1000,17 +1000,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/potensi/:id_periode",
+							"raw": "{{url}}/potensi/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"potensi",
-								":id_periode"
+								":id_tema"
 							],
 							"variable": [
 								{
-									"key": "id_periode",
+									"key": "id_tema",
 									"value": "1"
 								}
 							]
@@ -1179,12 +1179,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/periode",
+							"raw": "{{url}}/tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"periode"
+								"tema"
 							]
 						}
 					},

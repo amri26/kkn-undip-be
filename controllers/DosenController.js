@@ -6,6 +6,8 @@ const {
     verifyAdmin,
     verifyDosen,
 } = require("../helpers/middleware");
+const multer = require("multer");
+const upload = multer();
 
 const app = Router();
 
@@ -13,12 +15,18 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.listDosen());
 });
 
-app.post("/proposal", userSession, verifyDosen, async (req, res, next) => {
-    response.sendResponse(
-        res,
-        await modules.addProposal(req.user.id, req.body)
-    );
-});
+app.post(
+    "/proposal",
+    userSession,
+    verifyDosen,
+    upload.single("file"),
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.addProposal(req.file, req.user.id, req.body)
+        );
+    }
+);
 
 app.put(
     "/mahasiswa/acc/:id_mahasiswa_kecamatan",

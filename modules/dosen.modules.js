@@ -1,5 +1,8 @@
 const { prisma } = require("../helpers/database");
+const { uploadDrive } = require("../helpers/upload");
 const Joi = require("joi");
+
+require("dotenv").config();
 
 class _dosen {
     listDosen = async () => {
@@ -20,7 +23,7 @@ class _dosen {
         }
     };
 
-    addProposal = async (id_user, body) => {
+    addProposal = async (file, id_user, body) => {
         try {
             body = {
                 id_user,
@@ -30,6 +33,7 @@ class _dosen {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_kecamatan: Joi.number().required(),
+                id_gelombang: Joi.number().required(),
                 proposal: Joi.string().required(),
             });
 
@@ -66,25 +70,48 @@ class _dosen {
 
             const checkKecamatan = await prisma.kecamatan.findUnique({
                 where: {
-                    id_kecamatan: body.id_kecamatan,
+                    id_kecamatan: Number(body.id_kecamatan),
                 },
                 select: {
                     status: true,
                 },
             });
 
+            const checkGelombang = await prisma.gelombang.findUnique({
+                where: {
+                    id_gelombang: Number(body.id_gelombang),
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (!checkGelombang.status) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Gelombang data is not activated",
+                };
+            }
+
             if (checkKecamatan.status !== 1) {
                 return {
                     status: false,
                     code: 403,
-                    error: "Forbidden",
+                    error: "Forbidden, Kecamatan data is not approved",
                 };
             }
+
+            const fileDrive = await uploadDrive(
+                file,
+                process.env.PROPOSAL_FOLDER_ID
+            );
 
             await prisma.proposal.create({
                 data: {
                     id_dosen: checkDosen.id_dosen,
-                    id_kecamatan: body.id_kecamatan,
+                    id_kecamatan: Number(body.id_kecamatan),
+                    id_gelombang: Number(body.id_gelombang),
                     proposal: body.proposal,
                     status: 0,
                 },

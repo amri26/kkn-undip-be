@@ -5,7 +5,7 @@ class _proposal {
     listProposal = async (body) => {
         try {
             const schema = Joi.object({
-                id_periode: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 id_kabupaten: Joi.number().required(),
             });
 
@@ -25,7 +25,7 @@ class _proposal {
 
             const list = await prisma.potensi.findMany({
                 where: {
-                    id_periode: body.id_periode,
+                    id_tema: body.id_tema,
                     kecamatan: {
                         id_kabupaten: body.id_kabupaten,
                     },

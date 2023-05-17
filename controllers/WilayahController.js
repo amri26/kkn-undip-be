@@ -10,13 +10,13 @@ app.get("/", userSession, async (req, res, next) => {
 });
 
 app.get(
-    "/kecamatan/:id_periode/:id_kabupaten?",
+    "/kecamatan/:id_tema/:id_kabupaten?",
     userSession,
     async (req, res, next) => {
         response.sendResponse(
             res,
             await modules.listKecamatan(
-                Number(req.params.id_periode),
+                Number(req.params.id_tema),
                 req.params.id_kabupaten
             )
         );

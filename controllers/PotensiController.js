@@ -5,10 +5,10 @@ const { userSession, verifyAdmin } = require("../helpers/middleware");
 
 const app = Router();
 
-app.get("/:id_periode", userSession, async (req, res, next) => {
+app.get("/:id_tema", userSession, async (req, res, next) => {
     response.sendResponse(
         res,
-        await modules.listPotensi(Number(req.params.id_periode))
+        await modules.listPotensi(Number(req.params.id_tema))
     );
 });
 

@@ -28,16 +28,16 @@ class _wilayah {
         }
     };
 
-    listKecamatan = async (id_periode, id_kabupaten) => {
+    listKecamatan = async (id_tema, id_kabupaten) => {
         try {
             if (id_kabupaten !== undefined) {
                 const body = {
-                    id_periode,
+                    id_tema,
                     id_kabupaten: Number(id_kabupaten),
                 };
 
                 const schema = Joi.object({
-                    id_periode: Joi.number().required(),
+                    id_tema: Joi.number().required(),
                     id_kabupaten: Joi.number().required(),
                 });
 
@@ -57,7 +57,7 @@ class _wilayah {
 
                 const list = await prisma.kecamatan.findMany({
                     where: {
-                        id_periode: body.id_periode,
+                        id_tema: body.id_tema,
                         id_kabupaten: body.id_kabupaten,
                     },
                     include: {
@@ -76,7 +76,7 @@ class _wilayah {
             } else {
                 const schema = Joi.number().required();
 
-                const validation = schema.validate(id_periode);
+                const validation = schema.validate(id_tema);
 
                 if (validation.error) {
                     const errorDetails = validation.error.details.map(
@@ -92,7 +92,7 @@ class _wilayah {
 
                 const list = await prisma.kecamatan.findMany({
                     where: {
-                        id_periode,
+                        id_tema,
                     },
                     include: {
                         _count: {

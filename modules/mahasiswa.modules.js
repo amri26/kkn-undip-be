@@ -2,15 +2,15 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _mahasiswa {
-    listMahasiswa = async (id_periode, id_prodi) => {
+    listMahasiswa = async (id_tema, id_prodi) => {
         try {
             const body = {
-                id_periode,
+                id_tema,
                 id_prodi,
             };
 
             const schema = Joi.object({
-                id_periode: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 id_prodi: Joi.string().required(),
             });
 
@@ -33,14 +33,14 @@ class _mahasiswa {
             if (body.id_prodi !== "all") {
                 list = await prisma.mahasiswa.findMany({
                     where: {
-                        id_periode: body.id_periode,
+                        id_tema: body.id_tema,
                         id_prodi: body.id_prodi,
                     },
                 });
             } else {
                 list = await prisma.mahasiswa.findMany({
                     where: {
-                        id_periode: body.id_periode,
+                        id_tema: body.id_tema,
                     },
                 });
             }
@@ -69,6 +69,7 @@ class _mahasiswa {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_kecamatan: Joi.number().required(),
+                id_gelombang: Joi.number().required(),
             });
 
             const validation = schema.validate(body);
@@ -91,7 +92,7 @@ class _mahasiswa {
                 },
                 select: {
                     id_mahasiswa: true,
-                    id_periode: true,
+                    id_tema: true,
                 },
             });
 
@@ -103,20 +104,41 @@ class _mahasiswa {
                 };
             }
 
+            const checkGelombang = await prisma.gelombang.findUnique({
+                where: {
+                    id_gelombang: body.id_gelombang,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (!checkGelombang.status) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Gelombang data is not activated",
+                };
+            }
+
             const checkKecamatan = await prisma.kecamatan.findUnique({
                 where: {
                     id_kecamatan: body.id_kecamatan,
                 },
                 select: {
-                    id_periode: true,
+                    kabupaten: {
+                        select: {
+                            id_tema: true,
+                        },
+                    },
                 },
             });
 
-            if (checkMahasiswa.id_periode !== checkKecamatan.id_periode) {
+            if (checkMahasiswa.id_tema !== checkKecamatan.kabupaten.id_tema) {
                 return {
                     status: false,
                     code: 403,
-                    error: "Forbidden",
+                    error: "Forbidden, Tema data doesn't match",
                 };
             }
 
@@ -124,6 +146,7 @@ class _mahasiswa {
                 data: {
                     id_mahasiswa: checkMahasiswa.id_mahasiswa,
                     id_kecamatan: body.id_kecamatan,
+                    id_gelombang: body.id_gelombang,
                     status: 0,
                 },
             });

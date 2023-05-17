@@ -19,11 +19,43 @@ app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.listUser());
 });
 
-app.post(
-    "/mahasiswa",
-    upload.single("file"),
+app.post("/tema", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.addTema(req.body));
+});
+
+app.patch(
+    "/tema/:id_tema",
     userSession,
     verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.switchTema(Number(req.params.id_tema))
+        );
+    }
+);
+
+app.post("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.addGelombang(req.body));
+});
+
+app.patch(
+    "/gelombang/:id_gelombang",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.switchGelombang(Number(req.params.id_gelombang))
+        );
+    }
+);
+
+app.post(
+    "/mahasiswa",
+    userSession,
+    verifyAdmin,
+    upload.single("file"),
     async (req, res, next) => {
         response.sendResponse(
             res,
@@ -43,9 +75,9 @@ app.post(
 
 app.post(
     "/dosen",
-    upload.single("file"),
     userSession,
     verifyAdmin,
+    upload.single("file"),
     async (req, res, next) => {
         response.sendResponse(res, await modules.addDosen(req.file));
     }
@@ -57,9 +89,9 @@ app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
 
 app.post(
     "/bappeda",
-    upload.single("file"),
     userSession,
     verifyAdmin,
+    upload.single("file"),
     async (req, res, next) => {
         response.sendResponse(
             res,
@@ -82,9 +114,9 @@ app.post(
 
 app.post(
     "/reviewer",
-    upload.single("file"),
     userSession,
     verifyAdmin,
+    upload.single("file"),
     async (req, res, next) => {
         response.sendResponse(res, await modules.addReviewer(req.file));
     }

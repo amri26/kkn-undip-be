@@ -47,10 +47,192 @@ class _admin {
         }
     };
 
+    addTema = async (body) => {
+        try {
+            const schema = Joi.object({
+                nama: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            await prisma.tema.create({
+                data: {
+                    nama: body.nama,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addTema module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    switchTema = async (id_tema) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_tema);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.tema.findUnique({
+                where: {
+                    id_tema,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            await prisma.tema.update({
+                where: {
+                    id_tema,
+                },
+                data: {
+                    status: !check.status,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("switchTema module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addGelombang = async (body) => {
+        try {
+            const schema = Joi.object({
+                id_tema: Joi.number().required(),
+                nama: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            await prisma.gelombang.create({
+                data: {
+                    id_tema: body.id_tema,
+                    nama: body.nama,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addGelombang module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    switchGelombang = async (id_gelombang) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_gelombang);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.gelombang.findUnique({
+                where: {
+                    id_gelombang,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            await prisma.gelombang.update({
+                where: {
+                    id_gelombang,
+                },
+                data: {
+                    status: !check.status,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("switchGelombang module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addMahasiswa = async (file, body) => {
         try {
             const schema = Joi.object({
-                id_periode: Joi.number().required(),
+                id_tema: Joi.number().required(),
             });
 
             const validation = schema.validate(body);
@@ -117,7 +299,7 @@ class _admin {
                         nim: String(e.nim),
                         prodi: e.prodi,
                         id_user: addUser.id_user,
-                        id_periode: body.id_periode,
+                        id_tema: Number(body.id_tema),
                     },
                 });
             }
@@ -139,7 +321,7 @@ class _admin {
     addMahasiswaSingle = async (body) => {
         try {
             const schema = Joi.object({
-                id_periode: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 nama: Joi.string().required(),
                 nim: Joi.string().required(),
                 prodi: Joi.string().required(),
@@ -175,7 +357,7 @@ class _admin {
                     nama: body.nama,
                     nim: body.nim,
                     prodi: body.prodi,
-                    id_periode: body.id_periode,
+                    id_tema: body.id_tema,
                     id_user: addUser.id_user,
                 },
             });
@@ -363,8 +545,7 @@ class _admin {
                 columnToKey: {
                     B: "nama",
                     C: "nb",
-                    D: "kabupaten",
-                    E: "nama_pj",
+                    D: "nama_pj",
                 },
             });
 
@@ -399,19 +580,9 @@ class _admin {
                     },
                 });
 
-                const addKabupaten = await prisma.kabupaten.create({
-                    data: {
-                        nama: e.kabupaten,
-                    },
-                    select: {
-                        id_kabupaten: true,
-                    },
-                });
-
                 await prisma.bappeda.create({
                     data: {
                         id_user: addUser.id_user,
-                        id_kabupaten: addKabupaten.id_kabupaten,
                         nama: e.nama,
                         nb: String(e.nb),
                         nama_pj: e.nama_pj,
@@ -444,7 +615,6 @@ class _admin {
             const schema = Joi.object({
                 nama: Joi.string().required(),
                 nb: Joi.string().required(),
-                kabupaten: Joi.string().required(),
                 nama_pj: Joi.string().required(),
                 created_by: Joi.string().required(),
             });
@@ -474,19 +644,9 @@ class _admin {
                 },
             });
 
-            const addKabupaten = await prisma.kabupaten.create({
-                data: {
-                    nama: body.kabupaten,
-                },
-                select: {
-                    id_kabupaten: true,
-                },
-            });
-
             await prisma.bappeda.create({
                 data: {
                     id_user: addUser.id_user,
-                    id_kabupaten: addKabupaten.id_kabupaten,
                     nama: body.nama,
                     nb: body.nb,
                     nama_pj: body.nama_pj,

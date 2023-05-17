@@ -16,30 +16,42 @@ enum Role {
   REVIEWER
 }
 
-model periode {
-  id_periode Int         @id @default(autoincrement())
-  nama       String      @db.VarChar(20)
-  status     Boolean     @default(false)
-  mahasiswa  mahasiswa[]
-  kecamatan  kecamatan[]
+model tema {
+  id_tema   Int         @id @default(autoincrement())
+  nama      String      @db.VarChar(20)
+  status    Boolean     @default(false)
+  mahasiswa mahasiswa[]
+  gelombang gelombang[]
+  kabupaten kabupaten[]
+}
+
+model gelombang {
+  id_gelombang        Int                   @id @default(autoincrement())
+  id_tema             Int
+  nama                String                @db.VarChar(20)
+  status              Boolean               @default(false)
+  tema                tema                  @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
+  proposal            proposal[]
+  mahasiswa_kecamatan mahasiswa_kecamatan[]
 }
 
 model kabupaten {
   id_kabupaten Int         @id @default(autoincrement())
+  id_tema      Int
+  id_bappeda   Int
   nama         String      @db.VarChar(20)
+  tema         tema        @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
+  bappeda      bappeda     @relation(fields: [id_bappeda], references: [id_bappeda], onDelete: Cascade, onUpdate: Cascade)
   kecamatan    kecamatan[]
-  bappeda      bappeda[]
 }
 
 model kecamatan {
   id_kecamatan        Int                   @id @default(autoincrement())
   id_kabupaten        Int
-  id_periode          Int
   nama                String                @db.VarChar(20)
   potensi             String                @db.Text
   status              Int                   @db.TinyInt
   kabupaten           kabupaten             @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
-  periode             periode?              @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
   desa                desa[]
   proposal            proposal[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]
@@ -56,21 +68,25 @@ model proposal {
   id_proposal  Int       @id @default(autoincrement())
   id_kecamatan Int
   id_dosen     Int
+  id_gelombang Int
   proposal     String    @db.Text
   status       Int       @db.TinyInt
   created_at   DateTime  @default(now()) @db.DateTime(0)
   kecamatan    kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
   dosen        dosen     @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
+  gelombang    gelombang @relation(fields: [id_gelombang], references: [id_gelombang], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model mahasiswa_kecamatan {
   id_mahasiswa_kecamatan Int       @id @default(autoincrement())
   id_mahasiswa           Int
   id_kecamatan           Int
+  id_gelombang           Int
   status                 Int       @db.TinyInt
   created_at             DateTime  @default(now()) @db.DateTime(0)
   mahasiswa              mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
   kecamatan              kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
+  gelombang              gelombang @relation(fields: [id_gelombang], references: [id_gelombang], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model user {
@@ -96,16 +112,15 @@ model admin {
 }
 
 model bappeda {
-  id_bappeda   Int       @id @default(autoincrement())
-  id_user      Int?      @unique
-  id_kabupaten Int       @unique
-  nama         String    @db.VarChar(50)
-  nb           String    @unique @db.VarChar(50)
-  nama_pj      String    @db.VarChar(50)
-  created_by   String    @db.VarChar(50)
-  created_at   DateTime  @default(now()) @db.DateTime(0)
-  user         user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  kabupaten    kabupaten @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
+  id_bappeda Int         @id @default(autoincrement())
+  id_user    Int?        @unique
+  nama       String      @db.VarChar(50)
+  nb         String      @unique @db.VarChar(50)
+  nama_pj    String      @db.VarChar(50)
+  created_by String      @db.VarChar(50)
+  created_at DateTime    @default(now()) @db.DateTime(0)
+  user       user?       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  kabupaten  kabupaten[]
 }
 
 model reviewer {
@@ -130,13 +145,13 @@ model dosen {
 model mahasiswa {
   id_mahasiswa        Int                   @id @default(autoincrement())
   id_user             Int?                  @unique
-  id_periode          Int
+  id_tema             Int
   nama                String                @db.VarChar(50)
   nim                 String                @unique @db.VarChar(20)
   prodi               String                @db.VarChar(50)
   created_at          DateTime              @default(now()) @db.DateTime(0)
   user                user?                 @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  periode             periode               @relation(fields: [id_periode], references: [id_periode], onDelete: Cascade, onUpdate: Cascade)
+  tema                tema                  @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
   lrk                 lrk[]
   lpk                 lpk[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]

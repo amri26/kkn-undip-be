@@ -20,6 +20,107 @@ class _bappeda {
         }
     };
 
+    addKabupaten = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
+                nama: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkBappeda = await prisma.bappeda.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_bappeda: true,
+                },
+            });
+
+            if (!checkBappeda) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkTema = await prisma.tema.findUnique({
+                where: {
+                    id_tema: body.id_tema,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (!checkTema.status) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Tema data is not activated",
+                };
+            }
+
+            const checkKabupaten = await prisma.kabupaten.findFirst({
+                where: {
+                    id_bappeda: checkBappeda.id_bappeda,
+                    id_tema: body.id_tema,
+                },
+                select: {
+                    id_kabupaten: true,
+                },
+            });
+
+            if (checkKabupaten) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Kabupaten data is already created",
+                };
+            }
+
+            await prisma.kabupaten.create({
+                data: {
+                    id_bappeda: checkBappeda.id_bappeda,
+                    id_tema: body.id_tema,
+                    nama: body.nama,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addKabupaten module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addKecamatan = async (id_user, body) => {
         try {
             body = {
@@ -29,7 +130,7 @@ class _bappeda {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
-                id_periode: Joi.number().required(),
+                id_kabupaten: Joi.number().required(),
                 nama: Joi.string().required(),
                 potensi: Joi.string().required(),
                 desa: Joi.array().items(
@@ -53,12 +154,16 @@ class _bappeda {
                 };
             }
 
-            const check = await prisma.bappeda.findFirst({
+            const check = await prisma.kabupaten.findUnique({
                 where: {
-                    id_user,
+                    id_kabupaten: body.id_kabupaten,
                 },
                 select: {
-                    id_kabupaten: true,
+                    bappeda: {
+                        select: {
+                            id_user: true,
+                        },
+                    },
                 },
             });
 
@@ -68,12 +173,17 @@ class _bappeda {
                     code: 404,
                     error: "Data not found",
                 };
+            } else if (check.bappeda.id_user !== id_user) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
             }
 
             const add = await prisma.kecamatan.create({
                 data: {
-                    id_kabupaten: check.id_kabupaten,
-                    id_periode: body.id_periode,
+                    id_kabupaten: body.id_kabupaten,
                     nama: body.nama,
                     potensi: body.potensi,
                     status: 0,

@@ -2,11 +2,11 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _potensi {
-    listPotensi = async (id_periode) => {
+    listPotensi = async (id_tema) => {
         try {
             const schema = Joi.number().required();
 
-            const validation = schema.validate(id_periode);
+            const validation = schema.validate(id_tema);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map(
@@ -22,7 +22,7 @@ class _potensi {
 
             const list = await prisma.kecamatan.findMany({
                 where: {
-                    id_periode,
+                    id_tema,
                 },
                 include: {
                     kabupaten: {
