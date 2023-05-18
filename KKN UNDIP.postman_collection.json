@@ -1124,12 +1124,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/wilayah",
+							"raw": "{{url}}/wilayah/kabupaten/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"wilayah"
+								"wilayah",
+								"kabupaten",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -1151,27 +1159,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/wilayah/kecamatan/:id_periode/:id_kabupaten?",
+							"raw": "{{url}}/wilayah/kecamatan/:id_kabupaten",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"wilayah",
 								"kecamatan",
-								":id_periode",
 								":id_kabupaten"
 							],
-							"query": [
-								{
-									"key": "",
-									"value": null
-								}
-							],
 							"variable": [
-								{
-									"key": "id_periode",
-									"value": "1"
-								},
 								{
 									"key": "id_kabupaten",
 									"value": "1"
