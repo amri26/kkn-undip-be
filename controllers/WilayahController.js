@@ -12,11 +12,18 @@ app.get("/kabupaten/:id_tema", userSession, async (req, res, next) => {
     );
 });
 
-app.get("/kecamatan/:id_kabupaten", userSession, async (req, res, next) => {
-    response.sendResponse(
-        res,
-        await modules.listKecamatan(Number(req.params.id_kabupaten))
-    );
+app.get("/kecamatan", userSession, async (req, res, next) => {
+    if (req.query.id_kabupaten) {
+        response.sendResponse(
+            res,
+            await modules.listKecamatan(Number(req.query.id_kabupaten))
+        );
+    } else if (req.query.id_tema) {
+        response.sendResponse(
+            res,
+            await modules.listKecamatanAll(Number(req.query.id_tema))
+        );
+    }
 });
 
 module.exports = app;

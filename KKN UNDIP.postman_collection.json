@@ -1159,18 +1159,51 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/wilayah/kecamatan/:id_kabupaten",
+							"raw": "{{url}}/wilayah/kecamatan?id_kabupaten=1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"wilayah",
-								"kecamatan",
-								":id_kabupaten"
+								"kecamatan"
 							],
-							"variable": [
+							"query": [
 								{
 									"key": "id_kabupaten",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST KECAMATAN ALL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/wilayah/kecamatan?id_tema=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"wilayah",
+								"kecamatan"
+							],
+							"query": [
+								{
+									"key": "id_tema",
 									"value": "1"
 								}
 							]
