@@ -20,7 +20,6 @@ model tema {
   id_tema   Int         @id @default(autoincrement())
   nama      String      @db.VarChar(20)
   status    Boolean     @default(false)
-  mahasiswa mahasiswa[]
   gelombang gelombang[]
   kabupaten kabupaten[]
 }
@@ -33,6 +32,20 @@ model gelombang {
   tema                tema                  @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
   proposal            proposal[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]
+}
+
+model fakultas {
+  id_fakultas Int     @id @default(autoincrement())
+  nama        String  @db.VarChar(50)
+  prodi       prodi[]
+}
+
+model prodi {
+  id_prodi    Int         @id @default(autoincrement())
+  id_fakultas Int
+  nama        String      @db.VarChar(50)
+  fakultas    fakultas    @relation(fields: [id_fakultas], references: [id_fakultas], onDelete: Cascade, onUpdate: Cascade)
+  mahasiswa   mahasiswa[]
 }
 
 model dokumen {
@@ -57,7 +70,7 @@ model kecamatan {
   id_kabupaten        Int
   nama                String                @db.VarChar(20)
   potensi             String                @db.Text
-  status              Int                   @db.TinyInt
+  status              Int                   @default(0) @db.TinyInt
   kabupaten           kabupaten             @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
   desa                desa[]
   proposal            proposal[]
@@ -77,8 +90,9 @@ model proposal {
   id_dosen     Int
   id_gelombang Int
   id_dokumen   Int
-  proposal     String    @db.Text
-  status       Int       @db.TinyInt
+  komentar     String?   @db.Text
+  rekomendasi  Boolean?
+  status       Int       @default(0) @db.TinyInt
   created_at   DateTime  @default(now()) @db.DateTime(0)
   kecamatan    kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
   dosen        dosen     @relation(fields: [id_dosen], references: [id_dosen], onDelete: Cascade, onUpdate: Cascade)
@@ -91,7 +105,7 @@ model mahasiswa_kecamatan {
   id_mahasiswa           Int
   id_kecamatan           Int
   id_gelombang           Int
-  status                 Int       @db.TinyInt
+  status                 Int       @default(0) @db.TinyInt
   created_at             DateTime  @default(now()) @db.DateTime(0)
   mahasiswa              mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
   kecamatan              kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
@@ -154,13 +168,12 @@ model dosen {
 model mahasiswa {
   id_mahasiswa        Int                   @id @default(autoincrement())
   id_user             Int?                  @unique
-  id_tema             Int
+  id_prodi            Int?
   nama                String                @db.VarChar(50)
   nim                 String                @unique @db.VarChar(20)
-  prodi               String                @db.VarChar(50)
   created_at          DateTime              @default(now()) @db.DateTime(0)
   user                user?                 @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  tema                tema                  @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
+  prodi               prodi?                @relation(fields: [id_prodi], references: [id_prodi], onDelete: SetNull, onUpdate: Cascade)
   lrk                 lrk[]
   lpk                 lpk[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]

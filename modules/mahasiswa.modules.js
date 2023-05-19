@@ -147,7 +147,6 @@ class _mahasiswa {
                     id_mahasiswa: checkMahasiswa.id_mahasiswa,
                     id_kecamatan: body.id_kecamatan,
                     id_gelombang: body.id_gelombang,
-                    status: 0,
                 },
             });
 

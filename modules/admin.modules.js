@@ -229,26 +229,8 @@ class _admin {
         }
     };
 
-    addMahasiswa = async (file, body) => {
+    addMahasiswa = async (file) => {
         try {
-            const schema = Joi.object({
-                id_tema: Joi.number().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
             const result = excelToJson({
                 source: file.buffer,
                 header: {
@@ -258,7 +240,6 @@ class _admin {
                 columnToKey: {
                     B: "nama",
                     C: "nim",
-                    D: "prodi",
                 },
             });
 
@@ -297,9 +278,7 @@ class _admin {
                     data: {
                         nama: e.nama,
                         nim: String(e.nim),
-                        prodi: e.prodi,
                         id_user: addUser.id_user,
-                        id_tema: Number(body.id_tema),
                     },
                 });
             }
@@ -321,10 +300,8 @@ class _admin {
     addMahasiswaSingle = async (body) => {
         try {
             const schema = Joi.object({
-                id_tema: Joi.number().required(),
                 nama: Joi.string().required(),
                 nim: Joi.string().required(),
-                prodi: Joi.string().required(),
             });
 
             const validation = schema.validate(body);
@@ -356,8 +333,6 @@ class _admin {
                 data: {
                     nama: body.nama,
                     nim: body.nim,
-                    prodi: body.prodi,
-                    id_tema: body.id_tema,
                     id_user: addUser.id_user,
                 },
             });

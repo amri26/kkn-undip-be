@@ -186,7 +186,6 @@ class _bappeda {
                     id_kabupaten: body.id_kabupaten,
                     nama: body.nama,
                     potensi: body.potensi,
-                    status: 0,
                 },
                 select: {
                     id_kecamatan: true,

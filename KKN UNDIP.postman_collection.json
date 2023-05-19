@@ -370,11 +370,6 @@
 									"key": "file",
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
-								},
-								{
-									"key": "id_tema",
-									"value": "1",
-									"type": "default"
 								}
 							],
 							"options": {
@@ -413,7 +408,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\",\r\n    \"prodi\": \"Informatika\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -991,11 +986,6 @@
 									"key": "id_gelombang",
 									"value": "1",
 									"type": "default"
-								},
-								{
-									"key": "proposal",
-									"value": "Membuat bazar dekat UMKM",
-									"type": "default"
 								}
 							],
 							"options": {
@@ -1197,6 +1187,43 @@
 							],
 							"path": [
 								"reviewer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EVALUATE PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_proposal\": 1,\r\n    \"komentar\": \"Waw amazing!\",\r\n    \"rekomendasi\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/reviewer/evaluate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reviewer",
+								"evaluate"
 							]
 						}
 					},

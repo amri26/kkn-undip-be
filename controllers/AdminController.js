@@ -57,10 +57,7 @@ app.post(
     verifyAdmin,
     upload.single("file"),
     async (req, res, next) => {
-        response.sendResponse(
-            res,
-            await modules.addMahasiswa(req.file, req.body)
-        );
+        response.sendResponse(res, await modules.addMahasiswa(req.file));
     }
 );
 

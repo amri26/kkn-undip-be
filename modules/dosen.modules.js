@@ -34,7 +34,6 @@ class _dosen {
                 id_user: Joi.number().required(),
                 id_kecamatan: Joi.number().required(),
                 id_gelombang: Joi.number().required(),
-                proposal: Joi.string().required(),
             });
 
             const validation = schema.validate(body);
@@ -60,14 +59,6 @@ class _dosen {
                 },
             });
 
-            if (!checkDosen) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
-
             const checkKecamatan = await prisma.kecamatan.findUnique({
                 where: {
                     id_kecamatan: Number(body.id_kecamatan),
@@ -86,15 +77,19 @@ class _dosen {
                 },
             });
 
-            if (!checkGelombang.status) {
+            if (!checkDosen || !checkGelombang || !checkKecamatan) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            } else if (!checkGelombang.status) {
                 return {
                     status: false,
                     code: 403,
                     error: "Forbidden, Gelombang data is not activated",
                 };
-            }
-
-            if (checkKecamatan.status !== 1) {
+            } else if (checkKecamatan.status !== 1) {
                 return {
                     status: false,
                     code: 403,
@@ -123,8 +118,6 @@ class _dosen {
                     id_kecamatan: Number(body.id_kecamatan),
                     id_gelombang: Number(body.id_gelombang),
                     id_dokumen: add.id_dokumen,
-                    proposal: body.proposal,
-                    status: 0,
                 },
             });
 
@@ -195,6 +188,14 @@ class _dosen {
                     },
                 });
 
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
             const checkKecamatan = await prisma.kecamatan.findUnique({
                 where: {
                     id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
@@ -211,7 +212,13 @@ class _dosen {
                 },
             });
 
-            if (
+            if (!checkKecamatan) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            } else if (
                 !checkKecamatan.proposal.some(
                     (i) => i.id_dosen === checkDosen.id_dosen
                 )
@@ -231,6 +238,7 @@ class _dosen {
                     status: 1,
                 },
             });
+
             return {
                 status: true,
                 code: 204,
