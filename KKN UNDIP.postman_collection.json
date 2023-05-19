@@ -6,6 +6,105 @@
 	},
 	"item": [
 		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "LOGIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"    pm.expect(responseJson).to.ownProperty('data');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"    pm.expect(responseJson.data).to.be.an('object');\r",
+									"});\r",
+									" \r",
+									"pm.test('response body data should have property with correct value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const { data } = responseJson;\r",
+									" \r",
+									"    pm.expect(data).to.have.ownProperty('token');\r",
+									"    pm.expect(data.accessToken).to.not.equals('');\r",
+									"    pm.expect(data.accessToken).to.not.equals(null);\r",
+									"    pm.expect(data).to.have.ownProperty('expiresAt');\r",
+									"    pm.expect(data.refreshToken).to.not.equals('');\r",
+									"    pm.expect(data.refreshToken).to.not.equals(null);\r",
+									"\r",
+									"    pm.environment.set('token', data.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET USER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "SUPERADMIN",
 			"item": [
 				{
@@ -1462,73 +1561,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "LOGIN",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('response status code should be 201', () => {\r",
-							"   pm.response.to.have.status(201);\r",
-							"}); \r",
-							" \r",
-							"pm.test('response Content-Type header should have application/json value', () => {\r",
-							"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
-							"}); \r",
-							" \r",
-							"pm.test('response body should have correct property and value', () => {\r",
-							"    const responseJson = pm.response.json();\r",
-							" \r",
-							"    pm.expect(responseJson).to.ownProperty('status');\r",
-							"    pm.expect(responseJson).to.ownProperty('data');\r",
-							"\r",
-							"    pm.expect(responseJson.status).to.equals(true);\r",
-							"    pm.expect(responseJson.data).to.be.an('object');\r",
-							"});\r",
-							" \r",
-							"pm.test('response body data should have property with correct value', () => {\r",
-							"    const responseJson = pm.response.json();\r",
-							"    const { data } = responseJson;\r",
-							" \r",
-							"    pm.expect(data).to.have.ownProperty('token');\r",
-							"    pm.expect(data.accessToken).to.not.equals('');\r",
-							"    pm.expect(data.accessToken).to.not.equals(null);\r",
-							"    pm.expect(data).to.have.ownProperty('expiresAt');\r",
-							"    pm.expect(data.refreshToken).to.not.equals('');\r",
-							"    pm.expect(data.refreshToken).to.not.equals(null);\r",
-							"\r",
-							"    pm.environment.set('token', data.token);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/login",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"login"
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }

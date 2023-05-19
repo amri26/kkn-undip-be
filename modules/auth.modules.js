@@ -1,4 +1,4 @@
-const { prisma } = require("../helpers/database");
+const { prisma, Role } = require("../helpers/database");
 const config = require("../config/app.config.json");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -82,6 +82,64 @@ class _auth {
             };
         } catch (error) {
             console.error("login auth module Error: ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    getUser = async (id_user, role) => {
+        try {
+            let get = {};
+            switch (role) {
+                case Role.ADMIN:
+                    get = await prisma.admin.findFirst({
+                        where: {
+                            id_user,
+                        },
+                    });
+                    break;
+                case Role.BAPPEDA:
+                    get = await prisma.bappeda.findFirst({
+                        where: {
+                            id_user,
+                        },
+                    });
+                    break;
+                case Role.REVIEWER:
+                    get = await prisma.reviewer.findFirst({
+                        where: {
+                            id_user,
+                        },
+                    });
+                    break;
+                case Role.DOSEN:
+                    get = await prisma.dosen.findFirst({
+                        where: {
+                            id_user,
+                        },
+                    });
+                    break;
+                case Role.MAHASISWA:
+                    get = await prisma.mahasiswa.findFirst({
+                        where: {
+                            id_user,
+                        },
+                    });
+                    break;
+
+                default:
+                    break;
+            }
+
+            return {
+                status: true,
+                data: get,
+            };
+        } catch (error) {
+            console.error("getUser auth module Error: ", error);
 
             return {
                 status: false,

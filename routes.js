@@ -13,7 +13,7 @@ const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 
 const _routes = [
-    ["/login", AuthController],
+    ["/auth", AuthController],
     ["/superadmin", SuperAdminController],
     ["/admin", AdminController],
     ["/dosen", DosenController],
