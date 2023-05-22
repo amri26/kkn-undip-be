@@ -24,14 +24,7 @@ class _admin {
 
     listUser = async () => {
         try {
-            const list = await prisma.user.findMany({
-                select: {
-                    id_user: true,
-                    username: true,
-                    role: true,
-                    created_at: true,
-                },
-            });
+            const list = await prisma.user.findMany();
 
             return {
                 status: true,
@@ -39,6 +32,24 @@ class _admin {
             };
         } catch (error) {
             console.error("listUser module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listTema = async () => {
+        try {
+            const list = await prisma.tema.findMany();
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listTema module error ", error);
 
             return {
                 status: false,
@@ -114,6 +125,14 @@ class _admin {
                 },
             });
 
+            if (!check) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
             await prisma.tema.update({
                 where: {
                     id_tema,
@@ -137,10 +156,144 @@ class _admin {
         }
     };
 
+    listHalaman = async () => {
+        try {
+            const list = await prisma.halaman.findMany();
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listHalaman module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addHalaman = async (body) => {
+        try {
+            const schema = Joi.object({
+                nama: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            await prisma.halaman.create({
+                data: {
+                    nama: body.nama,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addHalaman module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    switchHalaman = async (id_halaman) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_halaman);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map(
+                    (detail) => detail.message
+                );
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.halaman.findUnique({
+                where: {
+                    id_halaman,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (!check) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            await prisma.halaman.update({
+                where: {
+                    id_halaman,
+                },
+                data: {
+                    status: !check.status,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("switchHalaman module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listGelombang = async () => {
+        try {
+            const list = await prisma.gelombang.findMany();
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listGelombang module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addGelombang = async (body) => {
         try {
             const schema = Joi.object({
-                id_tema: Joi.number().required(),
+                id_halaman: Joi.number().required(),
                 nama: Joi.string().required(),
             });
 
@@ -160,7 +313,7 @@ class _admin {
 
             await prisma.gelombang.create({
                 data: {
-                    id_tema: body.id_tema,
+                    id_halaman: body.id_halaman,
                     nama: body.nama,
                 },
             });
@@ -205,6 +358,14 @@ class _admin {
                     status: true,
                 },
             });
+
+            if (!check) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
 
             await prisma.gelombang.update({
                 where: {

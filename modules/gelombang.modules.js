@@ -1,12 +1,12 @@
 const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
-class _potensi {
-    listPotensi = async (id_tema) => {
+class _gelombang {
+    listGelombang = async (id_halaman) => {
         try {
             const schema = Joi.number().required();
 
-            const validation = schema.validate(id_tema);
+            const validation = schema.validate(id_halaman);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map(
@@ -20,16 +20,9 @@ class _potensi {
                 };
             }
 
-            const list = await prisma.kecamatan.findMany({
+            const list = await prisma.gelombang.findMany({
                 where: {
-                    id_tema,
-                },
-                include: {
-                    kabupaten: {
-                        select: {
-                            nama: true,
-                        },
-                    },
+                    id_halaman,
                 },
             });
 
@@ -38,7 +31,7 @@ class _potensi {
                 data: list,
             };
         } catch (error) {
-            console.error("listPotensi module error ", error);
+            console.error("listGelombang module error ", error);
 
             return {
                 status: false,
@@ -48,4 +41,4 @@ class _potensi {
     };
 }
 
-module.exports = new _potensi();
+module.exports = new _gelombang();

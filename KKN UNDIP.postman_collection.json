@@ -150,6 +150,34 @@
 			"name": "ADMIN",
 			"item": [
 				{
+					"name": "LIST TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD TEMA",
 					"request": {
 						"auth": {
@@ -222,6 +250,134 @@
 					"response": []
 				},
 				{
+					"name": "LIST HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"halaman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Daftar Proposal Dosen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"halaman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SWITCH HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/halaman/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"halaman",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD GELOMBANG",
 					"request": {
 						"auth": {
@@ -238,7 +394,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1008,6 +1164,41 @@
 					"response": []
 				},
 				{
+					"name": "LIST MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/mahasiswa/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"mahasiswa",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ACC MAHASISWA",
 					"request": {
 						"auth": {
@@ -1140,7 +1331,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"id_gelombang\": 2\r\n}",
+							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"id_gelombang\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1310,10 +1501,10 @@
 			]
 		},
 		{
-			"name": "POTENSI",
+			"name": "DOKUMEN",
 			"item": [
 				{
-					"name": "LIST POTENSI",
+					"name": "GET DOKUMEN",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1328,17 +1519,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/potensi/:id_periode",
+							"raw": "{{url}}/dokumen/:id_dokumen",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"potensi",
-								":id_periode"
+								"dokumen",
+								":id_dokumen"
 							],
 							"variable": [
 								{
-									"key": "id_periode",
+									"key": "id_dokumen",
 									"value": "1"
 								}
 							]
@@ -1351,6 +1542,77 @@
 		{
 			"name": "PROPOSAL",
 			"item": []
+		},
+		{
+			"name": "TEMA",
+			"item": [
+				{
+					"name": "LIST TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tema"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GELOMBANG",
+			"item": [
+				{
+					"name": "GET GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/gelombang/:id_halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"gelombang",
+								":id_halaman"
+							],
+							"variable": [
+								{
+									"key": "id_halaman",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "LRK",
@@ -1481,77 +1743,6 @@
 							],
 							"path": [
 								"lpk"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "TEMA",
-			"item": [
-				{
-					"name": "LIST TEMA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/tema",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"tema"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "DOKUMEN",
-			"item": [
-				{
-					"name": "GET DOKUMEN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/dokumen/:id_dokumen",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"dokumen",
-								":id_dokumen"
-							],
-							"variable": [
-								{
-									"key": "id_dokumen",
-									"value": "1"
-								}
 							]
 						}
 					},

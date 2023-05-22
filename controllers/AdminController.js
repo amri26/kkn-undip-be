@@ -19,6 +19,10 @@ app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.listUser());
 });
 
+app.get("/tema", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.listTema());
+});
+
 app.post("/tema", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addTema(req.body));
 });
@@ -34,6 +38,30 @@ app.patch(
         );
     }
 );
+
+app.get("/halaman", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.listHalaman());
+});
+
+app.post("/halaman", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.addHalaman(req.body));
+});
+
+app.patch(
+    "/halaman/:id_halaman",
+    userSession,
+    verifyAdmin,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.switchHalaman(Number(req.params.id_halaman))
+        );
+    }
+);
+
+app.get("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.listGelombang());
+});
 
 app.post("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addGelombang(req.body));

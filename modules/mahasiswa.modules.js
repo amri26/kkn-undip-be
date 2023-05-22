@@ -92,17 +92,8 @@ class _mahasiswa {
                 },
                 select: {
                     id_mahasiswa: true,
-                    id_tema: true,
                 },
             });
-
-            if (!checkMahasiswa) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
 
             const checkGelombang = await prisma.gelombang.findUnique({
                 where: {
@@ -113,32 +104,17 @@ class _mahasiswa {
                 },
             });
 
-            if (!checkGelombang.status) {
+            if (!checkMahasiswa || !checkGelombang) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            } else if (!checkGelombang.status) {
                 return {
                     status: false,
                     code: 403,
                     error: "Forbidden, Gelombang data is not activated",
-                };
-            }
-
-            const checkKecamatan = await prisma.kecamatan.findUnique({
-                where: {
-                    id_kecamatan: body.id_kecamatan,
-                },
-                select: {
-                    kabupaten: {
-                        select: {
-                            id_tema: true,
-                        },
-                    },
-                },
-            });
-
-            if (checkMahasiswa.id_tema !== checkKecamatan.kabupaten.id_tema) {
-                return {
-                    status: false,
-                    code: 403,
-                    error: "Forbidden, Tema data doesn't match",
                 };
             }
 

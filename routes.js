@@ -11,6 +11,7 @@ const LpkController = require("./controllers/LpkController");
 const ReviewerController = require("./controllers/ReviewerController");
 const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
+const GelombangController = require("./controllers/GelombangController");
 
 const _routes = [
     ["/auth", AuthController],
@@ -26,6 +27,7 @@ const _routes = [
     ["/reviewer", ReviewerController],
     ["/tema", TemaController],
     ["/dokumen", DokumenController],
+    ["/gelombang", GelombangController],
 ];
 
 const routes = (app) => {

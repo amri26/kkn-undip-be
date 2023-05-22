@@ -15,6 +15,21 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.listDosen());
 });
 
+app.get(
+    "/mahasiswa/:id_kecamatan",
+    userSession,
+    verifyDosen,
+    async (req, res, next) => {
+        response.sendResponse(
+            res,
+            await modules.listMahasiswa(
+                req.user.id,
+                Number(req.params.id_kecamatan)
+            )
+        );
+    }
+);
+
 app.post(
     "/proposal",
     userSession,
