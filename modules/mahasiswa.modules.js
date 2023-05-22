@@ -237,11 +237,11 @@ class _mahasiswa {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_laporan: Joi.number().required(),
-                pelaksanaan: Joi.string().required(),
-                capaian: Joi.string().required(),
-                hambatan: Joi.string().required(),
-                kelanjutan: Joi.string().required(),
-                metode: Joi.string().required(),
+                pelaksanaan: Joi.string(),
+                capaian: Joi.string(),
+                hambatan: Joi.string(),
+                kelanjutan: Joi.string(),
+                metode: Joi.string(),
             });
 
             const validation = schema.validate(body);
