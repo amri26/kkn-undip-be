@@ -30,7 +30,6 @@ class _bappeda {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_tema: Joi.number().required(),
-                nama: Joi.string().required(),
             });
 
             const validation = schema.validate(body);
@@ -53,6 +52,7 @@ class _bappeda {
                 },
                 select: {
                     id_bappeda: true,
+                    nama_kabupaten: true,
                 },
             });
 
@@ -103,7 +103,7 @@ class _bappeda {
                 data: {
                     id_bappeda: checkBappeda.id_bappeda,
                     id_tema: body.id_tema,
-                    nama: body.nama,
+                    nama: checkBappeda.nama_kabupaten,
                 },
             });
 

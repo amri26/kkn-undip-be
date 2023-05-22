@@ -107,6 +107,13 @@ model proposal {
   dokumen      dokumen   @relation(fields: [id_dokumen], references: [id_dokumen], onDelete: Cascade, onUpdate: Cascade)
 }
 
+model nilai {
+  id_nilai     Int       @id @default(autoincrement())
+  id_mahasiswa Int       @unique
+  post_test    Float?
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+}
+
 model mahasiswa_kecamatan {
   id_mahasiswa_kecamatan Int       @id @default(autoincrement())
   id_mahasiswa           Int
@@ -128,13 +135,13 @@ model mahasiswa_kecamatan_active {
 }
 
 model user {
-  id_user    Int         @id @default(autoincrement())
-  username   String      @unique(map: "username") @db.VarChar(50)
-  password   String      @db.VarChar(100)
+  id_user    Int        @id @default(autoincrement())
+  username   String     @unique(map: "username") @db.VarChar(50)
+  password   String     @db.VarChar(100)
   role       Role
-  created_at DateTime    @default(now()) @db.DateTime(0)
-  mahasiswa  mahasiswa[]
-  bappeda    bappeda[]
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  mahasiswa  mahasiswa?
+  bappeda    bappeda?
   admin      admin?
   dosen      dosen?
   reviewer   reviewer?
@@ -150,15 +157,16 @@ model admin {
 }
 
 model bappeda {
-  id_bappeda Int         @id @default(autoincrement())
-  id_user    Int?        @unique
-  nama       String      @db.VarChar(50)
-  nb         String      @unique @db.VarChar(50)
-  nama_pj    String      @db.VarChar(50)
-  created_by String      @db.VarChar(50)
-  created_at DateTime    @default(now()) @db.DateTime(0)
-  user       user?       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  kabupaten  kabupaten[]
+  id_bappeda     Int         @id @default(autoincrement())
+  id_user        Int?        @unique
+  nama           String      @db.VarChar(50)
+  nb             String      @unique @db.VarChar(50)
+  nama_kabupaten String      @db.VarChar(50)
+  nama_pj        String      @db.VarChar(50)
+  created_by     String      @db.VarChar(50)
+  created_at     DateTime    @default(now()) @db.DateTime(0)
+  user           user?       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  kabupaten      kabupaten[]
 }
 
 model reviewer {
@@ -193,6 +201,7 @@ model mahasiswa {
   lpk                        lpk[]
   mahasiswa_kecamatan        mahasiswa_kecamatan[]
   mahasiswa_kecamatan_active mahasiswa_kecamatan_active[]
+  nilai                      nilai?
 }
 
 model lrk {

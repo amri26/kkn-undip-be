@@ -344,6 +344,12 @@ class _dosen {
                 },
             });
 
+            await prisma.nilai.create({
+                data: {
+                    id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                },
+            });
+
             return {
                 status: true,
                 code: 204,

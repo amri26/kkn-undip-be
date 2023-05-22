@@ -726,7 +726,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"nama_kabupaten\": \"Semarang\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1021,7 +1021,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"nama\": \"Cilacap\"\r\n}",
+							"raw": "{\r\n    \"id_tema\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

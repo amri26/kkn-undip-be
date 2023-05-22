@@ -131,6 +131,9 @@ class _auth {
                     break;
 
                 default:
+                    get = {
+                        nama: "Super Administrator",
+                    };
                     break;
             }
 

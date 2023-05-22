@@ -681,7 +681,8 @@ class _admin {
                 columnToKey: {
                     B: "nama",
                     C: "nb",
-                    D: "nama_pj",
+                    D: "nama_kabupaten",
+                    E: "nama_pj",
                 },
             });
 
@@ -721,6 +722,7 @@ class _admin {
                         id_user: addUser.id_user,
                         nama: e.nama,
                         nb: String(e.nb),
+                        nama_kabupaten: e.nama_kabupaten,
                         nama_pj: e.nama_pj,
                         created_by,
                     },
@@ -751,6 +753,7 @@ class _admin {
             const schema = Joi.object({
                 nama: Joi.string().required(),
                 nb: Joi.string().required(),
+                nama_kabupaten: Joi.string().required(),
                 nama_pj: Joi.string().required(),
                 created_by: Joi.string().required(),
             });
@@ -785,6 +788,7 @@ class _admin {
                     id_user: addUser.id_user,
                     nama: body.nama,
                     nb: body.nb,
+                    nama_kabupaten: body.nama_kabupaten,
                     nama_pj: body.nama_pj,
                     created_by,
                 },
