@@ -6,8 +6,6 @@ const ProposalController = require("./controllers/ProposalController");
 const BappedaController = require("./controllers/BappedaController");
 const WilayahController = require("./controllers/WilayahController");
 const MahasiswaController = require("./controllers/MahasiswaController");
-const LrkController = require("./controllers/LrkController");
-const LpkController = require("./controllers/LpkController");
 const ReviewerController = require("./controllers/ReviewerController");
 const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
@@ -22,8 +20,6 @@ const _routes = [
     ["/bappeda", BappedaController],
     ["/wilayah", WilayahController],
     ["/mahasiswa", MahasiswaController],
-    ["/lrk", LrkController],
-    ["/lpk", LpkController],
     ["/reviewer", ReviewerController],
     ["/tema", TemaController],
     ["/dokumen", DokumenController],

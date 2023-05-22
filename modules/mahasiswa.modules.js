@@ -17,9 +17,7 @@ class _mahasiswa {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -75,9 +73,7 @@ class _mahasiswa {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -147,6 +143,167 @@ class _mahasiswa {
             };
         } catch (error) {
             console.error("daftarLokasi module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addLRK = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                potensi: Joi.string().required(),
+                program: Joi.string().required(),
+                sasaran: Joi.string().required(),
+                metode: Joi.string().required(),
+                luaran: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            if (!checkMahasiswa || !checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            await prisma.laporan.create({
+                data: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    potensi: body.potensi,
+                    program: body.program,
+                    sasaran: body.sasaran,
+                    metode: body.metode,
+                    luaran: body.luaran,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addLRK module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addLPK = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_laporan: Joi.number().required(),
+                pelaksanaan: Joi.string().required(),
+                capaian: Joi.string().required(),
+                hambatan: Joi.string().required(),
+                kelanjutan: Joi.string().required(),
+                metode: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            const checkLaporan = await prisma.laporan.findUnique({
+                where: {
+                    id_laporan: body.id_laporan,
+                },
+            });
+
+            if (!checkMahasiswa || !checkMahasiswaKecamatan || !checkLaporan) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            await prisma.laporan.update({
+                where: {
+                    id_laporan: body.id_laporan,
+                },
+                data: {
+                    pelaksanaan: body.pelaksanaan,
+                    capaian: body.capaian,
+                    hambatan: body.hambatan,
+                    kelanjutan: body.kelanjutan,
+                    metode: body.metode,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addLPK module error ", error);
 
             return {
                 status: false,

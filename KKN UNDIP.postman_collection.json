@@ -726,7 +726,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\" : \"Bpd Semarang\",\r\n    \"nb\" : \"222\",\r\n    \"nama_kabupaten\": \"Semarang\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"nama\" : \"Bpd Cilacap\",\r\n    \"nb\" : \"222\",\r\n    \"nama_kabupaten\": \"Cilacap\",\r\n    \"nama_pj\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1269,6 +1269,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "EVALUATE LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_laporan\": 1,\r\n    \"komentar\": \"Sudah bagus, mantul bener\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/dosen/evaluate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"evaluate"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1346,6 +1383,80 @@
 							"path": [
 								"mahasiswa",
 								"daftar_lokasi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD LRK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/lrk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lrk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD LPK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_laporan\": 1,\r\n    \"metode\": \"Langkah awal untuk mengembangkan website ini adalah proses Design Thinking. Semua fungsionalitas aplikasi didata dan dibuatkan diagram untuk membantu memudahkan proses kedepannya. Kemudian setelah didapatkan desain sistem yang diinginkan, selanjutnya adalah proses pengembangan aplikasi sampai jadi. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"pelaksanaan\": \"Program ini dilaksanakan pada: Hari/Tanggal : 14 Januari – 6 Februari 2023 Waktu : 08.00 – 20.00 Program “Pengembangan Website E-Katalog UMKM Desa Tlogoharjo” merupakan program kerja bertema teknologi berwujud pembuatan website untuk pendataan UMKM penduduk Desa Tlogoharjo. Dengan aplikasi ini, dapat mempermudah masyarakat untuk mengetahui ada UMKM apa saja di Desa Tlogoharjo. Keberhasilan dari program ini dapat dilihat dari kemudahan Operator Desa menggunakan website ini. Semua fitur utama dalam website ini dapat dicoba dan mendapatkan feedback yang sesuai. Output yang direncanakan adalah • Publikasi Rutin Media Sosial • Prototype produk • Reportase Media Berita\",\r\n    \"capaian\": \"Tercapai dengan tepat waktu, website sudah mempunyai fitur yang dibutuhkan namun masih belum bisa digunakan karena belum di hosting\",\r\n    \"hambatan\": \"- Pembuatan aplikasi membutuhkan waktu yang cukup - Untuk menghosting website juga membutuhkan biaya\",\r\n    \"kelanjutan\": \"Keberlanjutan program Pengembangan Website E-Katalog UMKM Desa Tlogoharjo ini dapat dilakukan oleh operator Desa Progowati yang nantinya diberi amanah untuk mengelola website E-Katalog UMKM Desa Tlogoharjo tersebut.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/lpk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lpk"
 							]
 						}
 					},
@@ -1607,142 +1718,6 @@
 									"key": "id_halaman",
 									"value": "1"
 								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "LRK",
-			"item": [
-				{
-					"name": "LIST LRK",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/lrk",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"lrk"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD LRK",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/lrk",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"lrk"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "LPK",
-			"item": [
-				{
-					"name": "LIST LPK",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/lpk",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"lpk"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADD LPK",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id_lrk\": 1,\r\n    \"metode\": \"Langkah awal untuk mengembangkan website ini adalah proses Design Thinking. Semua fungsionalitas aplikasi didata dan dibuatkan diagram untuk membantu memudahkan proses kedepannya. Kemudian setelah didapatkan desain sistem yang diinginkan, selanjutnya adalah proses pengembangan aplikasi sampai jadi. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"pelaksanaan\": \"Program ini dilaksanakan pada: Hari/Tanggal : 14 Januari – 6 Februari 2023 Waktu : 08.00 – 20.00 Program “Pengembangan Website E-Katalog UMKM Desa Tlogoharjo” merupakan program kerja bertema teknologi berwujud pembuatan website untuk pendataan UMKM penduduk Desa Tlogoharjo. Dengan aplikasi ini, dapat mempermudah masyarakat untuk mengetahui ada UMKM apa saja di Desa Tlogoharjo. Keberhasilan dari program ini dapat dilihat dari kemudahan Operator Desa menggunakan website ini. Semua fitur utama dalam website ini dapat dicoba dan mendapatkan feedback yang sesuai. Output yang direncanakan adalah • Publikasi Rutin Media Sosial • Prototype produk • Reportase Media Berita\",\r\n    \"capaian\": \"Tercapai dengan tepat waktu, website sudah mempunyai fitur yang dibutuhkan namun masih belum bisa digunakan karena belum di hosting\",\r\n    \"hambatan\": \"- Pembuatan aplikasi membutuhkan waktu yang cukup - Untuk menghosting website juga membutuhkan biaya\",\r\n    \"kelanjutan\": \"Keberlanjutan program Pengembangan Website E-Katalog UMKM Desa Tlogoharjo ini dapat dilakukan oleh operator Desa Progowati yang nantinya diberi amanah untuk mengelola website E-Katalog UMKM Desa Tlogoharjo tersebut.\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/lpk",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"lpk"
 							]
 						}
 					},

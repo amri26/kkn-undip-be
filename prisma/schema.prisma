@@ -127,11 +127,11 @@ model mahasiswa_kecamatan {
 }
 
 model mahasiswa_kecamatan_active {
-  mahasiswa_kecamatan_active Int       @id @default(autoincrement())
-  id_mahasiswa               Int
-  id_kecamatan               Int
-  mahasiswa                  mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
-  kecamatan                  kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
+  id_mahasiswa_kecamatan_active Int       @id @default(autoincrement())
+  id_mahasiswa                  Int       @unique
+  id_kecamatan                  Int
+  mahasiswa                     mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  kecamatan                     kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model user {
@@ -189,44 +189,34 @@ model dosen {
 }
 
 model mahasiswa {
-  id_mahasiswa               Int                          @id @default(autoincrement())
-  id_user                    Int?                         @unique
+  id_mahasiswa               Int                         @id @default(autoincrement())
+  id_user                    Int?                        @unique
   id_prodi                   Int?
-  nama                       String                       @db.VarChar(50)
-  nim                        String                       @unique @db.VarChar(50)
-  created_at                 DateTime                     @default(now()) @db.DateTime(0)
-  user                       user?                        @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  prodi                      prodi?                       @relation(fields: [id_prodi], references: [id_prodi], onDelete: SetNull, onUpdate: Cascade)
-  lrk                        lrk[]
-  lpk                        lpk[]
+  nama                       String                      @db.VarChar(50)
+  nim                        String                      @unique @db.VarChar(50)
+  is_registered              Boolean                     @default(false)
+  created_at                 DateTime                    @default(now()) @db.DateTime(0)
+  user                       user?                       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  prodi                      prodi?                      @relation(fields: [id_prodi], references: [id_prodi], onDelete: SetNull, onUpdate: Cascade)
   mahasiswa_kecamatan        mahasiswa_kecamatan[]
-  mahasiswa_kecamatan_active mahasiswa_kecamatan_active[]
+  mahasiswa_kecamatan_active mahasiswa_kecamatan_active?
   nilai                      nilai?
+  laporan                    laporan[]
 }
 
-model lrk {
-  id_lrk       Int       @id @default(autoincrement())
+model laporan {
+  id_laporan   Int       @id @default(autoincrement())
   id_mahasiswa Int
   potensi      String    @db.Text
   program      String    @db.Text
   sasaran      String    @db.Text
   metode       String    @db.Text
   luaran       String    @db.Text
+  pelaksanaan  String?   @db.Text
+  capaian      String?   @db.Text
+  hambatan     String?   @db.Text
+  kelanjutan   String?   @db.Text
+  komentar     String?   @db.Text
   created_at   DateTime  @default(now()) @db.DateTime(0)
-  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
-  lpk          lpk[]
-}
-
-model lpk {
-  id_lpk       Int       @id @default(autoincrement())
-  id_lrk       Int
-  id_mahasiswa Int
-  metode       String    @db.Text
-  pelaksanaan  String    @db.Text
-  capaian      String    @db.Text
-  hambatan     String    @db.Text
-  kelanjutan   String    @db.Text
-  created_at   DateTime  @default(now()) @db.DateTime(0)
-  lrk          lrk       @relation(fields: [id_lrk], references: [id_lrk], onDelete: Cascade, onUpdate: Cascade)
   mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }
