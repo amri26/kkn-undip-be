@@ -280,6 +280,8 @@ class _dosen {
                     },
                     select: {
                         id_kecamatan: true,
+                        id_mahasiswa: true,
+                        status: true,
                     },
                 });
 
@@ -316,7 +318,8 @@ class _dosen {
             } else if (
                 !checkKecamatan.proposal.some(
                     (i) => i.id_dosen === checkDosen.id_dosen
-                )
+                ) ||
+                checkMahasiswaKecamatan.status === -1
             ) {
                 return {
                     status: false,
@@ -331,6 +334,13 @@ class _dosen {
                 },
                 data: {
                     status: 1,
+                },
+            });
+
+            await prisma.mahasiswa_kecamatan_active.create({
+                data: {
+                    id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                    id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
                 },
             });
 
@@ -398,6 +408,7 @@ class _dosen {
                     },
                     select: {
                         id_kecamatan: true,
+                        status: true,
                     },
                 });
 
@@ -420,7 +431,8 @@ class _dosen {
             if (
                 !checkKecamatan.proposal.some(
                     (i) => i.id_dosen === checkDosen.id_dosen
-                )
+                ) ||
+                checkMahasiswaKecamatan.status === 1
             ) {
                 return {
                     status: false,
@@ -437,6 +449,7 @@ class _dosen {
                     status: -1,
                 },
             });
+
             return {
                 status: true,
                 code: 204,

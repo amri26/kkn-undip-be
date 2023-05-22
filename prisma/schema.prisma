@@ -72,15 +72,16 @@ model kabupaten {
 }
 
 model kecamatan {
-  id_kecamatan        Int                   @id @default(autoincrement())
-  id_kabupaten        Int
-  nama                String                @db.VarChar(50)
-  potensi             String                @db.Text
-  status              Int                   @default(0) @db.TinyInt
-  kabupaten           kabupaten             @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
-  desa                desa[]
-  proposal            proposal[]
-  mahasiswa_kecamatan mahasiswa_kecamatan[]
+  id_kecamatan               Int                          @id @default(autoincrement())
+  id_kabupaten               Int
+  nama                       String                       @db.VarChar(50)
+  potensi                    String                       @db.Text
+  status                     Int                          @default(0) @db.TinyInt
+  kabupaten                  kabupaten                    @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
+  desa                       desa[]
+  proposal                   proposal[]
+  mahasiswa_kecamatan        mahasiswa_kecamatan[]
+  mahasiswa_kecamatan_active mahasiswa_kecamatan_active[]
 }
 
 model desa {
@@ -116,6 +117,14 @@ model mahasiswa_kecamatan {
   mahasiswa              mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
   kecamatan              kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
   gelombang              gelombang @relation(fields: [id_gelombang], references: [id_gelombang], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model mahasiswa_kecamatan_active {
+  mahasiswa_kecamatan_active Int       @id @default(autoincrement())
+  id_mahasiswa               Int
+  id_kecamatan               Int
+  mahasiswa                  mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  kecamatan                  kecamatan @relation(fields: [id_kecamatan], references: [id_kecamatan], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model user {
@@ -172,17 +181,18 @@ model dosen {
 }
 
 model mahasiswa {
-  id_mahasiswa        Int                   @id @default(autoincrement())
-  id_user             Int?                  @unique
-  id_prodi            Int?
-  nama                String                @db.VarChar(50)
-  nim                 String                @unique @db.VarChar(50)
-  created_at          DateTime              @default(now()) @db.DateTime(0)
-  user                user?                 @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  prodi               prodi?                @relation(fields: [id_prodi], references: [id_prodi], onDelete: SetNull, onUpdate: Cascade)
-  lrk                 lrk[]
-  lpk                 lpk[]
-  mahasiswa_kecamatan mahasiswa_kecamatan[]
+  id_mahasiswa               Int                          @id @default(autoincrement())
+  id_user                    Int?                         @unique
+  id_prodi                   Int?
+  nama                       String                       @db.VarChar(50)
+  nim                        String                       @unique @db.VarChar(50)
+  created_at                 DateTime                     @default(now()) @db.DateTime(0)
+  user                       user?                        @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  prodi                      prodi?                       @relation(fields: [id_prodi], references: [id_prodi], onDelete: SetNull, onUpdate: Cascade)
+  lrk                        lrk[]
+  lpk                        lpk[]
+  mahasiswa_kecamatan        mahasiswa_kecamatan[]
+  mahasiswa_kecamatan_active mahasiswa_kecamatan_active[]
 }
 
 model lrk {

@@ -150,6 +150,33 @@
 			"name": "ADMIN",
 			"item": [
 				{
+					"name": "LIST ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST TEMA",
 					"request": {
 						"auth": {
@@ -394,7 +421,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
+							"raw": "{\r\n    \"id_halaman\": 1,\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -444,33 +471,6 @@
 									"key": "id_gelombang",
 									"value": "1"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST ADMIN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/admin",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin"
 							]
 						}
 					},

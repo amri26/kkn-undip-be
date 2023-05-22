@@ -104,6 +104,15 @@ class _mahasiswa {
                 },
             });
 
+            const checkKecamatan = await prisma.kecamatan.findUnique({
+                where: {
+                    id_kecamatan: body.id_kecamatan,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
             if (!checkMahasiswa || !checkGelombang) {
                 return {
                     status: false,
@@ -115,6 +124,12 @@ class _mahasiswa {
                     status: false,
                     code: 403,
                     error: "Forbidden, Gelombang data is not activated",
+                };
+            } else if (!checkKecamatan.status) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Kecamatan data is not approved",
                 };
             }
 
