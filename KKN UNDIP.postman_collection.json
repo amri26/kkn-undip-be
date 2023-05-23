@@ -1295,13 +1295,50 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/dosen/evaluate",
+							"raw": "{{url}}/dosen/laporan",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"dosen",
-								"evaluate"
+								"laporan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EVALUATE REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_reportase\": 1,\r\n    \"komentar\": \"Kurang mantul apa yah\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/dosen/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"reportase"
 							]
 						}
 					},
@@ -1457,6 +1494,43 @@
 							"path": [
 								"mahasiswa",
 								"lpk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Judul Reportase\",\r\n    \"isi\": \"Isi berita\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"reportase"
 							]
 						}
 					},

@@ -21,4 +21,8 @@ app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
     response.sendResponse(res, await modules.addLPK(req.user.id, req.body));
 });
 
+app.post("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
+    response.sendResponse(res, await modules.addReportase(req.user.id, req.body));
+});
+
 module.exports = app;

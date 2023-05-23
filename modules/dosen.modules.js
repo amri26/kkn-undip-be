@@ -528,8 +528,8 @@ class _dosen {
             if (!checkMahasiswaKecamatan) {
                 return {
                     status: false,
-                    code: 404,
-                    error: "Data not found",
+                    code: 403,
+                    error: "Forbidden",
                 };
             }
 
@@ -578,6 +578,97 @@ class _dosen {
             };
         } catch (error) {
             console.error("evaluateLaporan module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    evaluateReportase = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_reportase: Joi.number().required(),
+                komentar: Joi.string(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkDosen = await prisma.dosen.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_dosen: true,
+                },
+            });
+
+            const checkReportase = await prisma.reportase.findUnique({
+                where: {
+                    id_reportase: body.id_reportase,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            if (!checkDosen || !checkReportase) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkReportase.id_mahasiswa,
+                },
+                select: {
+                    id_kecamatan: true,
+                },
+            });
+
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.reportase.update({
+                where: {
+                    id_reportase: body.id_reportase,
+                },
+                data: {
+                    komentar: body.komentar,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("evaluateReportase module error ", error);
 
             return {
                 status: false,

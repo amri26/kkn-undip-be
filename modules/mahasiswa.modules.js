@@ -194,11 +194,11 @@ class _mahasiswa {
                 },
             });
 
-            if (!checkMahasiswa || !checkMahasiswaKecamatan) {
+            if (!checkMahasiswaKecamatan) {
                 return {
                     status: false,
-                    code: 404,
-                    error: "Data not found",
+                    code: 403,
+                    error: "Forbidden",
                 };
             }
 
@@ -277,11 +277,11 @@ class _mahasiswa {
                 },
             });
 
-            if (!checkMahasiswa || !checkMahasiswaKecamatan || !checkLaporan) {
+            if (!checkMahasiswaKecamatan || !checkLaporan) {
                 return {
                     status: false,
-                    code: 404,
-                    error: "Data not found",
+                    code: 403,
+                    error: "Forbidden",
                 };
             }
 
@@ -304,6 +304,76 @@ class _mahasiswa {
             };
         } catch (error) {
             console.error("addLPK module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    addReportase = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                judul: Joi.string().required(),
+                isi: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findFirst({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.reportase.create({
+                data: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    judul: body.judul,
+                    isi: body.isi,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("addReportase module error ", error);
 
             return {
                 status: false,

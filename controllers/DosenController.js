@@ -27,8 +27,12 @@ app.put("/mahasiswa/dec/:id_mahasiswa_kecamatan", userSession, verifyDosen, asyn
     response.sendResponse(res, await modules.decMahasiswa(req.user.id, Number(req.params.id_mahasiswa_kecamatan)));
 });
 
-app.put("/evaluate", userSession, verifyDosen, async (req, res, next) => {
+app.put("/laporan", userSession, verifyDosen, async (req, res, next) => {
     response.sendResponse(res, await modules.evaluateLaporan(req.user.id, req.body));
+});
+
+app.put("/reportase", userSession, verifyDosen, async (req, res, next) => {
+    response.sendResponse(res, await modules.evaluateReportase(req.user.id, req.body));
 });
 
 module.exports = app;

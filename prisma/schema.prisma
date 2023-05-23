@@ -202,6 +202,7 @@ model mahasiswa {
   mahasiswa_kecamatan_active mahasiswa_kecamatan_active?
   nilai                      nilai?
   laporan                    laporan[]
+  reportase                  reportase[]
 }
 
 model laporan {
@@ -216,6 +217,16 @@ model laporan {
   capaian      String?   @db.Text
   hambatan     String?   @db.Text
   kelanjutan   String?   @db.Text
+  komentar     String?   @db.Text
+  created_at   DateTime  @default(now()) @db.DateTime(0)
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model reportase {
+  id_reportase Int       @id @default(autoincrement())
+  id_mahasiswa Int
+  judul        String    @db.VarChar(100)
+  isi          String    @db.Text
   komentar     String?   @db.Text
   created_at   DateTime  @default(now()) @db.DateTime(0)
   mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
