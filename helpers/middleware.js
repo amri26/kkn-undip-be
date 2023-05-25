@@ -5,10 +5,7 @@ const jwt = require("jsonwebtoken");
 const userSession = async (req, res, next) => {
     let token;
 
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
-    ) {
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1];
 
@@ -169,6 +166,42 @@ const verifyReviewer = async (req, res, next) => {
     }
 };
 
+const isActive = async (page) => {
+    try {
+        const check = await prisma.halaman.findUnique({
+            where: {
+                id_halaman: page,
+            },
+            select: {
+                status: true,
+            },
+        });
+
+        if (!check) {
+            return {
+                status: false,
+                code: 404,
+                error: "Data not found",
+            };
+        } else if (!check.status) {
+            return {
+                status: false,
+                code: 403,
+                error: "Forbidden, Halaman data is not activated",
+            };
+        }
+
+        return {
+            status: true,
+        };
+    } catch (error) {
+        return {
+            status: false,
+            error,
+        };
+    }
+};
+
 module.exports = {
     userSession,
     verifySuperAdmin,
@@ -177,4 +210,5 @@ module.exports = {
     verifyBappeda,
     verifyDosen,
     verifyReviewer,
+    isActive,
 };

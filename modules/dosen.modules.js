@@ -2,8 +2,6 @@ const { prisma, Prisma } = require("../helpers/database");
 const { uploadDrive } = require("../helpers/upload");
 const Joi = require("joi");
 
-require("dotenv").config();
-
 class _dosen {
     listDosen = async () => {
         try {
@@ -15,6 +13,36 @@ class _dosen {
             };
         } catch (error) {
             console.error("listDosen module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listDosenWilayah = async (id_kecamatan) => {
+        try {
+            const list = await prisma.proposal.findMany({
+                where: {
+                    id_kecamatan,
+                    status: 1,
+                },
+                select: {
+                    dosen: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listDosenWilayah module error ", error);
 
             return {
                 status: false,

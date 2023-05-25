@@ -67,9 +67,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -105,9 +103,7 @@ class _admin {
             const validation = schema.validate(id_tema);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -183,9 +179,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -221,9 +215,7 @@ class _admin {
             const validation = schema.validate(id_halaman);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -274,7 +266,15 @@ class _admin {
 
     listGelombang = async () => {
         try {
-            const list = await prisma.gelombang.findMany();
+            const list = await prisma.gelombang.findMany({
+                include: {
+                    halaman: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                },
+            });
 
             return {
                 status: true,
@@ -300,9 +300,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -339,9 +337,7 @@ class _admin {
             const validation = schema.validate(id_gelombang);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -468,9 +464,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -600,9 +594,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -661,9 +653,7 @@ class _admin {
             const validation = schema.validate(created_by);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -761,9 +751,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -896,9 +884,7 @@ class _admin {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -957,9 +943,7 @@ class _admin {
             const validation = schema.validate(id_kecamatan);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -998,9 +982,7 @@ class _admin {
             const validation = schema.validate(id_kecamatan);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -1039,9 +1021,7 @@ class _admin {
             const validation = schema.validate(id_proposal);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -1080,9 +1060,7 @@ class _admin {
             const validation = schema.validate(id_proposal);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,

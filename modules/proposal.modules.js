@@ -2,19 +2,14 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _proposal {
-    listProposal = async (body) => {
+    listProposal = async (id_tema) => {
         try {
-            const schema = Joi.object({
-                id_tema: Joi.number().required(),
-                id_kabupaten: Joi.number().required(),
-            });
+            const schema = Joi.number().required();
 
-            const validation = schema.validate(body);
+            const validation = schema.validate(id_tema);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -23,17 +18,11 @@ class _proposal {
                 };
             }
 
-            const list = await prisma.potensi.findMany({
+            const list = await prisma.proposal.findMany({
                 where: {
-                    id_tema: body.id_tema,
                     kecamatan: {
-                        id_kabupaten: body.id_kabupaten,
-                    },
-                },
-                include: {
-                    kecamatan: {
-                        select: {
-                            nama: true,
+                        kabupaten: {
+                            id_tema,
                         },
                     },
                 },

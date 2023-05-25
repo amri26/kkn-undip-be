@@ -107,13 +107,6 @@ model proposal {
   dokumen      dokumen   @relation(fields: [id_dokumen], references: [id_dokumen], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model nilai {
-  id_nilai     Int       @id @default(autoincrement())
-  id_mahasiswa Int       @unique
-  post_test    Float?
-  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
-}
-
 model mahasiswa_kecamatan {
   id_mahasiswa_kecamatan Int       @id @default(autoincrement())
   id_mahasiswa           Int
@@ -203,6 +196,13 @@ model mahasiswa {
   nilai                      nilai?
   laporan                    laporan[]
   reportase                  reportase[]
+}
+
+model nilai {
+  id_nilai     Int       @id @default(autoincrement())
+  id_mahasiswa Int       @unique
+  post_test    Float?
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model laporan {

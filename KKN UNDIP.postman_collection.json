@@ -1111,6 +1111,40 @@
 					"response": []
 				},
 				{
+					"name": "LIST DOSEN WILAYAH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD PROPOSAL",
 					"request": {
 						"auth": {
@@ -1726,7 +1760,42 @@
 		},
 		{
 			"name": "PROPOSAL",
-			"item": []
+			"item": [
+				{
+					"name": "LIST PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/proposal/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"proposal",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "TEMA",
@@ -1764,7 +1833,7 @@
 			"name": "GELOMBANG",
 			"item": [
 				{
-					"name": "GET GELOMBANG",
+					"name": "LIST GELOMBANG",
 					"request": {
 						"auth": {
 							"type": "bearer",
