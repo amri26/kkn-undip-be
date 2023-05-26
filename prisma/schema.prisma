@@ -19,6 +19,8 @@ enum Role {
 model tema {
   id_tema   Int         @id @default(autoincrement())
   nama      String      @db.VarChar(50)
+  periode   String      @db.VarChar(50)
+  jenis     Int         @db.TinyInt
   status    Boolean     @default(false)
   kabupaten kabupaten[]
 }

@@ -62,6 +62,8 @@ class _admin {
         try {
             const schema = Joi.object({
                 nama: Joi.string().required(),
+                periode: Joi.string().required(),
+                jenis: Joi.number().required(),
             });
 
             const validation = schema.validate(body);
@@ -79,6 +81,8 @@ class _admin {
             await prisma.tema.create({
                 data: {
                     nama: body.nama,
+                    periode: body.periode,
+                    jenis: body.jenis,
                 },
             });
 

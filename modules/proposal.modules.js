@@ -26,6 +26,27 @@ class _proposal {
                         },
                     },
                 },
+                include: {
+                    kecamatan: {
+                        select: {
+                            nama: true,
+                            kabupaten: {
+                                select: {
+                                    tema: {
+                                        select: {
+                                            periode: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    gelombang: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                },
             });
 
             return {

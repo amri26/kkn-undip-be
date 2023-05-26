@@ -221,7 +221,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Tim I 2023\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Tim I 2023\",\r\n    \"periode\": \"2022/2023\",\r\n    \"jenis\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
