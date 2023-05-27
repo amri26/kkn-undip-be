@@ -1,6 +1,7 @@
 const { prisma, Role } = require("../helpers/database");
 const config = require("../config/app.config.json");
 const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 const userSession = async (req, res, next) => {
     let token;
@@ -168,6 +169,23 @@ const verifyReviewer = async (req, res, next) => {
 
 const isActive = async (id_tema, id_halaman) => {
     try {
+        const schema = Joi.object({
+            id_tema: Joi.number().required(),
+            id_halaman: Joi.number().required(),
+        });
+
+        const validation = schema.validate({ id_tema, id_halaman });
+
+        if (validation.error) {
+            const errorDetails = validation.error.details.map((detail) => detail.message);
+
+            return {
+                status: false,
+                code: 422,
+                error: errorDetails.join(", "),
+            };
+        }
+
         const check = await prisma.tema_halaman.findFirst({
             where: {
                 id_tema,
@@ -191,6 +209,7 @@ const isActive = async (id_tema, id_halaman) => {
 
         return {
             status: true,
+            data: check,
         };
     } catch (error) {
         return {

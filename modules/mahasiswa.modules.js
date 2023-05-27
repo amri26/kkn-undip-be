@@ -66,6 +66,8 @@ class _mahasiswa {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
+                id_tema_halaman: Joi.number().required(),
                 id_kecamatan: Joi.number().required(),
                 id_gelombang: Joi.number().required(),
             });
@@ -88,15 +90,7 @@ class _mahasiswa {
                 },
                 select: {
                     id_mahasiswa: true,
-                },
-            });
-
-            const checkGelombang = await prisma.gelombang.findUnique({
-                where: {
-                    id_gelombang: body.id_gelombang,
-                },
-                select: {
-                    status: true,
+                    is_registered: true,
                 },
             });
 
@@ -109,23 +103,45 @@ class _mahasiswa {
                 },
             });
 
-            if (!checkMahasiswa || !checkGelombang) {
+            const checkGelombang = await prisma.gelombang.findUnique({
+                where: {
+                    id_gelombang: body.id_gelombang,
+                },
+                select: {
+                    status: true,
+                    id_tema_halaman: true,
+                },
+            });
+
+            if (!checkMahasiswa || !checkKecamatan || !checkGelombang) {
                 return {
                     status: false,
                     code: 404,
                     error: "Data not found",
                 };
-            } else if (!checkGelombang.status) {
+            } else if (checkMahasiswa.is_registered) {
                 return {
                     status: false,
                     code: 403,
-                    error: "Forbidden, Gelombang data is not activated",
+                    error: "Forbidden, Mahasiswa data is already registered",
+                };
+            } else if (checkGelombang.id_tema_halaman !== body.id_tema_halaman) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, data doesn't match",
                 };
             } else if (!checkKecamatan.status) {
                 return {
                     status: false,
                     code: 403,
                     error: "Forbidden, Kecamatan data is not approved",
+                };
+            } else if (!checkGelombang.status) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Gelombang data is not activated",
                 };
             }
 
@@ -160,6 +176,7 @@ class _mahasiswa {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 potensi: Joi.string().required(),
                 program: Joi.string().required(),
                 sasaran: Joi.string().required(),
@@ -236,6 +253,7 @@ class _mahasiswa {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 id_laporan: Joi.number().required(),
                 pelaksanaan: Joi.string(),
                 capaian: Joi.string(),
@@ -321,6 +339,7 @@ class _mahasiswa {
 
             const schema = Joi.object({
                 id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
                 judul: Joi.string().required(),
                 isi: Joi.string().required(),
             });
