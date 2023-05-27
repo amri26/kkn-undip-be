@@ -17,27 +17,37 @@ enum Role {
 }
 
 model tema {
-  id_tema   Int         @id @default(autoincrement())
-  nama      String      @db.VarChar(50)
-  periode   String      @db.VarChar(50)
-  jenis     Int         @db.TinyInt
-  status    Boolean     @default(false)
-  kabupaten kabupaten[]
+  id_tema      Int            @id @default(autoincrement())
+  nama         String         @db.VarChar(50)
+  periode      String         @db.VarChar(50)
+  jenis        Int            @db.TinyInt
+  status       Boolean        @default(false)
+  kabupaten    kabupaten[]
+  tema_halaman tema_halaman[]
 }
 
 model halaman {
-  id_halaman Int         @id @default(autoincrement())
-  nama       String      @db.VarChar(50)
-  status     Boolean     @default(false)
-  gelombang  gelombang[]
+  id_halaman   Int            @id @default(autoincrement())
+  nama         String         @db.VarChar(50)
+  tema_halaman tema_halaman[]
+}
+
+model tema_halaman {
+  id_tema_halaman Int         @id @default(autoincrement())
+  id_tema         Int
+  id_halaman      Int
+  status          Boolean     @default(false)
+  tema            tema        @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
+  halaman         halaman     @relation(fields: [id_halaman], references: [id_halaman], onDelete: Cascade, onUpdate: Cascade)
+  gelombang       gelombang[]
 }
 
 model gelombang {
   id_gelombang        Int                   @id @default(autoincrement())
-  id_halaman          Int
+  id_tema_halaman     Int?
   nama                String                @db.VarChar(50)
   status              Boolean               @default(false)
-  halaman             halaman               @relation(fields: [id_halaman], references: [id_halaman], onDelete: Cascade, onUpdate: Cascade)
+  tema_halaman        tema_halaman?         @relation(fields: [id_tema_halaman], references: [id_tema_halaman], onDelete: Cascade, onUpdate: Cascade)
   proposal            proposal[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]
 }

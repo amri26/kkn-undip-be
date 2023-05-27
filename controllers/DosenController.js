@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const modules = require("../modules/dosen.modules");
 const response = require("../helpers/response");
-const { userSession, verifyAdmin, verifyDosen, isActive } = require("../helpers/middleware");
+const { userSession, verifyAdmin, verifyDosen } = require("../helpers/middleware");
 const multer = require("multer");
 const upload = multer();
 
@@ -20,11 +20,6 @@ app.get("/mahasiswa/:id_kecamatan", userSession, verifyDosen, async (req, res, n
 });
 
 app.post("/proposal", userSession, verifyDosen, upload.single("file"), async (req, res, next) => {
-    const check = await isActive(Number(process.env.DOSEN_PROPOSAL));
-    if (!check.status) {
-        response.sendResponse(res, check);
-    }
-
     response.sendResponse(res, await modules.addProposal(req.file, req.user.id, req.body));
 });
 

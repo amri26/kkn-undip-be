@@ -2,16 +2,22 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _gelombang {
-    listGelombang = async (id_halaman) => {
+    listGelombang = async (id_tema, id_halaman) => {
         try {
-            const schema = Joi.number().required();
+            const body = {
+                id_tema,
+                id_halaman,
+            };
 
-            const validation = schema.validate(id_halaman);
+            const schema = Joi.object({
+                id_tema: Joi.number().required(),
+                id_halaman: Joi.number().required(),
+            });
+
+            const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -22,7 +28,10 @@ class _gelombang {
 
             const list = await prisma.gelombang.findMany({
                 where: {
-                    id_halaman,
+                    tema_halaman: {
+                        id_tema: body.id_tema,
+                        id_halaman: body.id_halaman,
+                    },
                 },
             });
 

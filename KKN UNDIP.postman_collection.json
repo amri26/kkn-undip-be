@@ -1848,15 +1848,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/gelombang/:id_halaman",
+							"raw": "{{url}}/gelombang/:id_tema/:id_halaman",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"gelombang",
+								":id_tema",
 								":id_halaman"
 							],
 							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
 								{
 									"key": "id_halaman",
 									"value": "1"

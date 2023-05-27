@@ -272,9 +272,13 @@ class _admin {
         try {
             const list = await prisma.gelombang.findMany({
                 include: {
-                    halaman: {
+                    tema_halaman: {
                         select: {
-                            nama: true,
+                            halaman: {
+                                select: {
+                                    nama: true,
+                                },
+                            },
                         },
                     },
                 },

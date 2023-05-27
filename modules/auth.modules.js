@@ -15,9 +15,7 @@ class _auth {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -46,10 +44,7 @@ class _auth {
                 };
             }
 
-            const checkPassword = bcrypt.compareSync(
-                body.password,
-                checkUser.password
-            );
+            const checkPassword = bcrypt.compareSync(body.password, checkUser.password);
 
             if (!checkPassword) {
                 return {
@@ -128,6 +123,33 @@ class _auth {
                             id_user,
                         },
                     });
+
+                    const tema = await prisma.mahasiswa_kecamatan_active.findUnique({
+                        where: {
+                            id_mahasiswa: get.id_mahasiswa,
+                        },
+                        select: {
+                            kecamatan: {
+                                select: {
+                                    kabupaten: {
+                                        select: {
+                                            tema: {
+                                                select: {
+                                                    id_tema: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    });
+
+                    get = {
+                        ...get,
+                        id_tema: tema?.kecamatan.kabupaten.tema.id_tema,
+                    };
+
                     break;
 
                 default:

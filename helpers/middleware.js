@@ -166,14 +166,12 @@ const verifyReviewer = async (req, res, next) => {
     }
 };
 
-const isActive = async (page) => {
+const isActive = async (id_tema, id_halaman) => {
     try {
-        const check = await prisma.halaman.findUnique({
+        const check = await prisma.tema_halaman.findFirst({
             where: {
-                id_halaman: page,
-            },
-            select: {
-                status: true,
+                id_tema,
+                id_halaman,
             },
         });
 
