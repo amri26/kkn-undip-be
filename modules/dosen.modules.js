@@ -340,15 +340,6 @@ class _dosen {
                 };
             }
 
-            await prisma.mahasiswa_kecamatan.update({
-                where: {
-                    id_mahasiswa_kecamatan,
-                },
-                data: {
-                    status: 1,
-                },
-            });
-
             await prisma.mahasiswa_kecamatan_active.create({
                 data: {
                     id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
@@ -359,6 +350,15 @@ class _dosen {
             await prisma.nilai.create({
                 data: {
                     id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                },
+            });
+
+            await prisma.mahasiswa_kecamatan.update({
+                where: {
+                    id_mahasiswa_kecamatan,
+                },
+                data: {
+                    status: 1,
                 },
             });
 
