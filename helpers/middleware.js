@@ -69,7 +69,7 @@ const verifySuperAdmin = async (req, res, next) => {
 const verifyAdmin = async (req, res, next) => {
     try {
         if (req.user.role === Role.ADMIN) {
-            const check = await prisma.admin.findFirst({
+            const check = await prisma.admin.findUnique({
                 where: {
                     id_user: req.user.id,
                 },

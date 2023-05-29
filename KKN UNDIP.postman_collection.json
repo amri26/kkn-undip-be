@@ -748,6 +748,87 @@
 					"response": []
 				},
 				{
+					"name": "ADD KORWIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"korwil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD KORWIL SINGLE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Korwil C\",\r\n    \"nk\": \"korwil c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/korwil/single",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"korwil",
+								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD REVIEWER",
 					"request": {
 						"auth": {
@@ -843,6 +924,15 @@
 						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_korwil\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{url}}/admin/kecamatan/acc/:id_kecamatan",
 							"host": [

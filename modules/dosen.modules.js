@@ -75,7 +75,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },
@@ -169,7 +169,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },
@@ -274,7 +274,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },
@@ -340,6 +340,23 @@ class _dosen {
                 };
             }
 
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (checkMahasiswa.status === 2) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden, Mahasiswa data is already registered",
+                };
+            }
+
             await prisma.mahasiswa_kecamatan_active.create({
                 data: {
                     id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
@@ -367,7 +384,7 @@ class _dosen {
                     id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
                 },
                 data: {
-                    is_registered: true,
+                    status: 2,
                 },
             });
 
@@ -419,7 +436,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },
@@ -442,6 +459,7 @@ class _dosen {
                 },
                 select: {
                     id_kecamatan: true,
+                    id_mahasiswa: true,
                     status: true,
                 },
             });
@@ -478,6 +496,27 @@ class _dosen {
                     status: -1,
                 },
             });
+
+            const listMahasiswaKecamatan = await prisma.mahasiswa_kecamatan.findMany({
+                where: {
+                    id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                    status: 0,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (listMahasiswaKecamatan.length === 0) {
+                await prisma.mahasiswa.update({
+                    where: {
+                        id_mahasiswa: checkMahasiswaKecamatan.id_mahasiswa,
+                    },
+                    data: {
+                        status: 0,
+                    },
+                });
+            }
 
             return {
                 status: true,
@@ -518,7 +557,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },
@@ -639,7 +678,7 @@ class _dosen {
                 };
             }
 
-            const checkDosen = await prisma.dosen.findFirst({
+            const checkDosen = await prisma.dosen.findUnique({
                 where: {
                     id_user,
                 },

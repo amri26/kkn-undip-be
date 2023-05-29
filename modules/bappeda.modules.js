@@ -35,9 +35,7 @@ class _bappeda {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -46,7 +44,7 @@ class _bappeda {
                 };
             }
 
-            const checkBappeda = await prisma.bappeda.findFirst({
+            const checkBappeda = await prisma.bappeda.findUnique({
                 where: {
                     id_user,
                 },
@@ -143,9 +141,7 @@ class _bappeda {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,

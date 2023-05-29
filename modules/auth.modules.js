@@ -24,7 +24,7 @@ class _auth {
                 };
             }
 
-            const checkUser = await prisma.user.findFirst({
+            const checkUser = await prisma.user.findUnique({
                 where: {
                     username: body.username,
                 },
@@ -90,35 +90,35 @@ class _auth {
             let get = {};
             switch (role) {
                 case Role.ADMIN:
-                    get = await prisma.admin.findFirst({
+                    get = await prisma.admin.findUnique({
                         where: {
                             id_user,
                         },
                     });
                     break;
                 case Role.BAPPEDA:
-                    get = await prisma.bappeda.findFirst({
+                    get = await prisma.bappeda.findUnique({
                         where: {
                             id_user,
                         },
                     });
                     break;
                 case Role.REVIEWER:
-                    get = await prisma.reviewer.findFirst({
+                    get = await prisma.reviewer.findUnique({
                         where: {
                             id_user,
                         },
                     });
                     break;
                 case Role.DOSEN:
-                    get = await prisma.dosen.findFirst({
+                    get = await prisma.dosen.findUnique({
                         where: {
                             id_user,
                         },
                     });
                     break;
                 case Role.MAHASISWA:
-                    get = await prisma.mahasiswa.findFirst({
+                    get = await prisma.mahasiswa.findUnique({
                         where: {
                             id_user,
                         },
