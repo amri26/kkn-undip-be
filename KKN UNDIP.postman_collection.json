@@ -1489,23 +1489,165 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/mahasiswa/:id_periode/:id_prodi",
+							"raw": "{{url}}/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA UNREGISTERED",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/unregistered",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"mahasiswa",
-								":id_periode",
-								":id_prodi"
+								"unregistered"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA REGISTERED",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/registered",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"registered"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA ACCEPTED",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/accepted",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"accepted"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA REGISTERED BY KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/registered/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"registered",
+								":id_kecamatan"
 							],
 							"variable": [
 								{
-									"key": "id_periode",
+									"key": "id_kecamatan",
 									"value": "1"
-								},
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA ACCEPTED BY KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "id_prodi",
-									"value": "all"
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/accepted/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"accepted",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
 								}
 							]
 						}
@@ -1991,6 +2133,38 @@
 									"key": "id_mahasiswa",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LAPORAN",
+			"item": [
+				{
+					"name": "LIST LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan"
 							]
 						}
 					},

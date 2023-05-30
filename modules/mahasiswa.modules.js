@@ -2,19 +2,95 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _mahasiswa {
-    listMahasiswa = async (id_tema, id_prodi) => {
+    listMahasiswa = async () => {
         try {
-            const body = {
-                id_tema,
-                id_prodi,
-            };
+            const list = await prisma.mahasiswa.findMany();
 
-            const schema = Joi.object({
-                id_tema: Joi.number().required(),
-                id_prodi: Joi.string().required(),
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listMahasiswa module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listMahasiswaUnregistered = async () => {
+        try {
+            const list = await prisma.mahasiswa.findMany({
+                where: {
+                    status: 0,
+                },
             });
 
-            const validation = schema.validate(body);
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listMahasiswaUnregistered module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listMahasiswaRegistered = async () => {
+        try {
+            const list = await prisma.mahasiswa.findMany({
+                where: {
+                    status: 1,
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listMahasiswaRegistered module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listMahasiswaAccepted = async () => {
+        try {
+            const list = await prisma.mahasiswa.findMany({
+                where: {
+                    status: 2,
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listMahasiswaAccepted module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listMahasiswaRegisteredByKecamatan = async (id_kecamatan) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_kecamatan);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map((detail) => detail.message);
@@ -26,29 +102,60 @@ class _mahasiswa {
                 };
             }
 
-            let list = {};
-
-            if (body.id_prodi !== "all") {
-                list = await prisma.mahasiswa.findMany({
-                    where: {
-                        id_tema: body.id_tema,
-                        id_prodi: body.id_prodi,
-                    },
-                });
-            } else {
-                list = await prisma.mahasiswa.findMany({
-                    where: {
-                        id_tema: body.id_tema,
-                    },
-                });
-            }
+            const list = await prisma.mahasiswa_kecamatan.findMany({
+                where: {
+                    id_kecamatan,
+                },
+                include: {
+                    mahasiswa: true,
+                },
+            });
 
             return {
                 status: true,
                 data: list,
             };
         } catch (error) {
-            console.error("listMahasiswa module error ", error);
+            console.error("listMahasiswaRegistered module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listMahasiswaAcceptedByKecamatan = async (id_kecamatan) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_kecamatan);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const list = await prisma.mahasiswa_kecamatan_active.findMany({
+                where: {
+                    id_kecamatan,
+                },
+                include: {
+                    mahasiswa: true,
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listMahasiswaRegistered module error ", error);
 
             return {
                 status: false,
@@ -125,7 +232,7 @@ class _mahasiswa {
                     code: 403,
                     error: "Forbidden, Mahasiswa data is already registered",
                 };
-            } else if (checkGelombang.id_tema_halaman != body.id_tema_halaman) {
+            } else if (checkGelombang.id_tema_halaman !== body.id_tema_halaman) {
                 return {
                     status: false,
                     code: 403,

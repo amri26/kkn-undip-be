@@ -5,8 +5,28 @@ const { userSession, verifyAdmin, verifyMahasiswa, isActive } = require("../help
 
 const app = Router();
 
-app.get("/:id_tema/:id_prodi", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(res, await modules.listMahasiswa(Number(req.params.id_tema), req.params.id_prodi));
+app.get("/", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswa());
+});
+
+app.get("/unregistered", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswaUnregistered());
+});
+
+app.get("/registered", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswaRegistered());
+});
+
+app.get("/accepted", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswaAccepted());
+});
+
+app.get("/registered/:id_kecamatan", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswaRegisteredByKecamatan(Number(req.params.id_kecamatan)));
+});
+
+app.get("/accepted/:id_kecamatan", userSession, async (req, res, next) => {
+    response.sendResponse(res, await modules.listMahasiswaAcceptedByKecamatan(Number(req.params.id_kecamatan)));
 });
 
 app.post("/daftar_lokasi", userSession, verifyMahasiswa, async (req, res, next) => {
