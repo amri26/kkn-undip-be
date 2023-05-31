@@ -92,23 +92,36 @@ app.post("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
   }
 });
 
-app.get("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
+app.put("/lrk/edit", userSession, verifyMahasiswa, async (req, res, next) => {
   const check = await isActive(
     req.body.id_tema,
-    Number(process.env.MAHASISWA_INDEX_LPK)
+    Number(process.env.MAHASISWA_ADD_LRK)
   );
 
   if (!check.status) {
     response.sendResponse(res, check);
   } else {
-    response.sendResponse(res, await modules.listLaporan(req.user.id, "lpk"));
+    response.sendResponse(res, await modules.editLRK(req.user.id, req.body));
   }
+});
+
+app.get("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
+  // const check = await isActive(
+  //   req.body.id_tema,
+  //   Number(process.env.MAHASISWA_INDEX_LPK)
+  // );
+
+  // if (!check.status) {
+  //   response.sendResponse(res, check);
+  // } else {
+  response.sendResponse(res, await modules.listLaporan(req.user.id, "lpk"));
+  // }
 });
 
 app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
   const check = await isActive(
     req.body.id_tema,
-    Number(process.env.MAHASISWA_ADD_LPK)
+    Number(process.env.MAHASISWA_EDIT_LPK)
   );
 
   if (!check.status) {
