@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1665,14 +1665,25 @@
 				{
 					"name": "LIST LRK MAHASISWA",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/lrk",
+							"raw": "{{url}}/mahasiswa/lrk",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"mahasiswa",
 								"lrk"
 							]
 						}
@@ -1696,7 +1707,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+							"raw": "{\r\n    \"id_tema\": 3,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1733,7 +1744,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"id_laporan\": 1,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"id_laporan\": 5,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1741,13 +1752,42 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/lrk/edit",
+							"raw": "{{url}}/mahasiswa/lrk/edit",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"mahasiswa",
 								"lrk",
 								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST LPK MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/lpk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lpk"
 							]
 						}
 					},
@@ -2144,13 +2184,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/gelombang/mahasiswa/:id_tema/:id_halaman/:id_dosen",
+							"raw": "{{url}}/gelombang/dosen/:id_tema/:id_halaman/:id_dosen",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"gelombang",
-								"mahasiswa",
+								"dosen",
 								":id_tema",
 								":id_halaman",
 								":id_dosen"
@@ -2158,15 +2198,15 @@
 							"variable": [
 								{
 									"key": "id_tema",
-									"value": null
+									"value": "1"
 								},
 								{
 									"key": "id_halaman",
-									"value": null
+									"value": "1"
 								},
 								{
 									"key": "id_dosen",
-									"value": null
+									"value": "1"
 								}
 							]
 						}

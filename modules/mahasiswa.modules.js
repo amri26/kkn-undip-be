@@ -26,6 +26,23 @@ class _mahasiswa {
         where: {
           status: 0,
         },
+        include: {
+          mahasiswa_kecamatan: {
+            include: {
+              gelombang: true,
+              kecamatan: {
+                select: {
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                  nama: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       return {
@@ -48,6 +65,23 @@ class _mahasiswa {
         where: {
           status: 1,
         },
+        include: {
+          mahasiswa_kecamatan: {
+            include: {
+              gelombang: true,
+              kecamatan: {
+                select: {
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                  nama: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       return {
@@ -69,6 +103,23 @@ class _mahasiswa {
       const list = await prisma.mahasiswa.findMany({
         where: {
           status: 2,
+        },
+        include: {
+          mahasiswa_kecamatan: {
+            include: {
+              gelombang: true,
+              kecamatan: {
+                select: {
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                  nama: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -109,7 +160,36 @@ class _mahasiswa {
           id_kecamatan,
         },
         include: {
-          mahasiswa: true,
+          kecamatan: {
+            select: {
+              nama: true,
+              kabupaten: {
+                select: {
+                  nama: true,
+                  tema: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          mahasiswa: {
+            include: {
+              prodi: {
+                select: {
+                  nama: true,
+                  fakultas: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          gelombang: true,
         },
       });
 
@@ -151,6 +231,7 @@ class _mahasiswa {
         },
         include: {
           mahasiswa: true,
+          kecamatan: true,
         },
       });
 
