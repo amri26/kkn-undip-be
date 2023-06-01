@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4272ff12-4523-4cb8-923d-9378e0b560c5",
+		"_postman_id": "8145de33-51da-448f-b78c-f0de5faa5dc4",
 		"name": "KKN UNDIP",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18808497"
 	},
 	"item": [
 		{
@@ -527,12 +528,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/mahasiswa",
@@ -608,12 +604,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/dosen",
@@ -689,12 +680,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/bappeda",
@@ -770,12 +756,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/korwil",
@@ -851,12 +832,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/reviewer",
@@ -1267,12 +1243,7 @@
 									"value": "1",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/dosen/proposal",
@@ -1692,6 +1663,23 @@
 					"response": []
 				},
 				{
+					"name": "LIST LRK MAHASISWA",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/lrk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"lrk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD LRK",
 					"request": {
 						"auth": {
@@ -1723,6 +1711,43 @@
 							"path": [
 								"mahasiswa",
 								"lrk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT LRK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"id_laporan\": 1,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/lrk/edit",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"lrk",
+								"edit"
 							]
 						}
 					},
@@ -2104,6 +2129,51 @@
 					"response": []
 				},
 				{
+					"name": "LIST GELOMBANG DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/gelombang/mahasiswa/:id_tema/:id_halaman/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"gelombang",
+								"mahasiswa",
+								":id_tema",
+								":id_halaman",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": null
+								},
+								{
+									"key": "id_halaman",
+									"value": null
+								},
+								{
+									"key": "id_dosen",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST GELOMBANG MAHASISWA",
 					"request": {
 						"auth": {
@@ -2119,16 +2189,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/gelombang/mahasiswa/:id_mahasiswa",
+							"raw": "{{url}}/gelombang/mahasiswa/:id_tema/:id_halaman/:id_mahasiswa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"gelombang",
 								"mahasiswa",
+								":id_tema",
+								":id_halaman",
 								":id_mahasiswa"
 							],
 							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
+								{
+									"key": "id_halaman",
+									"value": "2"
+								},
 								{
 									"key": "id_mahasiswa",
 									"value": "1"
@@ -2165,6 +2245,40 @@
 							],
 							"path": [
 								"laporan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan/:id_laporan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan",
+								":id_laporan"
+							],
+							"variable": [
+								{
+									"key": "id_laporan",
+									"value": "4"
+								}
 							]
 						}
 					},
