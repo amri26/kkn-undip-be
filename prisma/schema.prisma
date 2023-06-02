@@ -90,6 +90,7 @@ model kecamatan {
   nama                       String                       @db.VarChar(50)
   potensi                    String                       @db.Text
   status                     Int                          @default(0) @db.TinyInt
+  is_full                    Boolean                      @default(false)
   kabupaten                  kabupaten                    @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
   korwil                     korwil?                      @relation(fields: [id_korwil], references: [id_korwil], onDelete: Cascade, onUpdate: Cascade)
   desa                       desa[]

@@ -220,13 +220,23 @@ class _mahasiswa {
                 },
             });
 
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan.findFirst({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    id_gelombang: body.id_gelombang,
+                },
+                select: {
+                    id_mahasiswa_kecamatan: true,
+                },
+            });
+
             if (!checkMahasiswa || !checkKecamatan || !checkGelombang) {
                 return {
                     status: false,
                     code: 404,
                     error: "Data not found",
                 };
-            } else if (checkMahasiswa.status === 2) {
+            } else if (checkMahasiswa.status === 2 || checkMahasiswaKecamatan) {
                 return {
                     status: false,
                     code: 403,
