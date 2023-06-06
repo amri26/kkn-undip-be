@@ -36,7 +36,7 @@ class _test {
                 where: {
                     id_kecamatan,
                 },
-                select: {
+                include: {
                     mahasiswa: {
                         include: {
                             prodi: {
@@ -49,6 +49,7 @@ class _test {
                                     },
                                 },
                             },
+                            nilai: true,
                         },
                     },
                 },
