@@ -293,13 +293,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/admin/halaman",
+							"raw": "{{url}}/admin/halaman/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"admin",
-								"halaman"
+								"halaman",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -358,19 +365,19 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/admin/halaman/:id_tema",
+							"raw": "{{url}}/admin/halaman/:id_tema_halaman",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"admin",
 								"halaman",
-								":id_tema"
+								":id_tema_halaman"
 							],
 							"variable": [
 								{
-									"key": "id_tema",
-									"value": "1"
+									"key": "id_tema_halaman",
+									"value": "3"
 								}
 							]
 						}
@@ -393,13 +400,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/admin/gelombang",
+							"raw": "{{url}}/admin/gelombang/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"admin",
-								"gelombang"
+								"gelombang",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -422,7 +436,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_halaman\": 1,\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
+							"raw": "{\r\n    \"id_tema_halaman\": 1,\r\n    \"nama\": \"Gelombang 1 Dosen\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

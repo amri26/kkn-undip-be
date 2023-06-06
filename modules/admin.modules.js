@@ -300,9 +300,30 @@ class _admin {
     }
   };
 
-  listGelombang = async () => {
+  listGelombang = async (id_tema) => {
     try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
       const list = await prisma.gelombang.findMany({
+        where: {
+          tema_halaman: {
+            id_tema,
+          },
+        },
         include: {
           tema_halaman: {
             select: {
@@ -338,7 +359,7 @@ class _admin {
   addGelombang = async (body) => {
     try {
       const schema = Joi.object({
-        id_halaman: Joi.number().required(),
+        id_tema_halaman: Joi.number().required(),
         nama: Joi.string().required(),
       });
 
@@ -358,7 +379,7 @@ class _admin {
 
       await prisma.gelombang.create({
         data: {
-          id_halaman: body.id_halaman,
+          id_tema_halaman: body.id_tema_halaman,
           nama: body.nama,
         },
       });

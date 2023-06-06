@@ -67,9 +67,17 @@ app.patch(
   }
 );
 
-app.get("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
-  response.sendResponse(res, await modules.listGelombang());
-});
+app.get(
+  "/gelombang/:id_tema",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.listGelombang(Number(req.params.id_tema))
+    );
+  }
+);
 
 app.post("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addGelombang(req.body));
