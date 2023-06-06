@@ -78,13 +78,27 @@ class _admin {
                 };
             }
 
-            await prisma.tema.create({
+            const add = await prisma.tema.create({
                 data: {
                     nama: body.nama,
                     periode: body.periode,
                     jenis: body.jenis,
                 },
+                select: {
+                    id_tema: true,
+                },
             });
+
+            const list = await prisma.halaman.findMany();
+
+            for (let i = 0; i < list.length; i++) {
+                await prisma.tema_halaman.create({
+                    data: {
+                        id_tema: add.id_tema,
+                        id_halaman: list[i].id_halaman,
+                    },
+                });
+            }
 
             return {
                 status: true,
@@ -212,11 +226,11 @@ class _admin {
         }
     };
 
-    switchHalaman = async (id_halaman) => {
+    switchHalaman = async (id_tema_halaman) => {
         try {
             const schema = Joi.number().required();
 
-            const validation = schema.validate(id_halaman);
+            const validation = schema.validate(id_tema_halaman);
 
             if (validation.error) {
                 const errorDetails = validation.error.details.map((detail) => detail.message);
@@ -228,9 +242,9 @@ class _admin {
                 };
             }
 
-            const check = await prisma.halaman.findUnique({
+            const check = await prisma.tema_halaman.findUnique({
                 where: {
-                    id_halaman,
+                    id_tema_halaman,
                 },
                 select: {
                     status: true,
@@ -245,9 +259,9 @@ class _admin {
                 };
             }
 
-            await prisma.halaman.update({
+            await prisma.tema_halaman.update({
                 where: {
-                    id_halaman,
+                    id_tema_halaman,
                 },
                 data: {
                     status: !check.status,
@@ -306,7 +320,7 @@ class _admin {
     addGelombang = async (body) => {
         try {
             const schema = Joi.object({
-                id_halaman: Joi.number().required(),
+                id_tema_halaman: Joi.number().required(),
                 nama: Joi.string().required(),
             });
 
@@ -324,7 +338,7 @@ class _admin {
 
             await prisma.gelombang.create({
                 data: {
-                    id_halaman: body.id_halaman,
+                    id_tema_halaman: body.id_tema_halaman,
                     nama: body.nama,
                 },
             });

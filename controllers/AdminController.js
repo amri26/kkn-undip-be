@@ -35,8 +35,8 @@ app.post("/halaman", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addHalaman(req.body));
 });
 
-app.patch("/halaman/:id_halaman", userSession, verifyAdmin, async (req, res, next) => {
-    response.sendResponse(res, await modules.switchHalaman(Number(req.params.id_halaman)));
+app.patch("/halaman/:id_tema_halaman", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.switchHalaman(Number(req.params.id_tema_halaman)));
 });
 
 app.get("/gelombang", userSession, verifyAdmin, async (req, res, next) => {

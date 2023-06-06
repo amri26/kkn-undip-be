@@ -210,6 +210,18 @@ model mahasiswa {
   id_prodi                   Int?
   nama                       String                      @db.VarChar(50)
   nim                        String                      @unique @db.VarChar(50)
+  jenis_kelamin              Int?                        @db.TinyInt
+  ttl                        String?                     @db.VarChar(50)
+  no_hp                      String?                     @db.VarChar(50)
+  alamat                     String?                     @db.VarChar(100)
+  riwayat_penyakit           String?                     @db.VarChar(50)
+  nama_ortu                  String?                     @db.VarChar(50)
+  no_hp_ortu                 String?                     @db.VarChar(50)
+  alamat_ortu                String?                     @db.VarChar(100)
+  nama_cp_urgent             String?                     @db.VarChar(50)
+  no_hp_cp_urgent            String?                     @db.VarChar(50)
+  alamat_cp_urgent           String?                     @db.VarChar(100)
+  hubungan                   String?                     @db.VarChar(50)
   status                     Int                         @default(0) @db.TinyInt
   created_at                 DateTime                    @default(now()) @db.DateTime(0)
   user                       user?                       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
@@ -222,10 +234,22 @@ model mahasiswa {
 }
 
 model nilai {
-  id_nilai     Int       @id @default(autoincrement())
-  id_mahasiswa Int       @unique
-  post_test    Float?
-  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  id_nilai              Int       @id @default(autoincrement())
+  id_mahasiswa          Int       @unique
+  pembekalan            Int?      @db.UnsignedTinyInt
+  upacara               Int?      @db.UnsignedTinyInt
+  kehadiran_dilokasi    Int?      @db.UnsignedTinyInt
+  lrk                   Int?      @db.UnsignedTinyInt
+  integritas            Int?      @db.UnsignedTinyInt
+  sosial_kemasyarakatan Int?      @db.UnsignedTinyInt
+  lpk                   Int?      @db.UnsignedTinyInt
+  ujian_akhir           Int?      @db.UnsignedTinyInt
+  tugas                 Int?      @db.UnsignedTinyInt
+  uts                   Int?      @db.UnsignedTinyInt
+  uas                   Int?      @db.UnsignedTinyInt
+  nilai_akhir           Float?    @db.Float()
+  nilai_huruf           String?   @db.Char(1)
+  mahasiswa             mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model laporan {

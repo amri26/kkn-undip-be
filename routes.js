@@ -11,6 +11,7 @@ const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 const GelombangController = require("./controllers/GelombangController");
 const LaporanController = require("./controllers/LaporanController");
+const TestController = require("./controllers/TestController");
 
 const _routes = [
     ["/auth", AuthController],
@@ -26,6 +27,7 @@ const _routes = [
     ["/dokumen", DokumenController],
     ["/gelombang", GelombangController],
     ["/laporan", LaporanController],
+    ["/test", TestController],
 ];
 
 const routes = (app) => {
