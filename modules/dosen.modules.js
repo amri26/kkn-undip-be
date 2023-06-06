@@ -121,7 +121,35 @@ class _dosen {
                     id_kecamatan: body.id_kecamatan,
                 },
                 include: {
-                    mahasiswa: true,
+                    mahasiswa: {
+                        include: {
+                            prodi: {
+                                select: {
+                                    nama: true,
+                                    fakultas: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    kecamatan: {
+                        select: {
+                            nama: true,
+                            kabupaten: {
+                                select: {
+                                    nama: true,
+                                    tema: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                     gelombang: {
                         select: {
                             nama: true,
@@ -136,6 +164,95 @@ class _dosen {
             };
         } catch (error) {
             console.error("listMahasiswa module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    listProposal = async (id_user, id_tema) => {
+        try {
+            const body = {
+                id_user,
+                id_tema,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkDosen = await prisma.dosen.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_dosen: true,
+                },
+            });
+
+            if (!checkDosen) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const list = await prisma.proposal.findMany({
+                where: {
+                    kecamatan: {
+                        kabupaten: {
+                            id_tema,
+                        },
+                    },
+                    id_dosen: checkDosen.id_dosen,
+                },
+                include: {
+                    dosen: true,
+                    kecamatan: {
+                        select: {
+                            nama: true,
+                            kabupaten: {
+                                select: {
+                                    tema: {
+                                        select: {
+                                            periode: true,
+                                        },
+                                    },
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
+                    gelombang: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listProposal module error ", error);
 
             return {
                 status: false,

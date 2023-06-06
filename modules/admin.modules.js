@@ -170,9 +170,31 @@ class _admin {
         }
     };
 
-    listHalaman = async () => {
+    listHalaman = async (id_tema) => {
         try {
-            const list = await prisma.halaman.findMany();
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_tema);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const list = await prisma.tema_halaman.findMany({
+                where: {
+                    id_tema,
+                },
+                include: {
+                    halaman: true,
+                    tema: true,
+                },
+            });
 
             return {
                 status: true,
@@ -282,9 +304,28 @@ class _admin {
         }
     };
 
-    listGelombang = async () => {
+    listGelombang = async (id_tema) => {
         try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_tema);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
             const list = await prisma.gelombang.findMany({
+                where: {
+                    tema_halaman: {
+                        id_tema,
+                    },
+                },
                 include: {
                     tema_halaman: {
                         select: {

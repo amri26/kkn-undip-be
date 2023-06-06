@@ -355,13 +355,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/admin/halaman",
+							"raw": "{{url}}/admin/halaman/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"admin",
-								"halaman"
+								"halaman",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -493,13 +500,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/admin/gelombang",
+							"raw": "{{url}}/admin/gelombang/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"admin",
-								"gelombang"
+								"gelombang",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -1804,6 +1818,41 @@
 					"response": []
 				},
 				{
+					"name": "LIST PROPOSAL DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/proposal/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"proposal",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST MAHASISWA",
 					"request": {
 						"auth": {
@@ -2347,6 +2396,72 @@
 					"response": []
 				},
 				{
+					"name": "EDIT LRK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"id_laporan\": 5,\r\n    \"potensi\": \"Di Desa Tlogoharjo ada banyak pelaku UMKM. Namun, informasi terkait data UMKM Desa Tlogoharjo masih sangat susah dicari. Oleh karena itu diperlukan suatu media yang mudah diakses, yaitu website untuk menampung informasi terkait UMKM Desa Tlogoharjo. Dengan adanya website ini, diharapkan nantinya dapat meningkatkan taraf hidup masyarakat.\",\r\n    \"program\": \"Pengembangan Website E-Katalog UMKM Desa Tlogoharjo\",\r\n    \"sasaran\": \"Seluruh masyarakat Desa Tlogoharjo\",\r\n    \"metode\": \"Pertama adalah proses pembuatan website e-katalog. Setelah dirasa sesuai, website akan dihosting ke cloud. Jika sudah berhasil dan tidak ada masalah, maka website akan diisi data NIB yang sesuai.\",\r\n    \"luaran\": \"1. Leaflet\\r\\n2. Modul PPT\\r\\n3. Reportase Media Berita (Elektronik)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/lrk/edit",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lrk",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST LPK MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/lpk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lpk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD LPK",
 					"event": [
 						{
@@ -2668,6 +2783,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET EMBED LINK DOKUMEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dokumen/embed/:id_dokumen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dokumen",
+								"embed",
+								":id_dokumen"
+							],
+							"variable": [
+								{
+									"key": "id_dokumen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2707,6 +2857,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET PROPOSAL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/proposal/detail/:id_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"proposal",
+								"detail",
+								":id_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_proposal",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2735,6 +2920,34 @@
 							],
 							"path": [
 								"tema"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST TEMA DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tema/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tema",
+								"dosen"
 							]
 						}
 					},
@@ -2785,6 +2998,51 @@
 					"response": []
 				},
 				{
+					"name": "LIST GELOMBANG DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/gelombang/dosen/:id_tema/:id_halaman/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"gelombang",
+								"dosen",
+								":id_tema",
+								":id_halaman",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
+								{
+									"key": "id_halaman",
+									"value": "1"
+								},
+								{
+									"key": "id_dosen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST GELOMBANG MAHASISWA",
 					"request": {
 						"auth": {
@@ -2800,16 +3058,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/gelombang/mahasiswa/:id_mahasiswa",
+							"raw": "{{url}}/gelombang/mahasiswa/:id_tema/:id_halaman/:id_mahasiswa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"gelombang",
 								"mahasiswa",
+								":id_tema",
+								":id_halaman",
 								":id_mahasiswa"
 							],
 							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
+								{
+									"key": "id_halaman",
+									"value": "2"
+								},
 								{
 									"key": "id_mahasiswa",
 									"value": "1"
@@ -2846,6 +3114,75 @@
 							],
 							"path": [
 								"laporan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST LAPORAN KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan/:id_laporan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan",
+								":id_laporan"
+							],
+							"variable": [
+								{
+									"key": "id_laporan",
+									"value": "4"
+								}
 							]
 						}
 					},

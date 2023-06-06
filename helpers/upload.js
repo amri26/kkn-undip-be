@@ -57,4 +57,21 @@ const downloadDrive = async (fileId) => {
     }
 };
 
-module.exports = { uploadDrive, downloadDrive };
+const embedLinkDrive = async (fileId) => {
+    try {
+        const file = await google.drive({ version: "v2", auth }).files.get({
+            fileId,
+            fields: "embedLink",
+        });
+
+        if (file.status !== 200) {
+            throw error;
+        }
+
+        return file;
+    } catch (error) {
+        throw error;
+    }
+};
+
+module.exports = { uploadDrive, downloadDrive, embedLinkDrive };

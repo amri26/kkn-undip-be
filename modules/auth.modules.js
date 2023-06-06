@@ -88,6 +88,7 @@ class _auth {
     getUser = async (id_user, role) => {
         try {
             let get = {};
+            let tema;
             switch (role) {
                 case Role.ADMIN:
                     get = await prisma.admin.findUnique({
@@ -116,6 +117,33 @@ class _auth {
                             id_user,
                         },
                     });
+
+                    tema = await prisma.proposal.findMany({
+                        where: {
+                            id_dosen: get.id_dosen,
+                        },
+                        select: {
+                            kecamatan: {
+                                select: {
+                                    kabupaten: {
+                                        select: {
+                                            tema: {
+                                                select: {
+                                                    id_tema: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    });
+
+                    get = {
+                        ...get,
+                        id_tema: tema?.kecamatan.kabupaten.tema.id_tema,
+                    };
+
                     break;
                 case Role.MAHASISWA:
                     get = await prisma.mahasiswa.findUnique({
@@ -124,7 +152,7 @@ class _auth {
                         },
                     });
 
-                    const tema = await prisma.mahasiswa_kecamatan_active.findUnique({
+                    tema = await prisma.mahasiswa_kecamatan_active.findUnique({
                         where: {
                             id_mahasiswa: get.id_mahasiswa,
                         },

@@ -26,6 +26,23 @@ class _mahasiswa {
                 where: {
                     status: 0,
                 },
+                include: {
+                    mahasiswa_kecamatan: {
+                        include: {
+                            gelombang: true,
+                            kecamatan: {
+                                select: {
+                                    kabupaten: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
+                },
             });
 
             return {
@@ -48,6 +65,23 @@ class _mahasiswa {
                 where: {
                     status: 1,
                 },
+                include: {
+                    mahasiswa_kecamatan: {
+                        include: {
+                            gelombang: true,
+                            kecamatan: {
+                                select: {
+                                    kabupaten: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
+                },
             });
 
             return {
@@ -69,6 +103,23 @@ class _mahasiswa {
             const list = await prisma.mahasiswa.findMany({
                 where: {
                     status: 2,
+                },
+                include: {
+                    mahasiswa_kecamatan: {
+                        include: {
+                            gelombang: true,
+                            kecamatan: {
+                                select: {
+                                    kabupaten: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
                 },
             });
 
@@ -107,7 +158,36 @@ class _mahasiswa {
                     id_kecamatan,
                 },
                 include: {
-                    mahasiswa: true,
+                    kecamatan: {
+                        select: {
+                            nama: true,
+                            kabupaten: {
+                                select: {
+                                    nama: true,
+                                    tema: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    mahasiswa: {
+                        include: {
+                            prodi: {
+                                select: {
+                                    nama: true,
+                                    fakultas: {
+                                        select: {
+                                            nama: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    gelombang: true,
                 },
             });
 
@@ -147,6 +227,7 @@ class _mahasiswa {
                 },
                 include: {
                     mahasiswa: true,
+                    kecamatan: true,
                 },
             });
 
@@ -293,6 +374,92 @@ class _mahasiswa {
         }
     };
 
+    listLaporan = async (id_user, type) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_user);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            if (!checkMahasiswa) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            let list = [];
+            if (type === "lrk") {
+                list = await prisma.laporan.findMany({
+                    where: {
+                        id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    },
+                    select: {
+                        id_laporan: true,
+                        id_mahasiswa: true,
+                        potensi: true,
+                        program: true,
+                        sasaran: true,
+                        metode: true,
+                        luaran: true,
+                        created_at: true,
+                    },
+                });
+            } else {
+                list = await prisma.laporan.findMany({
+                    where: {
+                        id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    },
+                });
+            }
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listLaporan module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addLRK = async (id_user, body) => {
         try {
             body = {
@@ -362,6 +529,87 @@ class _mahasiswa {
             };
         } catch (error) {
             console.error("addLRK module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    editLRK = async (id_user, body) => {
+        try {
+            body = {
+                id_user,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_tema: Joi.number().required(),
+                id_laporan: Joi.number().required(),
+                potensi: Joi.string().required(),
+                program: Joi.string().required(),
+                sasaran: Joi.string().required(),
+                metode: Joi.string().required(),
+                luaran: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.laporan.update({
+                where: {
+                    id_laporan: body.id_laporan,
+                },
+                data: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    potensi: body.potensi,
+                    program: body.program,
+                    sasaran: body.sasaran,
+                    metode: body.metode,
+                    luaran: body.luaran,
+                },
+            });
+
+            return {
+                status: true,
+                code: 201,
+            };
+        } catch (error) {
+            console.error("editLRK module error ", error);
 
             return {
                 status: false,

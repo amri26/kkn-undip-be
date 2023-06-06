@@ -27,6 +27,7 @@ class _proposal {
                     },
                 },
                 include: {
+                    dosen: true,
                     kecamatan: {
                         select: {
                             nama: true,
@@ -37,6 +38,7 @@ class _proposal {
                                             periode: true,
                                         },
                                     },
+                                    nama: true,
                                 },
                             },
                         },
@@ -55,6 +57,67 @@ class _proposal {
             };
         } catch (error) {
             console.error("listProposal module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    getProposal = async (id_proposal) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_proposal);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const proposal = await prisma.proposal.findUnique({
+                where: {
+                    id_proposal,
+                },
+                include: {
+                    dokumen: true,
+                    dosen: true,
+                    kecamatan: {
+                        select: {
+                            nama: true,
+                            kabupaten: {
+                                select: {
+                                    tema: {
+                                        select: {
+                                            periode: true,
+                                            nama: true,
+                                        },
+                                    },
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
+                    gelombang: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                },
+            });
+
+            return {
+                status: true,
+                data: proposal,
+            };
+        } catch (error) {
+            console.error("getProposal module error ", error);
 
             return {
                 status: false,
