@@ -39,9 +39,17 @@ app.patch(
   }
 );
 
-app.get("/halaman", userSession, verifyAdmin, async (req, res, next) => {
-  response.sendResponse(res, await modules.listHalaman());
-});
+app.get(
+  "/halaman/:id_tema",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.listHalaman(Number(req.params.id_tema))
+    );
+  }
+);
 
 app.post("/halaman", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addHalaman(req.body));

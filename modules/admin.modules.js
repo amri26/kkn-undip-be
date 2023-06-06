@@ -160,9 +160,33 @@ class _admin {
     }
   };
 
-  listHalaman = async () => {
+  listHalaman = async (id_tema) => {
     try {
-      const list = await prisma.halaman.findMany();
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.tema_halaman.findMany({
+        where: {
+          id_tema,
+        },
+        include: {
+          halaman: true,
+          tema: true,
+        },
+      });
 
       return {
         status: true,
@@ -218,11 +242,11 @@ class _admin {
     }
   };
 
-  switchHalaman = async (id_halaman) => {
+  switchHalaman = async (id_tema_halaman) => {
     try {
       const schema = Joi.number().required();
 
-      const validation = schema.validate(id_halaman);
+      const validation = schema.validate(id_tema_halaman);
 
       if (validation.error) {
         const errorDetails = validation.error.details.map(
@@ -236,9 +260,9 @@ class _admin {
         };
       }
 
-      const check = await prisma.halaman.findUnique({
+      const check = await prisma.tema_halaman.findUnique({
         where: {
-          id_halaman,
+          id_tema_halaman,
         },
         select: {
           status: true,
@@ -253,9 +277,9 @@ class _admin {
         };
       }
 
-      await prisma.halaman.update({
+      await prisma.tema_halaman.update({
         where: {
-          id_halaman,
+          id_tema_halaman,
         },
         data: {
           status: !check.status,
