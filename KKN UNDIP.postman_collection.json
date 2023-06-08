@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2305,6 +2305,34 @@
 					"response": []
 				},
 				{
+					"name": "LIST LRK MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/lrk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lrk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD LRK",
 					"event": [
 						{
@@ -2489,6 +2517,34 @@
 							"path": [
 								"mahasiswa",
 								"lpk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"reportase"
 							]
 						}
 					},
@@ -3153,6 +3209,72 @@
 								{
 									"key": "id_laporan",
 									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REPORTASE",
+			"item": [
+				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase/:id_reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase",
+								":id_reportase"
+							],
+							"variable": [
+								{
+									"key": "id_reportase",
+									"value": "1"
 								}
 							]
 						}

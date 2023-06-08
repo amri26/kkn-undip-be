@@ -11,6 +11,7 @@ const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 const GelombangController = require("./controllers/GelombangController");
 const LaporanController = require("./controllers/LaporanController");
+const ReportaseController = require("./controllers/ReportaseController");
 const FakultasController = require("./controllers/FakultasController");
 const TestController = require("./controllers/TestController");
 
@@ -28,6 +29,7 @@ const _routes = [
   ["/dokumen", DokumenController],
   ["/gelombang", GelombangController],
   ["/laporan", LaporanController],
+  ["/reportase", ReportaseController],
   ["/fakultas", FakultasController],
   ["/test", TestController],
 ];
