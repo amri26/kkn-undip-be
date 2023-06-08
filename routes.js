@@ -11,30 +11,32 @@ const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 const GelombangController = require("./controllers/GelombangController");
 const LaporanController = require("./controllers/LaporanController");
+const FakultasController = require("./controllers/FakultasController");
 const TestController = require("./controllers/TestController");
 
 const _routes = [
-    ["/auth", AuthController],
-    ["/superadmin", SuperAdminController],
-    ["/admin", AdminController],
-    ["/dosen", DosenController],
-    ["/proposal", ProposalController],
-    ["/bappeda", BappedaController],
-    ["/wilayah", WilayahController],
-    ["/mahasiswa", MahasiswaController],
-    ["/reviewer", ReviewerController],
-    ["/tema", TemaController],
-    ["/dokumen", DokumenController],
-    ["/gelombang", GelombangController],
-    ["/laporan", LaporanController],
-    ["/test", TestController],
+  ["/auth", AuthController],
+  ["/superadmin", SuperAdminController],
+  ["/admin", AdminController],
+  ["/dosen", DosenController],
+  ["/proposal", ProposalController],
+  ["/bappeda", BappedaController],
+  ["/wilayah", WilayahController],
+  ["/mahasiswa", MahasiswaController],
+  ["/reviewer", ReviewerController],
+  ["/tema", TemaController],
+  ["/dokumen", DokumenController],
+  ["/gelombang", GelombangController],
+  ["/laporan", LaporanController],
+  ["/fakultas", FakultasController],
+  ["/test", TestController],
 ];
 
 const routes = (app) => {
-    _routes.forEach((route) => {
-        const [url, controller] = route;
-        app.use(`${url}`, controller);
-    });
+  _routes.forEach((route) => {
+    const [url, controller] = route;
+    app.use(`${url}`, controller);
+  });
 };
 
 module.exports = routes;
