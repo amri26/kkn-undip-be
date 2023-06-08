@@ -736,6 +736,53 @@ class _mahasiswa {
     }
   };
 
+  listReportase = async (id_user) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_user);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const checkMahasiswa = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_mahasiswa: true,
+        },
+      });
+
+      const list = await prisma.reportase.findMany({
+        where: {
+          id_mahasiswa: checkMahasiswa.id_mahasiswa,
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listReportase module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addReportase = async (id_user, body) => {
     try {
       body = {
