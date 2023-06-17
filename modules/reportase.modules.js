@@ -105,9 +105,55 @@ class _reportase {
           id_reportase,
         },
         include: {
-          mahasiswa: true,
+          mahasiswa: {
+            select: {
+              nama: true,
+              nim: true,
+              prodi: {
+                select: {
+                  nama: true,
+                  fakultas: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+              mahasiswa_kecamatan_active: {
+                select: {
+                  kecamatan: {
+                    select: {
+                      nama: true,
+                      kabupaten: {
+                        select: {
+                          nama: true,
+                          tema: {
+                            select: {
+                              nama: true,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
+
+      reportase.tema =
+        reportase.mahasiswa.mahasiswa_kecamatan_active.kecamatan.kabupaten.tema.nama;
+      reportase.kabupaten =
+        reportase.mahasiswa.mahasiswa_kecamatan_active.kecamatan.kabupaten.nama;
+      reportase.kecamatan =
+        reportase.mahasiswa.mahasiswa_kecamatan_active.kecamatan.nama;
+      reportase.fakultas = reportase.mahasiswa.prodi.fakultas.nama;
+      reportase.prodi = reportase.mahasiswa.prodi.nama;
+
+      delete reportase.mahasiswa.mahasiswa_kecamatan_active;
+      delete reportase.mahasiswa.prodi;
 
       return {
         status: true,
