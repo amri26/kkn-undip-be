@@ -856,6 +856,84 @@ class _mahasiswa {
       };
     }
   };
+
+  editReportase = async (id_user, id_reportase, body) => {
+    try {
+      body = {
+        id_user,
+        id_reportase,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_reportase: Joi.number().required(),
+        id_tema: Joi.number().required(),
+        judul: Joi.string().required(),
+        isi: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const checkMahasiswa = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_mahasiswa: true,
+        },
+      });
+
+      const checkMahasiswaKecamatan =
+        await prisma.mahasiswa_kecamatan_active.findUnique({
+          where: {
+            id_mahasiswa: checkMahasiswa.id_mahasiswa,
+          },
+        });
+
+      if (!checkMahasiswaKecamatan) {
+        return {
+          status: false,
+          code: 403,
+          error: "Forbidden",
+        };
+      }
+
+      await prisma.reportase.update({
+        where: {
+          id_reportase: body.id_reportase,
+        },
+        data: {
+          judul: body.judul,
+          isi: body.isi,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editReportase module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _mahasiswa();

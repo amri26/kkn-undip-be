@@ -133,4 +133,29 @@ app.post("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
   }
 });
 
+app.put(
+  "/reportase/:id_reportase",
+  userSession,
+  verifyMahasiswa,
+  async (req, res, next) => {
+    const check = await isActive(
+      req.body.id_tema,
+      Number(process.env.MAHASISWA_REPORTASE)
+    );
+
+    if (!check.status) {
+      response.sendResponse(res, check);
+    } else {
+      response.sendResponse(
+        res,
+        await modules.editReportase(
+          req.user.id,
+          Number(req.params.id_reportase),
+          req.body
+        )
+      );
+    }
+  }
+);
+
 module.exports = app;
