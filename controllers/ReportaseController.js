@@ -9,6 +9,13 @@ app.get("/", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listReportase());
 });
 
+app.get("/kecamatan/:id_kecamatan", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listReportaseKecamatan(Number(req.params.id_kecamatan))
+  );
+});
+
 app.get("/:id_reportase", userSession, async (req, res, next) => {
   response.sendResponse(
     res,

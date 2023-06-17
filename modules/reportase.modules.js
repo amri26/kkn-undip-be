@@ -24,6 +24,64 @@ class _reportase {
     }
   };
 
+  listReportaseKecamatan = async (id_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const listReportase = await prisma.reportase.findMany({
+        where: {
+          mahasiswa: {
+            mahasiswa_kecamatan_active: {
+              id_kecamatan,
+            },
+          },
+        },
+        include: {
+          mahasiswa: {
+            include: {
+              prodi: {
+                select: {
+                  nama: true,
+                  fakultas: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: listReportase,
+      };
+    } catch (error) {
+      console.error("listReportaseKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   getReportase = async (id_reportase) => {
     try {
       const schema = Joi.number().required();
