@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"909\",\r\n    \"password\": \"909\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1842,6 +1842,11 @@
 									"key": "id_gelombang",
 									"value": "1",
 									"type": "default"
+								},
+								{
+									"key": "id_tema",
+									"value": "2",
+									"type": "text"
 								}
 							]
 						},

@@ -5,6 +5,7 @@ const {
   userSession,
   verifyAdmin,
   verifyDosen,
+  isActive,
 } = require("../helpers/middleware");
 const multer = require("multer");
 const upload = multer();
@@ -52,10 +53,19 @@ app.post(
   verifyDosen,
   upload.single("file"),
   async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.addProposal(req.file, req.user.id, req.body)
+    const check = await isActive(
+      Number(req.body.id_tema),
+      Number(process.env.DOSEN_PROPOSAL)
     );
+
+    if (!check.status) {
+      response.sendResponse(res, check);
+    } else {
+      response.sendResponse(
+        res,
+        await modules.addProposal(req.file, req.user.id, req.body)
+      );
+    }
   }
 );
 

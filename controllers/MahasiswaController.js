@@ -50,7 +50,7 @@ app.post(
   verifyMahasiswa,
   async (req, res, next) => {
     const check = await isActive(
-      req.body.id_tema,
+      Number(req.body.id_tema),
       Number(process.env.MAHASISWA_DAFTAR_LOKASI)
     );
 
