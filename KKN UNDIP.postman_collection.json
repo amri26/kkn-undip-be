@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -287,6 +287,76 @@
 							"path": [
 								"admin",
 								"tema"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT TEMA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Tim I 2023\",\r\n    \"periode\": \"2022/2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tema/edit/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema",
+								"edit",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -2007,6 +2077,41 @@
 					"response": []
 				},
 				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/reportase/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"reportase",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "EVALUATE REPORTASE",
 					"event": [
 						{
@@ -2611,6 +2716,75 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "EDIT REPORTASE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/reportase/:id_reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"reportase",
+								":id_reportase"
+							],
+							"variable": [
+								{
+									"key": "id_reportase",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2953,6 +3127,40 @@
 					"response": []
 				},
 				{
+					"name": "GET TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST TEMA DOSEN",
 					"request": {
 						"auth": {
@@ -2975,6 +3183,50 @@
 							"path": [
 								"tema",
 								"dosen"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HALAMAN",
+			"item": [
+				{
+					"name": "CEK HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/halaman/:id_tema/:id_halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"halaman",
+								":id_tema",
+								":id_halaman"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
+								{
+									"key": "id_halaman",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -3248,6 +3500,41 @@
 					"response": []
 				},
 				{
+					"name": "LIST REPORTASE KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GET REPORTASE",
 					"request": {
 						"auth": {
@@ -3276,6 +3563,38 @@
 									"key": "id_reportase",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "KORWIL",
+			"item": [
+				{
+					"name": "LIST KORWIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"korwil"
 							]
 						}
 					},
