@@ -116,6 +116,74 @@ class _admin {
     }
   };
 
+  editTema = async (id_tema, body) => {
+    try {
+      body = {
+        id_tema,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_tema: Joi.number().required(),
+        nama: Joi.string().required(),
+        periode: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.tema.update({
+        where: {
+          id_tema,
+        },
+        data: {
+          nama: body.nama,
+          periode: body.periode,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   switchTema = async (id_tema) => {
     try {
       const schema = Joi.number().required();

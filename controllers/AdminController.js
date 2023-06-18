@@ -27,6 +27,18 @@ app.post("/tema", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addTema(req.body));
 });
 
+app.put(
+  "/tema/edit/:id_tema",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editTema(Number(req.params.id_tema), req.body)
+    );
+  }
+);
+
 app.patch(
   "/tema/:id_tema",
   userSession,
