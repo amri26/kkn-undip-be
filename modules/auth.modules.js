@@ -146,7 +146,7 @@ class _auth {
 
           get = {
             ...get,
-            id_tema: tema?.kecamatan?.kabupaten?.tema?.id_tema,
+            id_tema: tema.map((item) => item.kecamatan.kabupaten.tema.id_tema),
           };
 
           break;
