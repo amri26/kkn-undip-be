@@ -453,6 +453,7 @@ class _mahasiswa {
           select: {
             id_laporan: true,
             id_mahasiswa: true,
+            kategori: true,
             potensi: true,
             program: true,
             sasaran: true,
