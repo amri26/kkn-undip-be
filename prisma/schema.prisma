@@ -21,6 +21,9 @@ model tema {
   nama         String         @db.VarChar(50)
   periode      String         @db.VarChar(50)
   jenis        Int            @db.TinyInt
+  kab          String?        @db.VarChar(50)
+  kec          String?        @db.VarChar(50)
+  desa         String?        @db.VarChar(50)
   status       Boolean        @default(false)
   kabupaten    kabupaten[]
   tema_halaman tema_halaman[]
@@ -46,6 +49,8 @@ model gelombang {
   id_gelombang        Int                   @id @default(autoincrement())
   id_tema_halaman     Int?
   nama                String                @db.VarChar(50)
+  tgl_mulai           DateTime?             @db.Timestamp(0)
+  tgl_akhir           DateTime?             @db.Timestamp(0)
   status              Boolean               @default(false)
   tema_halaman        tema_halaman?         @relation(fields: [id_tema_halaman], references: [id_tema_halaman], onDelete: Cascade, onUpdate: Cascade)
   proposal            proposal[]
