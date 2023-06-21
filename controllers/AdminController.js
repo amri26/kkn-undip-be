@@ -91,9 +91,33 @@ app.get(
   }
 );
 
+app.get(
+  "/gelombang/detail/:id_gelombang",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.getGelombang(Number(req.params.id_gelombang))
+    );
+  }
+);
+
 app.post("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addGelombang(req.body));
 });
+
+app.put(
+  "/gelombang/edit/:id_gelombang",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editGelombang(Number(req.params.id_gelombang), req.body)
+    );
+  }
+);
 
 app.patch(
   "/gelombang/:id_gelombang",

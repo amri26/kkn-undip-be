@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"909\",\r\n    \"password\": \"909\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -591,6 +591,42 @@
 					"response": []
 				},
 				{
+					"name": "GET GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang/detail/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								"detail",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD GELOMBANG",
 					"event": [
 						{
@@ -647,6 +683,76 @@
 							"path": [
 								"admin",
 								"gelombang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT GELOMBANG",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema_halaman\": 2,\r\n    \"nama\": \"Gelombang 2 Mahasiswa\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"status\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/gelombang/edit/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								"edit",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "2"
+								}
 							]
 						}
 					},
