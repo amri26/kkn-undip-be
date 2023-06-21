@@ -459,6 +459,7 @@ class _mahasiswa {
             sasaran: true,
             metode: true,
             luaran: true,
+            komentar: true,
             created_at: true,
           },
         });
