@@ -64,6 +64,9 @@ class _admin {
         nama: Joi.string().required(),
         periode: Joi.string().required(),
         jenis: Joi.number().required(),
+        kab: Joi.string().allow(null, ""),
+        kec: Joi.string().allow(null, ""),
+        desa: Joi.string().allow(null, ""),
       });
 
       const validation = schema.validate(body);
@@ -85,6 +88,9 @@ class _admin {
           nama: body.nama,
           periode: body.periode,
           jenis: body.jenis,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
         },
         select: {
           id_tema: true,
@@ -127,6 +133,9 @@ class _admin {
         id_tema: Joi.number().required(),
         nama: Joi.string().required(),
         periode: Joi.string().required(),
+        kab: Joi.string().allow(null),
+        kec: Joi.string().allow(null),
+        desa: Joi.string().allow(null),
       });
 
       const validation = schema.validate(body);
@@ -167,6 +176,9 @@ class _admin {
         data: {
           nama: body.nama,
           periode: body.periode,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
         },
       });
 
