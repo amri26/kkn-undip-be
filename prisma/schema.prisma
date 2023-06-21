@@ -260,6 +260,7 @@ model nilai {
 model laporan {
   id_laporan   Int       @id @default(autoincrement())
   id_mahasiswa Int
+  kategori     Int       @db.TinyInt
   potensi      String    @db.Text
   program      String    @db.Text
   sasaran      String    @db.Text
@@ -277,6 +278,7 @@ model laporan {
 model reportase {
   id_reportase Int       @id @default(autoincrement())
   id_mahasiswa Int
+  kategori     Int       @db.TinyInt
   judul        String    @db.VarChar(100)
   isi          String    @db.Text
   komentar     String?   @db.Text
