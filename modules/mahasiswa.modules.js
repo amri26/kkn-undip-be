@@ -936,6 +936,74 @@ class _mahasiswa {
       };
     }
   };
+
+  getKecamatanMahasiswa = async (id_user) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_user);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const checkMahasiswa = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_mahasiswa: true,
+        },
+      });
+
+      const checkMahasiswaKecamatan =
+        await prisma.mahasiswa_kecamatan_active.findUnique({
+          where: {
+            id_mahasiswa: checkMahasiswa.id_mahasiswa,
+          },
+          select: {
+            id_kecamatan: true,
+          },
+        });
+
+      const kecamatan = await prisma.kecamatan.findUnique({
+        where: {
+          id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
+        },
+        include: {
+          proposal: {
+            select: {
+              dosen: true,
+            },
+          },
+        },
+      });
+
+      kecamatan.dosen = kecamatan.proposal.map((item) => item.dosen);
+
+      delete kecamatan.proposal;
+
+      return {
+        status: true,
+        data: kecamatan,
+      };
+    } catch (error) {
+      console.error("getKecamatanMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _mahasiswa();

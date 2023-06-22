@@ -158,4 +158,8 @@ app.put(
   }
 );
 
+app.get("/kecamatan", userSession, verifyMahasiswa, async (req, res, next) => {
+  response.sendResponse(res, await modules.getKecamatanMahasiswa(req.user.id));
+});
+
 module.exports = app;

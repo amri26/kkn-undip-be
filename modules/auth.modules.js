@@ -166,11 +166,7 @@ class _auth {
                 select: {
                   kabupaten: {
                     select: {
-                      tema: {
-                        select: {
-                          id_tema: true,
-                        },
-                      },
+                      tema: true,
                     },
                   },
                 },
@@ -181,6 +177,7 @@ class _auth {
           get = {
             ...get,
             id_tema: tema?.kecamatan.kabupaten.tema.id_tema,
+            tema: tema?.kecamatan.kabupaten.tema,
           };
 
           break;

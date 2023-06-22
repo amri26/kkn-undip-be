@@ -2896,6 +2896,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET KECAMATAN MAHASISWA",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
