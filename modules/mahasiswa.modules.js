@@ -979,6 +979,34 @@ class _mahasiswa {
           id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
         },
         include: {
+          mahasiswa_kecamatan_active: {
+            select: {
+              mahasiswa: {
+                include: {
+                  prodi: {
+                    select: {
+                      nama: true,
+                      fakultas: {
+                        select: {
+                          nama: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          kabupaten: {
+            select: {
+              nama: true,
+            },
+          },
+          desa: {
+            select: {
+              nama: true,
+            },
+          },
           proposal: {
             select: {
               dosen: true,
@@ -987,8 +1015,16 @@ class _mahasiswa {
         },
       });
 
+      kecamatan.kabupaten = kecamatan.kabupaten.nama;
+      kecamatan.desa = kecamatan.desa.map((item) => item.nama);
       kecamatan.dosen = kecamatan.proposal.map((item) => item.dosen);
+      kecamatan.mahasiswa = kecamatan.mahasiswa_kecamatan_active.map((item) => {
+        item.mahasiswa.fakultas = item.mahasiswa.prodi.fakultas.nama;
+        item.mahasiswa.prodi = item.mahasiswa.prodi.nama;
+        return item.mahasiswa;
+      });
 
+      delete kecamatan.mahasiswa_kecamatan_active;
       delete kecamatan.proposal;
 
       return {

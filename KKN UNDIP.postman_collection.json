@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"dosen a\",\r\n    \"password\": \"dosen a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2900,8 +2900,28 @@
 				{
 					"name": "GET KECAMATAN MAHASISWA",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"kecamatan"
+							]
+						}
 					},
 					"response": []
 				}
