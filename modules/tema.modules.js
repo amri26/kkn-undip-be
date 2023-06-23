@@ -24,12 +24,77 @@ class _tema {
         },
       });
 
+      list.forEach((item) => {
+        item.total_kabupaten = item.kabupaten.length;
+        item.total_kecamatan = 0;
+        item.total_desa = 0;
+        item.kabupaten.forEach((kab) => {
+          item.total_kecamatan += kab.kecamatan.length;
+
+          kab.kecamatan.forEach((kec) => {
+            item.total_desa += kec.desa.length;
+          });
+        });
+      });
+
       return {
         status: true,
         data: list,
       };
     } catch (error) {
       console.error("listTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  listTemaActive = async () => {
+    try {
+      const list = await prisma.tema.findMany({
+        where: {
+          status: true,
+        },
+        include: {
+          kabupaten: {
+            select: {
+              nama: true,
+              kecamatan: {
+                select: {
+                  nama: true,
+                  desa: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      list.forEach((item) => {
+        item.total_kabupaten = item.kabupaten.length;
+        item.total_kecamatan = 0;
+        item.total_desa = 0;
+        item.kabupaten.forEach((kab) => {
+          item.total_kecamatan += kab.kecamatan.length;
+
+          kab.kecamatan.forEach((kec) => {
+            item.total_desa += kec.desa.length;
+          });
+        });
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listTemaActive module error ", error);
 
       return {
         status: false,

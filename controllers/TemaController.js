@@ -9,6 +9,10 @@ app.get("/", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listTema());
 });
 
+app.get("/aktif", userSession, async (req, res, next) => {
+  response.sendResponse(res, await modules.listTemaActive());
+});
+
 app.get("/dosen", userSession, verifyDosen, async (req, res, next) => {
   response.sendResponse(res, await modules.listTemaDosen(req.user.id));
 });
