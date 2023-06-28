@@ -10,7 +10,11 @@ const ReviewerController = require("./controllers/ReviewerController");
 const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 const GelombangController = require("./controllers/GelombangController");
+const HalamanController = require("./controllers/HalamanController");
 const LaporanController = require("./controllers/LaporanController");
+const ReportaseController = require("./controllers/ReportaseController");
+const KorwilController = require("./controllers/KorwilController");
+const FakultasController = require("./controllers/FakultasController");
 const TestController = require("./controllers/TestController");
 
 const _routes = [
@@ -26,7 +30,11 @@ const _routes = [
     ["/tema", TemaController],
     ["/dokumen", DokumenController],
     ["/gelombang", GelombangController],
+    ["/halaman", HalamanController],
     ["/laporan", LaporanController],
+    ["/reportase", ReportaseController],
+    ["/korwil", KorwilController],
+    ["/fakultas", FakultasController],
     ["/test", TestController],
 ];
 

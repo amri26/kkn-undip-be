@@ -212,6 +212,8 @@ const isActive = async (id_tema, id_halaman) => {
             data: check,
         };
     } catch (error) {
+        console.error("isActive module error ", error);
+
         return {
             status: false,
             error,

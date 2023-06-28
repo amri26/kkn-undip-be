@@ -39,6 +39,10 @@ app.put("/laporan", userSession, verifyDosen, async (req, res, next) => {
     response.sendResponse(res, await modules.evaluateLaporan(req.user.id, req.body));
 });
 
+app.get("/reportase/:id_kecamatan", userSession, verifyDosen, async (req, res, next) => {
+    response.sendResponse(res, await modules.listReportase(req.user.id, Number(req.params.id_kecamatan)));
+});
+
 app.put("/reportase", userSession, verifyDosen, async (req, res, next) => {
     response.sendResponse(res, await modules.evaluateReportase(req.user.id, req.body));
 });

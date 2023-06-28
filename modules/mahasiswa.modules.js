@@ -4,7 +4,20 @@ const Joi = require("joi");
 class _mahasiswa {
     listMahasiswa = async () => {
         try {
-            const list = await prisma.mahasiswa.findMany();
+            const list = await prisma.mahasiswa.findMany({
+                include: {
+                    prodi: {
+                        select: {
+                            nama: true,
+                            fakultas: {
+                                select: {
+                                    nama: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
 
             return {
                 status: true,
@@ -430,11 +443,13 @@ class _mahasiswa {
                     select: {
                         id_laporan: true,
                         id_mahasiswa: true,
+                        kategori: true,
                         potensi: true,
                         program: true,
                         sasaran: true,
                         metode: true,
                         luaran: true,
+                        komentar: true,
                         created_at: true,
                     },
                 });
@@ -470,6 +485,7 @@ class _mahasiswa {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_tema: Joi.number().required(),
+                kategori: Joi.number().required(),
                 potensi: Joi.string().required(),
                 program: Joi.string().required(),
                 sasaran: Joi.string().required(),
@@ -515,6 +531,7 @@ class _mahasiswa {
             await prisma.laporan.create({
                 data: {
                     id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    kategori: body.kategori,
                     potensi: body.potensi,
                     program: body.program,
                     sasaran: body.sasaran,
@@ -704,6 +721,51 @@ class _mahasiswa {
         }
     };
 
+    listReportase = async (id_user) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_user);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const list = await prisma.reportase.findMany({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            return {
+                status: true,
+                data: list,
+            };
+        } catch (error) {
+            console.error("listReportase module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addReportase = async (id_user, body) => {
         try {
             body = {
@@ -714,6 +776,7 @@ class _mahasiswa {
             const schema = Joi.object({
                 id_user: Joi.number().required(),
                 id_tema: Joi.number().required(),
+                kategori: Joi.number().required(),
                 judul: Joi.string().required(),
                 isi: Joi.string().required(),
             });
@@ -756,6 +819,7 @@ class _mahasiswa {
             await prisma.reportase.create({
                 data: {
                     id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                    kategori: body.kategori,
                     judul: body.judul,
                     isi: body.isi,
                 },
@@ -767,6 +831,182 @@ class _mahasiswa {
             };
         } catch (error) {
             console.error("addReportase module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    editReportase = async (id_user, id_reportase, body) => {
+        try {
+            body = {
+                id_user,
+                id_reportase,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_user: Joi.number().required(),
+                id_reportase: Joi.number().required(),
+                id_tema: Joi.number().required(),
+                judul: Joi.string().required(),
+                isi: Joi.string().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+            });
+
+            if (!checkMahasiswaKecamatan) {
+                return {
+                    status: false,
+                    code: 403,
+                    error: "Forbidden",
+                };
+            }
+
+            await prisma.reportase.update({
+                where: {
+                    id_reportase: body.id_reportase,
+                },
+                data: {
+                    judul: body.judul,
+                    isi: body.isi,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("editReportase module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    getKecamatanMahasiswa = async (id_user) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_user);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const checkMahasiswa = await prisma.mahasiswa.findUnique({
+                where: {
+                    id_user,
+                },
+                select: {
+                    id_mahasiswa: true,
+                },
+            });
+
+            const checkMahasiswaKecamatan = await prisma.mahasiswa_kecamatan_active.findUnique({
+                where: {
+                    id_mahasiswa: checkMahasiswa.id_mahasiswa,
+                },
+                select: {
+                    id_kecamatan: true,
+                },
+            });
+
+            const kecamatan = await prisma.kecamatan.findUnique({
+                where: {
+                    id_kecamatan: checkMahasiswaKecamatan.id_kecamatan,
+                },
+                include: {
+                    mahasiswa_kecamatan_active: {
+                        select: {
+                            mahasiswa: {
+                                include: {
+                                    prodi: {
+                                        select: {
+                                            nama: true,
+                                            fakultas: {
+                                                select: {
+                                                    nama: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    kabupaten: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                    desa: {
+                        select: {
+                            nama: true,
+                        },
+                    },
+                    proposal: {
+                        select: {
+                            dosen: true,
+                        },
+                    },
+                },
+            });
+
+            kecamatan.kabupaten = kecamatan.kabupaten.nama;
+            kecamatan.desa = kecamatan.desa.map((item) => item.nama);
+            kecamatan.dosen = kecamatan.proposal.map((item) => item.dosen);
+            kecamatan.mahasiswa = kecamatan.mahasiswa_kecamatan_active.map((item) => {
+                item.mahasiswa.fakultas = item.mahasiswa.prodi.fakultas.nama;
+                item.mahasiswa.prodi = item.mahasiswa.prodi.nama;
+                return item.mahasiswa;
+            });
+
+            delete kecamatan.mahasiswa_kecamatan_active;
+            delete kecamatan.proposal;
+
+            return {
+                status: true,
+                data: kecamatan,
+            };
+        } catch (error) {
+            console.error("getKecamatanMahasiswa module error ", error);
 
             return {
                 status: false,

@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4272ff12-4523-4cb8-923d-9378e0b560c5",
+		"_postman_id": "aca4c37b-35cf-4715-9c2b-bb936951e11a",
 		"name": "KKN UNDIP",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18808497"
 	},
 	"item": [
 		{
@@ -56,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -292,6 +293,76 @@
 					"response": []
 				},
 				{
+					"name": "EDIT TEMA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Tim I 2023\",\r\n    \"periode\": \"2022/2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/tema/edit/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema",
+								"edit",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "SWITCH TEMA",
 					"event": [
 						{
@@ -520,6 +591,42 @@
 					"response": []
 				},
 				{
+					"name": "GET GELOMBANG",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang/detail/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								"detail",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD GELOMBANG",
 					"event": [
 						{
@@ -576,6 +683,76 @@
 							"path": [
 								"admin",
 								"gelombang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT GELOMBANG",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema_halaman\": 2,\r\n    \"nama\": \"Gelombang 2 Mahasiswa\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"status\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/gelombang/edit/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								"edit",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -705,12 +882,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/mahasiswa",
@@ -767,7 +939,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Mhs A\",\r\n    \"nim\": \"mhs a\",\r\n    \"prodi\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -836,12 +1008,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/dosen",
@@ -967,12 +1134,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/bappeda",
@@ -1098,12 +1260,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/korwil",
@@ -1229,12 +1386,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/reviewer",
@@ -1797,12 +1949,7 @@
 									"value": "1",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/dosen/proposal",
@@ -2030,6 +2177,41 @@
 							"path": [
 								"dosen",
 								"laporan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/reportase/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"reportase",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -2334,6 +2516,34 @@
 					"response": []
 				},
 				{
+					"name": "LIST LRK MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/lrk",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"lrk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD LRK",
 					"event": [
 						{
@@ -2524,6 +2734,34 @@
 					"response": []
 				},
 				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"reportase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD REPORTASE",
 					"event": [
 						{
@@ -2580,6 +2818,103 @@
 							"path": [
 								"mahasiswa",
 								"reportase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT REPORTASE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/mahasiswa/reportase/:id_reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"reportase",
+								":id_reportase"
+							],
+							"variable": [
+								{
+									"key": "id_reportase",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET KECAMATAN MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"kecamatan"
 							]
 						}
 					},
@@ -2926,6 +3261,40 @@
 					"response": []
 				},
 				{
+					"name": "GET TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST TEMA DOSEN",
 					"request": {
 						"auth": {
@@ -2948,6 +3317,50 @@
 							"path": [
 								"tema",
 								"dosen"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HALAMAN",
+			"item": [
+				{
+					"name": "CEK HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/halaman/:id_tema/:id_halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"halaman",
+								":id_tema",
+								":id_halaman"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								},
+								{
+									"key": "id_halaman",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -3183,6 +3596,171 @@
 									"key": "id_laporan",
 									"value": "4"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REPORTASE",
+			"item": [
+				{
+					"name": "LIST REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST REPORTASE KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase/:id_reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase",
+								":id_reportase"
+							],
+							"variable": [
+								{
+									"key": "id_reportase",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "KORWIL",
+			"item": [
+				{
+					"name": "LIST KORWIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"korwil"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FAKULTAS",
+			"item": [
+				{
+					"name": "LIST FAKULTAS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fakultas",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fakultas"
 							]
 						}
 					},
@@ -3863,12 +4441,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/bappeda",
@@ -3994,12 +4567,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/dosen",
@@ -4125,12 +4693,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/mahasiswa",
@@ -4256,12 +4819,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/reviewer",
@@ -4387,12 +4945,7 @@
 									"type": "file",
 									"src": "/C:/Users/ACER NITRO/Desktop/test.xlsx"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/admin/korwil",
@@ -5280,12 +5833,7 @@
 									"value": "1",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/dosen/proposal",
@@ -5417,7 +5965,7 @@
 								},
 								{
 									"key": "id_kecamatan",
-									"value": "2",
+									"value": "1",
 									"type": "default"
 								},
 								{
@@ -5425,12 +5973,7 @@
 									"value": "1",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/dosen/proposal",
@@ -5570,12 +6113,7 @@
 									"value": "1",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/dosen/proposal",

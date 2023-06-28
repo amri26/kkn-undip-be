@@ -9,9 +9,7 @@ class _wilayah {
             const validation = schema.validate(id_tema);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,
@@ -62,9 +60,7 @@ class _wilayah {
             const validation = schema.validate(body);
 
             if (validation.error) {
-                const errorDetails = validation.error.details.map(
-                    (detail) => detail.message
-                );
+                const errorDetails = validation.error.details.map((detail) => detail.message);
 
                 return {
                     status: false,

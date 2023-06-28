@@ -4,7 +4,28 @@ const Joi = require("joi");
 class _bappeda {
     listBappeda = async () => {
         try {
-            const list = await prisma.bappeda.findMany();
+            const list = await prisma.bappeda.findMany({
+                include: {
+                    kabupaten: {
+                        select: {
+                            _count: {
+                                select: {
+                                    kecamatan: true,
+                                },
+                            },
+                            kecamatan: {
+                                select: {
+                                    _count: {
+                                        select: {
+                                            desa: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            });
 
             return {
                 status: true,

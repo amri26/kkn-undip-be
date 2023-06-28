@@ -23,6 +23,10 @@ app.post("/tema", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addTema(req.body));
 });
 
+app.put("/tema/edit/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.editTema(Number(req.params.id_tema), req.body));
+});
+
 app.patch("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.switchTema(Number(req.params.id_tema)));
 });
@@ -43,8 +47,16 @@ app.get("/gelombang/:id_tema", userSession, verifyAdmin, async (req, res, next) 
     response.sendResponse(res, await modules.listGelombang(Number(req.params.id_tema)));
 });
 
+app.get("/gelombang/detail/:id_gelombang", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.getGelombang(Number(req.params.id_gelombang)));
+});
+
 app.post("/gelombang", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addGelombang(req.body));
+});
+
+app.put("/gelombang/edit/:id_gelombang", userSession, verifyAdmin, async (req, res, next) => {
+    response.sendResponse(res, await modules.editGelombang(Number(req.params.id_gelombang), req.body));
 });
 
 app.patch("/gelombang/:id_gelombang", userSession, verifyAdmin, async (req, res, next) => {
@@ -67,11 +79,11 @@ app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
     response.sendResponse(res, await modules.addDosenSingle(req.body));
 });
 
-app.post("/korwil", userSession, verifyAdmin, upload.single("file"), async (req, res, next) => {
+app.post("/korwil", userSession, upload.single("file"), async (req, res, next) => {
     response.sendResponse(res, await modules.addKorwil(req.file));
 });
 
-app.post("/korwil/single", userSession, verifyAdmin, async (req, res, next) => {
+app.post("/korwil/single", userSession, async (req, res, next) => {
     response.sendResponse(res, await modules.addKorwilSingle(req.body));
 });
 

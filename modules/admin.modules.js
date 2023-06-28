@@ -64,6 +64,9 @@ class _admin {
                 nama: Joi.string().required(),
                 periode: Joi.string().required(),
                 jenis: Joi.number().required(),
+                kab: Joi.string().allow(null, ""),
+                kec: Joi.string().allow(null, ""),
+                desa: Joi.string().allow(null, ""),
             });
 
             const validation = schema.validate(body);
@@ -83,6 +86,9 @@ class _admin {
                     nama: body.nama,
                     periode: body.periode,
                     jenis: body.jenis,
+                    kab: body.kab,
+                    kec: body.kec,
+                    desa: body.desa,
                 },
                 select: {
                     id_tema: true,
@@ -106,6 +112,78 @@ class _admin {
             };
         } catch (error) {
             console.error("addTema module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    editTema = async (id_tema, body) => {
+        try {
+            body = {
+                id_tema,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_tema: Joi.number().required(),
+                nama: Joi.string().required(),
+                periode: Joi.string().required(),
+                kab: Joi.string().allow(null),
+                kec: Joi.string().allow(null),
+                desa: Joi.string().allow(null),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const check = await prisma.tema.findUnique({
+                where: {
+                    id_tema,
+                },
+                select: {
+                    status: true,
+                },
+            });
+
+            if (!check) {
+                return {
+                    status: false,
+                    code: 404,
+                    error: "Data not found",
+                };
+            }
+
+            await prisma.tema.update({
+                where: {
+                    id_tema,
+                },
+                data: {
+                    nama: body.nama,
+                    periode: body.periode,
+                    kab: body.kab,
+                    kec: body.kec,
+                    desa: body.desa,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("editTema module error ", error);
 
             return {
                 status: false,
@@ -358,11 +436,49 @@ class _admin {
         }
     };
 
+    getGelombang = async (id_gelombang) => {
+        try {
+            const schema = Joi.number().required();
+
+            const validation = schema.validate(id_gelombang);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            const gelombang = await prisma.gelombang.findUnique({
+                where: {
+                    id_gelombang,
+                },
+            });
+
+            return {
+                status: true,
+                data: gelombang,
+            };
+        } catch (error) {
+            console.error("getGelombang module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
     addGelombang = async (body) => {
         try {
             const schema = Joi.object({
                 id_tema_halaman: Joi.number().required(),
                 nama: Joi.string().required(),
+                tgl_mulai: Joi.date().allow(null),
+                tgl_akhir: Joi.date().allow(null),
             });
 
             const validation = schema.validate(body);
@@ -381,6 +497,8 @@ class _admin {
                 data: {
                     id_tema_halaman: body.id_tema_halaman,
                     nama: body.nama,
+                    tgl_mulai: body.tgl_mulai ?? null,
+                    tgl_akhir: body.tgl_akhir ?? null,
                 },
             });
 
@@ -390,6 +508,61 @@ class _admin {
             };
         } catch (error) {
             console.error("addGelombang module error ", error);
+
+            return {
+                status: false,
+                error,
+            };
+        }
+    };
+
+    editGelombang = async (id_gelombang, body) => {
+        try {
+            body = {
+                id_gelombang,
+                ...body,
+            };
+
+            const schema = Joi.object({
+                id_gelombang: Joi.number().required(),
+                id_tema_halaman: Joi.number().required(),
+                nama: Joi.string().required(),
+                tgl_mulai: Joi.date().allow(null),
+                tgl_akhir: Joi.date().allow(null),
+                status: Joi.number().required(),
+            });
+
+            const validation = schema.validate(body);
+
+            if (validation.error) {
+                const errorDetails = validation.error.details.map((detail) => detail.message);
+
+                return {
+                    status: false,
+                    code: 422,
+                    error: errorDetails.join(", "),
+                };
+            }
+
+            await prisma.gelombang.update({
+                where: {
+                    id_gelombang,
+                },
+                data: {
+                    id_tema_halaman: body.id_tema_halaman,
+                    nama: body.nama,
+                    tgl_mulai: body.tgl_mulai ?? null,
+                    tgl_akhir: body.tgl_akhir ?? null,
+                    status: body.status ? true : false,
+                },
+            });
+
+            return {
+                status: true,
+                code: 204,
+            };
+        } catch (error) {
+            console.error("editGelombang module error ", error);
 
             return {
                 status: false,
@@ -542,6 +715,7 @@ class _admin {
             const schema = Joi.object({
                 nama: Joi.string().required(),
                 nim: Joi.string().required(),
+                prodi: Joi.number().required(),
             });
 
             const validation = schema.validate(body);
@@ -572,6 +746,7 @@ class _admin {
                     nama: body.nama,
                     nim: body.nim,
                     id_user: addUser.id_user,
+                    id_prodi: body.prodi,
                 },
             });
 
