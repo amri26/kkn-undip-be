@@ -30,7 +30,7 @@ app.get("/accepted/:id_kecamatan", userSession, async (req, res, next) => {
 });
 
 app.post("/daftar_lokasi", userSession, verifyMahasiswa, async (req, res, next) => {
-    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_DAFTAR_LOKASI));
+    const check = await isActive(Number(req.body.id_tema), Number(process.env.MAHASISWA_DAFTAR_LOKASI));
 
     if (!check.status) {
         response.sendResponse(res, check);
@@ -76,6 +76,10 @@ app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
     } else {
         response.sendResponse(res, await modules.addLPK(req.user.id, req.body));
     }
+});
+
+app.get("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
+    response.sendResponse(res, await modules.listReportase(req.user.id));
 });
 
 app.post("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
