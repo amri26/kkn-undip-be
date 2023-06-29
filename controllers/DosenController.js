@@ -47,4 +47,8 @@ app.put("/reportase", userSession, verifyDosen, async (req, res, next) => {
     response.sendResponse(res, await modules.evaluateReportase(req.user.id, req.body));
 });
 
+app.put("/nilai", userSession, verifyDosen, async (req, res, next) => {
+    response.sendResponse(res, await modules.editNilai(req.user.id, req.body));
+});
+
 module.exports = app;
