@@ -150,6 +150,18 @@ app.post(
   }
 );
 
+app.delete(
+  "/mahasiswa/:id_mahasiswa",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteMahasiswa(Number(req.params.id_mahasiswa))
+    );
+  }
+);
+
 app.post(
   "/dosen",
   userSession,
@@ -164,6 +176,18 @@ app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addDosenSingle(req.body));
 });
 
+app.delete(
+  "/dosen/:id_dosen",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteDosen(Number(req.params.id_dosen))
+    );
+  }
+);
+
 app.post(
   "/korwil",
   userSession,
@@ -176,6 +200,18 @@ app.post(
 app.post("/korwil/single", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.addKorwilSingle(req.body));
 });
+
+app.delete(
+  "/korwil/:id_korwil",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteKorwil(Number(req.params.id_korwil))
+    );
+  }
+);
 
 app.post(
   "/bappeda",
@@ -202,6 +238,18 @@ app.post(
   }
 );
 
+app.delete(
+  "/bappeda/:id_bappeda",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteBappeda(Number(req.params.id_bappeda))
+    );
+  }
+);
+
 app.post(
   "/reviewer",
   userSession,
@@ -221,6 +269,18 @@ app.post(
   }
 );
 
+app.delete(
+  "/reviewer/:id_reviewer",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteReviewer(Number(req.params.id_reviewer))
+    );
+  }
+);
+
 app.post(
   "/pimpinan",
   userSession,
@@ -237,6 +297,18 @@ app.post(
   verifyAdmin,
   async (req, res, next) => {
     response.sendResponse(res, await modules.addPimpinanSingle(req.body));
+  }
+);
+
+app.delete(
+  "/pimpinan/:id_pimpinan",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deletePimpinan(Number(req.params.id_pimpinan))
+    );
   }
 );
 

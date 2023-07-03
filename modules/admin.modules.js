@@ -798,6 +798,52 @@ class _admin {
     }
   };
 
+  deleteMahasiswa = async (id_mahasiswa) => {
+    try {
+      const checkMahasiswaRegistered =
+        await prisma.mahasiswa_kecamatan_active.findFirst({
+          where: {
+            id_mahasiswa,
+          },
+        });
+
+      if (checkMahasiswaRegistered) {
+        return {
+          status: false,
+          code: 403,
+          error: "Mahasiswa masih terdaftar di tema KKN",
+        };
+      }
+
+      const mahasiswa = await prisma.mahasiswa.delete({
+        where: {
+          id_mahasiswa,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: mahasiswa.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addDosen = async (file) => {
     try {
       const result = excelToJson({
@@ -945,6 +991,65 @@ class _admin {
     }
   };
 
+  deleteDosen = async (id_dosen) => {
+    try {
+      const checkDosenRegistered = await prisma.proposal.findFirst({
+        where: {
+          id_dosen,
+          status: 1,
+        },
+      });
+
+      if (checkDosenRegistered) {
+        return {
+          status: false,
+          code: 403,
+          error: "Dosen masih terdaftar di tema KKN",
+        };
+      }
+
+      const dosen = await prisma.dosen.delete({
+        where: {
+          id_dosen,
+        },
+        select: {
+          id_user: true,
+          proposal: {
+            select: {
+              id_dokumen: true,
+            },
+          },
+        },
+      });
+
+      dosen.proposal.forEach(async (proposal) => {
+        await prisma.dokumen.delete({
+          where: {
+            id_dokumen: proposal.id_dokumen,
+          },
+        });
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: dosen.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addKorwil = async (file) => {
     try {
       const result = excelToJson({
@@ -1045,6 +1150,28 @@ class _admin {
       }
 
       console.error("addKorwilSingle module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deleteKorwil = async (id_korwil) => {
+    try {
+      await prisma.korwil.delete({
+        where: {
+          id_korwil,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteKorwil module error ", error);
 
       return {
         status: false,
@@ -1232,6 +1359,54 @@ class _admin {
     }
   };
 
+  deleteBappeda = async (id_bappeda) => {
+    try {
+      const checkBappedaRegistered = await prisma.kecamatan.findFirst({
+        where: {
+          kabupaten: {
+            id_bappeda,
+          },
+          status: 1,
+        },
+      });
+
+      if (checkBappedaRegistered) {
+        return {
+          status: false,
+          code: 403,
+          error: "Bappeda masih mempunyai lokasi yang terdaftar",
+        };
+      }
+
+      const bappeda = await prisma.bappeda.delete({
+        where: {
+          id_bappeda,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: bappeda.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addReviewer = async (file) => {
     try {
       const result = excelToJson({
@@ -1379,6 +1554,37 @@ class _admin {
     }
   };
 
+  deleteReviewer = async (id_reviewer) => {
+    try {
+      const reviewer = await prisma.reviewer.delete({
+        where: {
+          id_reviewer,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: reviewer.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteReviewer module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addPimpinan = async (file) => {
     try {
       const result = excelToJson({
@@ -1518,6 +1724,37 @@ class _admin {
       }
 
       console.error("addPimpinanSingle module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deletePimpinan = async (id_pimpinan) => {
+    try {
+      const pimpinan = await prisma.pimpinan.delete({
+        where: {
+          id_pimpinan,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: pimpinan.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deletePimpinan module error ", error);
 
       return {
         status: false,
