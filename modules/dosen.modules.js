@@ -267,6 +267,8 @@ class _dosen {
 
   addProposal = async (file, id_user, body) => {
     try {
+      delete body.id_tema;
+
       body = {
         id_user,
         ...body,
