@@ -1001,6 +1001,164 @@ class _dosen {
       };
     }
   };
+
+  addTemaTematik = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        periode: Joi.string().required(),
+        jenis: Joi.number().required(),
+        kab: Joi.string().required(),
+        kec: Joi.string().required(),
+        desa: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const add = await prisma.tema.create({
+        data: {
+          nama: body.nama,
+          periode: body.periode,
+          jenis: body.jenis,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
+        },
+        select: {
+          id_tema: true,
+        },
+      });
+
+      const list = await prisma.halaman.findMany();
+
+      for (let i = 0; i < list.length; i++) {
+        await prisma.tema_halaman.create({
+          data: {
+            id_tema: add.id_tema,
+            id_halaman: list[i].id_halaman,
+          },
+        });
+      }
+
+      const temaHalaman = await prisma.tema_halaman.findFirst({
+        where: {
+          id_tema: add.id_tema,
+          id_halaman: list[0].id_halaman,
+        },
+      });
+
+      const gelombang = await prisma.gelombang.create({
+        data: {
+          id_tema_halaman: temaHalaman.id_tema_halaman,
+          nama: "Gelombang 1 Dosen",
+          tgl_mulai: null,
+          tgl_akhir: null,
+        },
+        select: {
+          id_gelombang: true,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editTemaTematik = async (id_tema, body) => {
+    try {
+      body = {
+        id_tema,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_tema: Joi.number().required(),
+        nama: Joi.string().required(),
+        periode: Joi.string().required(),
+        jenis: Joi.number().required(),
+        kab: Joi.string().required(),
+        kec: Joi.string().required(),
+        desa: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.tema.update({
+        where: {
+          id_tema,
+        },
+        data: {
+          nama: body.nama,
+          periode: body.periode,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _dosen();
