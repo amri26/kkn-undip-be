@@ -7,6 +7,7 @@ const BappedaController = require("./controllers/BappedaController");
 const WilayahController = require("./controllers/WilayahController");
 const MahasiswaController = require("./controllers/MahasiswaController");
 const ReviewerController = require("./controllers/ReviewerController");
+const PimpinanController = require("./controllers/PimpinanController");
 const TemaController = require("./controllers/TemaController");
 const DokumenController = require("./controllers/DokumenController");
 const GelombangController = require("./controllers/GelombangController");
@@ -19,32 +20,33 @@ const NilaiController = require("./controllers/NilaiController");
 const TestController = require("./controllers/TestController");
 
 const _routes = [
-    ["/auth", AuthController],
-    ["/superadmin", SuperAdminController],
-    ["/admin", AdminController],
-    ["/dosen", DosenController],
-    ["/proposal", ProposalController],
-    ["/bappeda", BappedaController],
-    ["/wilayah", WilayahController],
-    ["/mahasiswa", MahasiswaController],
-    ["/reviewer", ReviewerController],
-    ["/tema", TemaController],
-    ["/dokumen", DokumenController],
-    ["/gelombang", GelombangController],
-    ["/halaman", HalamanController],
-    ["/laporan", LaporanController],
-    ["/reportase", ReportaseController],
-    ["/korwil", KorwilController],
-    ["/fakultas", FakultasController],
-    ["/nilai", NilaiController],
-    ["/test", TestController],
+  ["/auth", AuthController],
+  ["/superadmin", SuperAdminController],
+  ["/admin", AdminController],
+  ["/dosen", DosenController],
+  ["/proposal", ProposalController],
+  ["/bappeda", BappedaController],
+  ["/wilayah", WilayahController],
+  ["/mahasiswa", MahasiswaController],
+  ["/reviewer", ReviewerController],
+  ["/pimpinan", PimpinanController],
+  ["/tema", TemaController],
+  ["/dokumen", DokumenController],
+  ["/gelombang", GelombangController],
+  ["/halaman", HalamanController],
+  ["/laporan", LaporanController],
+  ["/reportase", ReportaseController],
+  ["/korwil", KorwilController],
+  ["/fakultas", FakultasController],
+  ["/nilai", NilaiController],
+  ["/test", TestController],
 ];
 
 const routes = (app) => {
-    _routes.forEach((route) => {
-        const [url, controller] = route;
-        app.use(`${url}`, controller);
-    });
+  _routes.forEach((route) => {
+    const [url, controller] = route;
+    app.use(`${url}`, controller);
+  });
 };
 
 module.exports = routes;

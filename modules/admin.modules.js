@@ -4,1512 +4,1701 @@ const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
 
 class _admin {
-    listAdmin = async () => {
-        try {
-            const list = await prisma.admin.findMany();
+  listAdmin = async () => {
+    try {
+      const list = await prisma.admin.findMany();
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listAdmin module error ", error);
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listAdmin module error ", error);
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-    listUser = async () => {
-        try {
-            const list = await prisma.user.findMany();
+  listUser = async () => {
+    try {
+      const list = await prisma.user.findMany();
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listUser module error ", error);
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listUser module error ", error);
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-    listTema = async () => {
-        try {
-            const list = await prisma.tema.findMany();
+  listTema = async () => {
+    try {
+      const list = await prisma.tema.findMany();
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listTema module error ", error);
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listTema module error ", error);
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-    addTema = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                periode: Joi.string().required(),
-                jenis: Joi.number().required(),
-                kab: Joi.string().allow(null, ""),
-                kec: Joi.string().allow(null, ""),
-                desa: Joi.string().allow(null, ""),
-            });
+  addTema = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        periode: Joi.string().required(),
+        jenis: Joi.number().required(),
+        kab: Joi.string().allow(null, ""),
+        kec: Joi.string().allow(null, ""),
+        desa: Joi.string().allow(null, ""),
+      });
 
-            const validation = schema.validate(body);
+      const validation = schema.validate(body);
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            const add = await prisma.tema.create({
-                data: {
-                    nama: body.nama,
-                    periode: body.periode,
-                    jenis: body.jenis,
-                    kab: body.kab,
-                    kec: body.kec,
-                    desa: body.desa,
-                },
+      const add = await prisma.tema.create({
+        data: {
+          nama: body.nama,
+          periode: body.periode,
+          jenis: body.jenis,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
+        },
+        select: {
+          id_tema: true,
+        },
+      });
+
+      const list = await prisma.halaman.findMany();
+
+      for (let i = 0; i < list.length; i++) {
+        await prisma.tema_halaman.create({
+          data: {
+            id_tema: add.id_tema,
+            id_halaman: list[i].id_halaman,
+          },
+        });
+      }
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editTema = async (id_tema, body) => {
+    try {
+      body = {
+        id_tema,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_tema: Joi.number().required(),
+        nama: Joi.string().required(),
+        periode: Joi.string().required(),
+        kab: Joi.string().allow(null),
+        kec: Joi.string().allow(null),
+        desa: Joi.string().allow(null),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.tema.update({
+        where: {
+          id_tema,
+        },
+        data: {
+          nama: body.nama,
+          periode: body.periode,
+          kab: body.kab,
+          kec: body.kec,
+          desa: body.desa,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  switchTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.tema.update({
+        where: {
+          id_tema,
+        },
+        data: {
+          status: !check.status,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("switchTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  listHalaman = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.tema_halaman.findMany({
+        where: {
+          id_tema,
+        },
+        include: {
+          halaman: true,
+          tema: true,
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listHalaman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addHalaman = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.halaman.create({
+        data: {
+          nama: body.nama,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addHalaman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  switchHalaman = async (id_tema_halaman) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema_halaman);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema_halaman.findUnique({
+        where: {
+          id_tema_halaman,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.tema_halaman.update({
+        where: {
+          id_tema_halaman,
+        },
+        data: {
+          status: !check.status,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("switchHalaman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  listGelombang = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.gelombang.findMany({
+        where: {
+          tema_halaman: {
+            id_tema,
+          },
+        },
+        include: {
+          tema_halaman: {
+            select: {
+              halaman: {
                 select: {
-                    id_tema: true,
+                  nama: true,
                 },
-            });
-
-            const list = await prisma.halaman.findMany();
-
-            for (let i = 0; i < list.length; i++) {
-                await prisma.tema_halaman.create({
-                    data: {
-                        id_tema: add.id_tema,
-                        id_halaman: list[i].id_halaman,
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addTema module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    editTema = async (id_tema, body) => {
-        try {
-            body = {
-                id_tema,
-                ...body,
-            };
-
-            const schema = Joi.object({
-                id_tema: Joi.number().required(),
-                nama: Joi.string().required(),
-                periode: Joi.string().required(),
-                kab: Joi.string().allow(null),
-                kec: Joi.string().allow(null),
-                desa: Joi.string().allow(null),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            const check = await prisma.tema.findUnique({
-                where: {
-                    id_tema,
-                },
+              },
+              tema: {
                 select: {
-                    status: true,
+                  nama: true,
                 },
-            });
+              },
+            },
+          },
+        },
+      });
 
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listGelombang module error ", error);
 
-            await prisma.tema.update({
-                where: {
-                    id_tema,
-                },
-                data: {
-                    nama: body.nama,
-                    periode: body.periode,
-                    kab: body.kab,
-                    kec: body.kec,
-                    desa: body.desa,
-                },
-            });
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("editTema module error ", error);
+  getGelombang = async (id_gelombang) => {
+    try {
+      const schema = Joi.number().required();
 
-            return {
-                status: false,
-                error,
-            };
+      const validation = schema.validate(id_gelombang);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const gelombang = await prisma.gelombang.findUnique({
+        where: {
+          id_gelombang,
+        },
+      });
+
+      return {
+        status: true,
+        data: gelombang,
+      };
+    } catch (error) {
+      console.error("getGelombang module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addGelombang = async (body) => {
+    try {
+      const schema = Joi.object({
+        id_tema_halaman: Joi.number().required(),
+        nama: Joi.string().required(),
+        tgl_mulai: Joi.date().allow(null),
+        tgl_akhir: Joi.date().allow(null),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.gelombang.create({
+        data: {
+          id_tema_halaman: body.id_tema_halaman,
+          nama: body.nama,
+          tgl_mulai: body.tgl_mulai ?? null,
+          tgl_akhir: body.tgl_akhir ?? null,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addGelombang module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editGelombang = async (id_gelombang, body) => {
+    try {
+      body = {
+        id_gelombang,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_gelombang: Joi.number().required(),
+        id_tema_halaman: Joi.number().required(),
+        nama: Joi.string().required(),
+        tgl_mulai: Joi.date().allow(null),
+        tgl_akhir: Joi.date().allow(null),
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.gelombang.update({
+        where: {
+          id_gelombang,
+        },
+        data: {
+          id_tema_halaman: body.id_tema_halaman,
+          nama: body.nama,
+          tgl_mulai: body.tgl_mulai ?? null,
+          tgl_akhir: body.tgl_akhir ?? null,
+          status: body.status ? true : false,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editGelombang module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  switchGelombang = async (id_gelombang) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_gelombang);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.gelombang.findUnique({
+        where: {
+          id_gelombang,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.gelombang.update({
+        where: {
+          id_gelombang,
+        },
+        data: {
+          status: !check.status,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("switchGelombang module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addMahasiswa = async (file) => {
+    try {
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["mahasiswa"],
+        columnToKey: {
+          B: "nama",
+          C: "nim",
+        },
+      });
+
+      for (let i = 0; i < result.mahasiswa.length; i++) {
+        const e = result.mahasiswa[i];
+
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nim),
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        const checkMahasiswa = await prisma.mahasiswa.findUnique({
+          where: {
+            nim: String(e.nim),
+          },
+          select: {
+            nim: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIM " + checkUser.username,
+          };
+        } else if (checkMahasiswa) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIM " + checkMahasiswa.nim,
+          };
         }
-    };
 
-    switchTema = async (id_tema) => {
-        try {
-            const schema = Joi.number().required();
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nim),
+            password: bcrypt.hashSync(String(e.nim), 10),
+            role: Role.MAHASISWA,
+          },
+          select: {
+            id_user: true,
+          },
+        });
 
-            const validation = schema.validate(id_tema);
+        await prisma.mahasiswa.create({
+          data: {
+            nama: e.nama,
+            nim: String(e.nim),
+            id_user: addUser.id_user,
+          },
+        });
+      }
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addMahasiswa module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const check = await prisma.tema.findUnique({
-                where: {
-                    id_tema,
-                },
-                select: {
-                    status: true,
-                },
-            });
+  addMahasiswaSingle = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nim: Joi.string().required(),
+        prodi: Joi.number().required(),
+      });
 
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
+      const validation = schema.validate(body);
 
-            await prisma.tema.update({
-                where: {
-                    id_tema,
-                },
-                data: {
-                    status: !check.status,
-                },
-            });
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("switchTema module error ", error);
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            return {
-                status: false,
-                error,
-            };
+      const addUser = await prisma.user.create({
+        data: {
+          username: body.nim,
+          password: bcrypt.hashSync(body.nim, 10),
+          role: Role.MAHASISWA,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.mahasiswa.create({
+        data: {
+          nama: body.nama,
+          nim: body.nim,
+          id_user: addUser.id_user,
+          id_prodi: body.prodi,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
+      }
 
-    listHalaman = async (id_tema) => {
-        try {
-            const schema = Joi.number().required();
+      console.error("addMahasiswaSingle module error ", error);
 
-            const validation = schema.validate(id_tema);
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+  addDosen = async (file) => {
+    try {
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["dosen"],
+        columnToKey: {
+          B: "nama",
+          C: "nip",
+        },
+      });
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      for (let i = 0; i < result.dosen.length; i++) {
+        const e = result.dosen[i];
 
-            const list = await prisma.tema_halaman.findMany({
-                where: {
-                    id_tema,
-                },
-                include: {
-                    halaman: true,
-                    tema: true,
-                },
-            });
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nip),
+          },
+          select: {
+            username: true,
+          },
+        });
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listHalaman module error ", error);
+        const checkDosen = await prisma.dosen.findUnique({
+          where: {
+            nip: String(e.nip),
+          },
+          select: {
+            nip: true,
+          },
+        });
 
-            return {
-                status: false,
-                error,
-            };
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkUser.username,
+          };
+        } else if (checkDosen) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkDosen.nip,
+          };
         }
-    };
 
-    addHalaman = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-            });
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nip),
+            password: bcrypt.hashSync(String(e.nip), 10),
+            role: Role.DOSEN,
+          },
+          select: {
+            id_user: true,
+          },
+        });
 
-            const validation = schema.validate(body);
+        await prisma.dosen.create({
+          data: {
+            id_user: addUser.id_user,
+            nama: e.nama,
+            nip: String(e.nip),
+          },
+        });
+      }
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addDosen module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            await prisma.halaman.create({
-                data: {
-                    nama: body.nama,
-                },
-            });
+  addDosenSingle = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
 
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addHalaman module error ", error);
+      const validation = schema.validate(body);
 
-            return {
-                status: false,
-                error,
-            };
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const addUser = await prisma.user.create({
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+          role: Role.DOSEN,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.dosen.create({
+        data: {
+          id_user: addUser.id_user,
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
+      }
 
-    switchHalaman = async (id_tema_halaman) => {
-        try {
-            const schema = Joi.number().required();
+      console.error("addDosenSingle module error ", error);
 
-            const validation = schema.validate(id_tema_halaman);
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+  addKorwil = async (file) => {
+    try {
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["korwil"],
+        columnToKey: {
+          B: "nama",
+          C: "nk",
+        },
+      });
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      for (let i = 0; i < result.korwil.length; i++) {
+        const e = result.korwil[i];
 
-            const check = await prisma.tema_halaman.findUnique({
-                where: {
-                    id_tema_halaman,
-                },
-                select: {
-                    status: true,
-                },
-            });
+        const checkKorwil = await prisma.korwil.findUnique({
+          where: {
+            nk: String(e.nk),
+          },
+          select: {
+            nk: true,
+          },
+        });
 
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
-
-            await prisma.tema_halaman.update({
-                where: {
-                    id_tema_halaman,
-                },
-                data: {
-                    status: !check.status,
-                },
-            });
-
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("switchHalaman module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
+        if (checkKorwil) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NK " + checkKorwil.nk,
+          };
         }
-    };
 
-    listGelombang = async (id_tema) => {
-        try {
-            const schema = Joi.number().required();
+        await prisma.korwil.create({
+          data: {
+            nama: e.nama,
+            nk: String(e.nk),
+          },
+        });
+      }
 
-            const validation = schema.validate(id_tema);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addKorwil module error ", error);
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+  addKorwilSingle = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nk: Joi.string().required(),
+      });
 
-            const list = await prisma.gelombang.findMany({
-                where: {
-                    tema_halaman: {
-                        id_tema,
-                    },
-                },
-                include: {
-                    tema_halaman: {
-                        select: {
-                            halaman: {
-                                select: {
-                                    nama: true,
-                                },
-                            },
-                            tema: {
-                                select: {
-                                    nama: true,
-                                },
-                            },
-                        },
-                    },
-                },
-            });
+      const validation = schema.validate(body);
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listGelombang module error ", error);
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            return {
-                status: false,
-                error,
-            };
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.korwil.create({
+        data: {
+          nama: body.nama,
+          nk: body.nk,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
+      }
 
-    getGelombang = async (id_gelombang) => {
-        try {
-            const schema = Joi.number().required();
+      console.error("addKorwilSingle module error ", error);
 
-            const validation = schema.validate(id_gelombang);
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+  addBappeda = async (created_by, file) => {
+    try {
+      const schema = Joi.string().required();
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      const validation = schema.validate(created_by);
 
-            const gelombang = await prisma.gelombang.findUnique({
-                where: {
-                    id_gelombang,
-                },
-            });
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            return {
-                status: true,
-                data: gelombang,
-            };
-        } catch (error) {
-            console.error("getGelombang module error ", error);
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            return {
-                status: false,
-                error,
-            };
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["bappeda"],
+        columnToKey: {
+          B: "nama",
+          C: "nb",
+          D: "nama_kabupaten",
+          E: "nama_pj",
+        },
+      });
+
+      for (let i = 0; i < result.bappeda.length; i++) {
+        const e = result.bappeda[i];
+
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nb),
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        const checkBappeda = await prisma.bappeda.findUnique({
+          where: {
+            nb: String(e.nb),
+          },
+          select: {
+            nb: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NB " + checkUser.username,
+          };
+        } else if (checkBappeda) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NB " + checkBappeda.nb,
+          };
         }
-    };
 
-    addGelombang = async (body) => {
-        try {
-            const schema = Joi.object({
-                id_tema_halaman: Joi.number().required(),
-                nama: Joi.string().required(),
-                tgl_mulai: Joi.date().allow(null),
-                tgl_akhir: Joi.date().allow(null),
-            });
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nb),
+            password: bcrypt.hashSync(String(e.nb), 10),
+            role: Role.BAPPEDA,
+          },
+          select: {
+            id_user: true,
+          },
+        });
 
-            const validation = schema.validate(body);
+        await prisma.bappeda.create({
+          data: {
+            id_user: addUser.id_user,
+            nama: e.nama,
+            nb: String(e.nb),
+            nama_kabupaten: e.nama_kabupaten,
+            nama_pj: e.nama_pj,
+            created_by,
+          },
+        });
+      }
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addBappeda module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            await prisma.gelombang.create({
-                data: {
-                    id_tema_halaman: body.id_tema_halaman,
-                    nama: body.nama,
-                    tgl_mulai: body.tgl_mulai ?? null,
-                    tgl_akhir: body.tgl_akhir ?? null,
-                },
-            });
+  addBappedaSingle = async (created_by, body) => {
+    try {
+      body = {
+        created_by,
+        ...body,
+      };
 
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addGelombang module error ", error);
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nb: Joi.string().required(),
+        nama_kabupaten: Joi.string().required(),
+        nama_pj: Joi.string().required(),
+        created_by: Joi.string().required(),
+      });
 
-            return {
-                status: false,
-                error,
-            };
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const addUser = await prisma.user.create({
+        data: {
+          username: body.nb,
+          password: bcrypt.hashSync(body.nb, 10),
+          role: Role.BAPPEDA,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.bappeda.create({
+        data: {
+          id_user: addUser.id_user,
+          nama: body.nama,
+          nb: body.nb,
+          nama_kabupaten: body.nama_kabupaten,
+          nama_pj: body.nama_pj,
+          created_by,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
+      }
 
-    editGelombang = async (id_gelombang, body) => {
-        try {
-            body = {
-                id_gelombang,
-                ...body,
-            };
+      console.error("addBappedaSingle module error ", error);
 
-            const schema = Joi.object({
-                id_gelombang: Joi.number().required(),
-                id_tema_halaman: Joi.number().required(),
-                nama: Joi.string().required(),
-                tgl_mulai: Joi.date().allow(null),
-                tgl_akhir: Joi.date().allow(null),
-                status: Joi.number().required(),
-            });
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const validation = schema.validate(body);
+  addReviewer = async (file) => {
+    try {
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["reviewer"],
+        columnToKey: {
+          B: "nama",
+          C: "nip",
+        },
+      });
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      for (let i = 0; i < result.reviewer.length; i++) {
+        const e = result.reviewer[i];
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nip),
+          },
+          select: {
+            username: true,
+          },
+        });
 
-            await prisma.gelombang.update({
-                where: {
-                    id_gelombang,
-                },
-                data: {
-                    id_tema_halaman: body.id_tema_halaman,
-                    nama: body.nama,
-                    tgl_mulai: body.tgl_mulai ?? null,
-                    tgl_akhir: body.tgl_akhir ?? null,
-                    status: body.status ? true : false,
-                },
-            });
+        const checkReviewer = await prisma.reviewer.findUnique({
+          where: {
+            nip: String(e.nip),
+          },
+          select: {
+            nip: true,
+          },
+        });
 
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("editGelombang module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkUser.username,
+          };
+        } else if (checkReviewer) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkReviewer.nip,
+          };
         }
-    };
 
-    switchGelombang = async (id_gelombang) => {
-        try {
-            const schema = Joi.number().required();
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nip),
+            password: bcrypt.hashSync(String(e.nip), 10),
+            role: Role.REVIEWER,
+          },
+          select: {
+            id_user: true,
+          },
+        });
 
-            const validation = schema.validate(id_gelombang);
+        await prisma.reviewer.create({
+          data: {
+            id_user: addUser.id_user,
+            nama: e.nama,
+            nip: String(e.nip),
+          },
+        });
+      }
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addReviewer module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const check = await prisma.gelombang.findUnique({
-                where: {
-                    id_gelombang,
-                },
-                select: {
-                    status: true,
-                },
-            });
+  addReviewerSingle = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
 
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
+      const validation = schema.validate(body);
 
-            await prisma.gelombang.update({
-                where: {
-                    id_gelombang,
-                },
-                data: {
-                    status: !check.status,
-                },
-            });
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("switchGelombang module error ", error);
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            return {
-                status: false,
-                error,
-            };
+      const addUser = await prisma.user.create({
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+          role: Role.REVIEWER,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.reviewer.create({
+        data: {
+          id_user: addUser.id_user,
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
+      }
 
-    addMahasiswa = async (file) => {
-        try {
-            const result = excelToJson({
-                source: file.buffer,
-                header: {
-                    rows: 1,
-                },
-                sheets: ["mahasiswa"],
-                columnToKey: {
-                    B: "nama",
-                    C: "nim",
-                },
-            });
+      console.error("addReviewerSingle module error ", error);
 
-            for (let i = 0; i < result.mahasiswa.length; i++) {
-                const e = result.mahasiswa[i];
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-                const checkUser = await prisma.user.findUnique({
-                    where: {
-                        username: String(e.nim),
-                    },
-                    select: {
-                        username: true,
-                    },
-                });
+  addPimpinan = async (file) => {
+    try {
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
+        },
+        sheets: ["pimpinan"],
+        columnToKey: {
+          B: "nama",
+          C: "nip",
+        },
+      });
 
-                const checkMahasiswa = await prisma.mahasiswa.findUnique({
-                    where: {
-                        nim: String(e.nim),
-                    },
-                    select: {
-                        nim: true,
-                    },
-                });
+      for (let i = 0; i < result.pimpinan.length; i++) {
+        const e = result.pimpinan[i];
 
-                if (checkUser) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIM " + checkUser.username,
-                    };
-                } else if (checkMahasiswa) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIM " + checkMahasiswa.nim,
-                    };
-                }
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nip),
+          },
+          select: {
+            username: true,
+          },
+        });
 
-                const addUser = await prisma.user.create({
-                    data: {
-                        username: String(e.nim),
-                        password: bcrypt.hashSync(String(e.nim), 10),
-                        role: Role.MAHASISWA,
-                    },
-                    select: {
-                        id_user: true,
-                    },
-                });
+        const checkPimpinan = await prisma.pimpinan.findUnique({
+          where: {
+            nip: String(e.nip),
+          },
+          select: {
+            nip: true,
+          },
+        });
 
-                await prisma.mahasiswa.create({
-                    data: {
-                        nama: e.nama,
-                        nim: String(e.nim),
-                        id_user: addUser.id_user,
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addMahasiswa module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkUser.username,
+          };
+        } else if (checkPimpinan) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP " + checkPimpinan.nip,
+          };
         }
-    };
 
-    addMahasiswaSingle = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                nim: Joi.string().required(),
-                prodi: Joi.number().required(),
-            });
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nip),
+            password: bcrypt.hashSync(String(e.nip), 10),
+            role: Role.PIMPINAN,
+          },
+          select: {
+            id_user: true,
+          },
+        });
 
-            const validation = schema.validate(body);
+        await prisma.pimpinan.create({
+          data: {
+            id_user: addUser.id_user,
+            nama: e.nama,
+            nip: String(e.nip),
+          },
+        });
+      }
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addPimpinan module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nim,
-                    password: bcrypt.hashSync(body.nim, 10),
-                    role: Role.MAHASISWA,
-                },
-                select: {
-                    id_user: true,
-                },
-            });
+  addPimpinanSingle = async (body) => {
+    try {
+      const schema = Joi.object({
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
 
-            await prisma.mahasiswa.create({
-                data: {
-                    nama: body.nama,
-                    nim: body.nim,
-                    id_user: addUser.id_user,
-                    id_prodi: body.prodi,
-                },
-            });
+      const validation = schema.validate(body);
 
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            console.error("addMahasiswaSingle module error ", error);
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            return {
-                status: false,
-                error,
-            };
+      const addUser = await prisma.user.create({
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+          role: Role.PIMPINAN,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.pimpinan.create({
+        data: {
+          id_user: addUser.id_user,
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
         }
-    };
-
-    addDosen = async (file) => {
-        try {
-            const result = excelToJson({
-                source: file.buffer,
-                header: {
-                    rows: 1,
-                },
-                sheets: ["dosen"],
-                columnToKey: {
-                    B: "nama",
-                    C: "nip",
-                },
-            });
-
-            for (let i = 0; i < result.dosen.length; i++) {
-                const e = result.dosen[i];
-
-                const checkUser = await prisma.user.findUnique({
-                    where: {
-                        username: String(e.nip),
-                    },
-                    select: {
-                        username: true,
-                    },
-                });
-
-                const checkDosen = await prisma.dosen.findUnique({
-                    where: {
-                        nip: String(e.nip),
-                    },
-                    select: {
-                        nip: true,
-                    },
-                });
-
-                if (checkUser) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIP " + checkUser.username,
-                    };
-                } else if (checkDosen) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIP " + checkDosen.nip,
-                    };
-                }
-
-                const addUser = await prisma.user.create({
-                    data: {
-                        username: String(e.nip),
-                        password: bcrypt.hashSync(String(e.nip), 10),
-                        role: Role.DOSEN,
-                    },
-                    select: {
-                        id_user: true,
-                    },
-                });
-
-                await prisma.dosen.create({
-                    data: {
-                        id_user: addUser.id_user,
-                        nama: e.nama,
-                        nip: String(e.nip),
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addDosen module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addDosenSingle = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                nip: Joi.string().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nip,
-                    password: bcrypt.hashSync(body.nip, 10),
-                    role: Role.DOSEN,
-                },
-                select: {
-                    id_user: true,
-                },
-            });
-
-            await prisma.dosen.create({
-                data: {
-                    id_user: addUser.id_user,
-                    nama: body.nama,
-                    nip: body.nip,
-                },
-            });
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
-
-            console.error("addDosenSingle module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addKorwil = async (file) => {
-        try {
-            const result = excelToJson({
-                source: file.buffer,
-                header: {
-                    rows: 1,
-                },
-                sheets: ["korwil"],
-                columnToKey: {
-                    B: "nama",
-                    C: "nk",
-                },
-            });
-
-            for (let i = 0; i < result.korwil.length; i++) {
-                const e = result.korwil[i];
-
-                const checkKorwil = await prisma.korwil.findUnique({
-                    where: {
-                        nk: String(e.nk),
-                    },
-                    select: {
-                        nk: true,
-                    },
-                });
-
-                if (checkKorwil) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NK " + checkKorwil.nk,
-                    };
-                }
-
-                await prisma.korwil.create({
-                    data: {
-                        nama: e.nama,
-                        nk: String(e.nk),
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addKorwil module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addKorwilSingle = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                nk: Joi.string().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            await prisma.korwil.create({
-                data: {
-                    nama: body.nama,
-                    nk: body.nk,
-                },
-            });
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
-
-            console.error("addKorwilSingle module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addBappeda = async (created_by, file) => {
-        try {
-            const schema = Joi.string().required();
-
-            const validation = schema.validate(created_by);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            const result = excelToJson({
-                source: file.buffer,
-                header: {
-                    rows: 1,
-                },
-                sheets: ["bappeda"],
-                columnToKey: {
-                    B: "nama",
-                    C: "nb",
-                    D: "nama_kabupaten",
-                    E: "nama_pj",
-                },
-            });
-
-            for (let i = 0; i < result.bappeda.length; i++) {
-                const e = result.bappeda[i];
-
-                const checkUser = await prisma.user.findUnique({
-                    where: {
-                        username: String(e.nb),
-                    },
-                    select: {
-                        username: true,
-                    },
-                });
-
-                const checkBappeda = await prisma.bappeda.findUnique({
-                    where: {
-                        nb: String(e.nb),
-                    },
-                    select: {
-                        nb: true,
-                    },
-                });
-
-                if (checkUser) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NB " + checkUser.username,
-                    };
-                } else if (checkBappeda) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NB " + checkBappeda.nb,
-                    };
-                }
-
-                const addUser = await prisma.user.create({
-                    data: {
-                        username: String(e.nb),
-                        password: bcrypt.hashSync(String(e.nb), 10),
-                        role: Role.BAPPEDA,
-                    },
-                    select: {
-                        id_user: true,
-                    },
-                });
-
-                await prisma.bappeda.create({
-                    data: {
-                        id_user: addUser.id_user,
-                        nama: e.nama,
-                        nb: String(e.nb),
-                        nama_kabupaten: e.nama_kabupaten,
-                        nama_pj: e.nama_pj,
-                        created_by,
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addBappeda module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addBappedaSingle = async (created_by, body) => {
-        try {
-            body = {
-                created_by,
-                ...body,
-            };
-
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                nb: Joi.string().required(),
-                nama_kabupaten: Joi.string().required(),
-                nama_pj: Joi.string().required(),
-                created_by: Joi.string().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nb,
-                    password: bcrypt.hashSync(body.nb, 10),
-                    role: Role.BAPPEDA,
-                },
-                select: {
-                    id_user: true,
-                },
-            });
-
-            await prisma.bappeda.create({
-                data: {
-                    id_user: addUser.id_user,
-                    nama: body.nama,
-                    nb: body.nb,
-                    nama_kabupaten: body.nama_kabupaten,
-                    nama_pj: body.nama_pj,
-                    created_by,
-                },
-            });
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
-
-            console.error("addBappedaSingle module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addReviewer = async (file) => {
-        try {
-            const result = excelToJson({
-                source: file.buffer,
-                header: {
-                    rows: 1,
-                },
-                sheets: ["reviewer"],
-                columnToKey: {
-                    B: "nama",
-                    C: "nip",
-                },
-            });
-
-            for (let i = 0; i < result.reviewer.length; i++) {
-                const e = result.reviewer[i];
-
-                const checkUser = await prisma.user.findUnique({
-                    where: {
-                        username: String(e.nip),
-                    },
-                    select: {
-                        username: true,
-                    },
-                });
-
-                const checkReviewer = await prisma.reviewer.findUnique({
-                    where: {
-                        nip: String(e.nip),
-                    },
-                    select: {
-                        nip: true,
-                    },
-                });
-
-                if (checkUser) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIP " + checkUser.username,
-                    };
-                } else if (checkReviewer) {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found, NIP " + checkReviewer.nip,
-                    };
-                }
-
-                const addUser = await prisma.user.create({
-                    data: {
-                        username: String(e.nip),
-                        password: bcrypt.hashSync(String(e.nip), 10),
-                        role: Role.REVIEWER,
-                    },
-                    select: {
-                        id_user: true,
-                    },
-                });
-
-                await prisma.reviewer.create({
-                    data: {
-                        id_user: addUser.id_user,
-                        nama: e.nama,
-                        nip: String(e.nip),
-                    },
-                });
-            }
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addReviewer module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    addReviewerSingle = async (body) => {
-        try {
-            const schema = Joi.object({
-                nama: Joi.string().required(),
-                nip: Joi.string().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            const addUser = await prisma.user.create({
-                data: {
-                    username: body.nip,
-                    password: bcrypt.hashSync(body.nip, 10),
-                    role: Role.REVIEWER,
-                },
-                select: {
-                    id_user: true,
-                },
-            });
-
-            await prisma.reviewer.create({
-                data: {
-                    id_user: addUser.id_user,
-                    nama: body.nama,
-                    nip: body.nip,
-                },
-            });
-
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return {
-                        status: false,
-                        code: 409,
-                        error: "Data duplicate found",
-                    };
-                }
-            }
-
-            console.error("addReviewerSingle module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    accKecamatan = async (id_kecamatan, body) => {
-        try {
-            body = {
-                id_kecamatan,
-                ...body,
-            };
-
-            const schema = Joi.object({
-                id_kecamatan: Joi.number().required(),
-                id_korwil: Joi.number().required(),
-            });
-
-            const validation = schema.validate(body);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            await prisma.kecamatan.update({
-                where: {
-                    id_kecamatan,
-                },
-                data: {
-                    id_korwil: body.id_korwil,
-                    status: 1,
-                },
-            });
-
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("accKecamatan module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    decKecamatan = async (id_kecamatan) => {
-        try {
-            const schema = Joi.number().required();
-
-            const validation = schema.validate(id_kecamatan);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            await prisma.kecamatan.update({
-                where: {
-                    id_kecamatan,
-                },
-                data: {
-                    id_korwil: null,
-                    status: -1,
-                },
-            });
-
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("decKecamatan module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    accProposal = async (id_proposal) => {
-        try {
-            const schema = Joi.number().required();
-
-            const validation = schema.validate(id_proposal);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            await prisma.proposal.update({
-                where: {
-                    id_proposal,
-                },
-                data: {
-                    status: 1,
-                },
-            });
-
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("accProposal module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
-
-    decProposal = async (id_proposal) => {
-        try {
-            const schema = Joi.number().required();
-
-            const validation = schema.validate(id_proposal);
-
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
-
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
-
-            await prisma.proposal.update({
-                where: {
-                    id_proposal,
-                },
-                data: {
-                    status: -1,
-                },
-            });
-
-            return {
-                status: true,
-                code: 204,
-            };
-        } catch (error) {
-            console.error("decProposal module error ", error);
-
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      }
+
+      console.error("addPimpinanSingle module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  accKecamatan = async (id_kecamatan, body) => {
+    try {
+      body = {
+        id_kecamatan,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_kecamatan: Joi.number().required(),
+        id_korwil: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.kecamatan.update({
+        where: {
+          id_kecamatan,
+        },
+        data: {
+          id_korwil: body.id_korwil,
+          status: 1,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("accKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  decKecamatan = async (id_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.kecamatan.update({
+        where: {
+          id_kecamatan,
+        },
+        data: {
+          id_korwil: null,
+          status: -1,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("decKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  accProposal = async (id_proposal) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_proposal);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.proposal.update({
+        where: {
+          id_proposal,
+        },
+        data: {
+          status: 1,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("accProposal module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  decProposal = async (id_proposal) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_proposal);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.proposal.update({
+        where: {
+          id_proposal,
+        },
+        data: {
+          status: -1,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("decProposal module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _admin();
