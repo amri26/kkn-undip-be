@@ -321,23 +321,36 @@ class _dosen {
         },
       });
 
+      const checkProposal = await prisma.proposal.findFirst({
+        where: {
+          id_dosen: checkDosen.id_dosen,
+          id_kecamatan: Number(body.id_kecamatan),
+        },
+      });
+
       if (!checkDosen || !checkGelombang || !checkKecamatan) {
         return {
           status: false,
           code: 404,
-          error: "Data not found",
+          error: "Data tidak ditemukan",
         };
       } else if (!checkGelombang.status) {
         return {
           status: false,
           code: 403,
-          error: "Forbidden, Gelombang data is not activated",
+          error: "Forbidden, Gelombang tidak aktif",
         };
       } else if (checkKecamatan.status !== 1) {
         return {
           status: false,
           code: 403,
-          error: "Forbidden, Kecamatan data is not approved",
+          error: "Forbidden, Kecamatan belum disetujui",
+        };
+      } else if (checkProposal) {
+        return {
+          status: false,
+          code: 403,
+          error: "Forbidden, sudah terdaftar di Kecamatan ini",
         };
       }
 
