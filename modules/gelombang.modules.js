@@ -179,6 +179,10 @@ class _gelombang {
                 },
             });
 
+            list.forEach((item) => {
+                item.jumlah_pendaftaran = item.mahasiswa_kecamatan.length;
+            });
+
             return {
                 status: true,
                 data: list,
