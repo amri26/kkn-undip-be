@@ -18,19 +18,23 @@ const uploadDrive = async (fileObject, fileType, parentsFolder) => {
         const bufferStream = new stream.PassThrough();
         bufferStream.end(fileObject.buffer);
 
-        const file = await google.drive({ version: "v3", auth }).files.create({
-            media: {
-                mimeType: fileObject.mimeType,
-                body: bufferStream,
-            },
-            requestBody: {
-                name: filename,
-                parents: [parentsFolder],
-            },
-            fields: "id",
-        });
+        if (fileObject.mimeType === application / pdf) {
+            const file = await google.drive({ version: "v3", auth }).files.create({
+                media: {
+                    mimeType: fileObject.mimeType,
+                    body: bufferStream,
+                },
+                requestBody: {
+                    name: filename,
+                    parents: [parentsFolder],
+                },
+                fields: "id",
+            });
 
-        if (file.status !== 200) {
+            if (file.status !== 200) {
+                throw error;
+            }
+        } else {
             throw error;
         }
 
