@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"dosen a\",\r\n    \"password\": \"dosen a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1571,7 +1571,7 @@
 							"variable": [
 								{
 									"key": "id_korwil",
-									"value": "6"
+									"value": "11"
 								}
 							]
 						}
@@ -2748,6 +2748,43 @@
 							"path": [
 								"dosen",
 								"reportase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT NILAI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_nilai\": 1,\r\n    \"pembekalan\": 70,\r\n    \"upacara\": 70,\r\n    \"kehadiran_dilokasi\": 70,\r\n    \"lrk\": 70,\r\n    \"integritas\": 70,\r\n    \"sosial_kemasyarakatan\": 70,\r\n    \"lpk\": 70,\r\n    \"ujian_akhir\": 70,\r\n    \"tugas\": 70,\r\n    \"uts\": 70,\r\n    \"uas\": 70,\r\n    \"nilai_akhir\": 70,\r\n    \"nilai_huruf\": \"B\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/dosen/nilai",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"nilai"
 							]
 						}
 					},
@@ -4279,6 +4316,80 @@
 							],
 							"path": [
 								"fakultas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NILAI",
+			"item": [
+				{
+					"name": "LIST NILAI KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/nilai/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"nilai",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET NILAI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/nilai/:id_nilai",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"nilai",
+								":id_nilai"
+							],
+							"variable": [
+								{
+									"key": "id_nilai",
+									"value": "1"
+								}
 							]
 						}
 					},
