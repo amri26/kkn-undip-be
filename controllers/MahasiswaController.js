@@ -45,7 +45,7 @@ app.get("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
 });
 
 app.post("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
-    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_ADD_LRK));
+    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_KELOLA_LRK));
 
     if (!check.status) {
         response.sendResponse(res, check);
@@ -55,7 +55,7 @@ app.post("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
 });
 
 app.put("/lrk/edit", userSession, verifyMahasiswa, async (req, res, next) => {
-    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_ADD_LRK));
+    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_KELOLA_LRK));
 
     if (!check.status) {
         response.sendResponse(res, check);
@@ -69,7 +69,7 @@ app.get("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
 });
 
 app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
-    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_EDIT_LPK));
+    const check = await isActive(req.body.id_tema, Number(process.env.MAHASISWA_KELOLA_LPK));
 
     if (!check.status) {
         response.sendResponse(res, check);
