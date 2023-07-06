@@ -102,6 +102,222 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "EDIT PROFILE ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"riwayat_penyakit\": \"Tidak ada\",\r\n    \"nama_ortu\": \"Rudiger\",\r\n    \"no_hp_ortu\": \"09832565\",\r\n    \"alamat_ortu\": \"Jalan Kenanga\",\r\n    \"nama_cp_urgent\": \"Ibu Kos\",\r\n    \"no_hp_cp_urgent\": \"93797324\",\r\n    \"alamat_cp_urgent\": \"Jalan Banyubiru\",\r\n    \"hubungan\": \"Ibu kos\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE PIMPINAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3388,7 +3604,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
