@@ -171,6 +171,7 @@ model admin {
   ttl           DateTime? @db.Date()
   no_hp         String?   @db.VarChar(50)
   alamat        String?   @db.VarChar(100)
+  foto_profile  String?   @db.VarChar(100)
   created_at    DateTime  @default(now()) @db.DateTime(0)
   user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
 }
@@ -184,6 +185,7 @@ model bappeda {
   alamat         String?     @db.VarChar(100)
   nama_kabupaten String      @db.VarChar(50)
   nama_pj        String      @db.VarChar(50)
+  foto_profile   String?     @db.VarChar(100)
   created_by     String      @db.VarChar(50)
   created_at     DateTime    @default(now()) @db.DateTime(0)
   user           user?       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
@@ -211,8 +213,10 @@ model reviewer {
   ttl           DateTime? @db.Date()
   no_hp         String?   @db.VarChar(50)
   alamat        String?   @db.VarChar(100)
-  created_at    DateTime  @default(now()) @db.DateTime(0)
-  user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  foto_profile  String?   @db.VarChar(100)
+
+  created_at DateTime @default(now()) @db.DateTime(0)
+  user       user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model pimpinan {
@@ -224,22 +228,26 @@ model pimpinan {
   ttl           DateTime? @db.Date()
   no_hp         String?   @db.VarChar(50)
   alamat        String?   @db.VarChar(100)
-  created_at    DateTime  @default(now()) @db.DateTime(0)
-  user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  foto_profile  String?   @db.VarChar(100)
+
+  created_at DateTime @default(now()) @db.DateTime(0)
+  user       user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model dosen {
-  id_dosen      Int        @id @default(autoincrement())
-  id_user       Int?       @unique
-  nama          String     @db.VarChar(50)
-  nip           String     @unique @db.VarChar(50)
-  jenis_kelamin Int?       @db.TinyInt
-  ttl           DateTime?  @db.Date()
-  no_hp         String?    @db.VarChar(50)
-  alamat        String?    @db.VarChar(100)
-  created_at    DateTime   @default(now()) @db.DateTime(0)
-  user          user?      @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  proposal      proposal[]
+  id_dosen      Int       @id @default(autoincrement())
+  id_user       Int?      @unique
+  nama          String    @db.VarChar(50)
+  nip           String    @unique @db.VarChar(50)
+  jenis_kelamin Int?      @db.TinyInt
+  ttl           DateTime? @db.Date()
+  no_hp         String?   @db.VarChar(50)
+  alamat        String?   @db.VarChar(100)
+  foto_profile  String?   @db.VarChar(100)
+
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  user       user?      @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  proposal   proposal[]
 }
 
 model mahasiswa {
@@ -259,6 +267,7 @@ model mahasiswa {
   nama_cp_urgent             String?                     @db.VarChar(50)
   no_hp_cp_urgent            String?                     @db.VarChar(50)
   alamat_cp_urgent           String?                     @db.VarChar(100)
+  foto_profile               String?                     @db.VarChar(100)
   hubungan                   String?                     @db.VarChar(50)
   status                     Int                         @default(0) @db.TinyInt
   created_at                 DateTime                    @default(now()) @db.DateTime(0)
