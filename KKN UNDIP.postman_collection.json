@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"dosen a\",\r\n    \"password\": \"dosen a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -228,7 +228,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -169,6 +169,7 @@ class _auth {
           });
 
           get.id_fakultas = get.prodi?.fakultas.id_fakultas;
+          delete get.prodi;
 
           tema = await prisma.mahasiswa_kecamatan_active.findUnique({
             where: {
