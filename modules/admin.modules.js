@@ -283,6 +283,26 @@ class _admin {
         },
       });
 
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.tema_halaman.update({
+              where: {
+                id_tema_halaman: item.id_tema_halaman,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
+      });
+
       return {
         status: true,
         data: list,
@@ -329,6 +349,72 @@ class _admin {
       };
     } catch (error) {
       console.error("addHalaman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editHalaman = async (id_tema_halaman, body) => {
+    try {
+      body = {
+        id_tema_halaman,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_tema_halaman: Joi.number().required(),
+        tgl_mulai: Joi.date().allow(null),
+        tgl_akhir: Joi.date().allow(null),
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        body.tgl_mulai &&
+        body.tgl_akhir &&
+        checkDate(body.tgl_mulai, body.tgl_akhir) &&
+        body.status == 0
+      ) {
+        isStatusEdited = 1;
+      }
+
+      await prisma.tema_halaman.update({
+        where: {
+          id_tema_halaman: body.id_tema_halaman,
+        },
+        data: {
+          tgl_mulai: body.tgl_mulai ?? null,
+          tgl_akhir: body.tgl_akhir ?? null,
+          status: body.status ? true : false,
+          isStatusEdited: isStatusEdited ? true : false,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editHalaman module error ", error);
 
       return {
         status: false,

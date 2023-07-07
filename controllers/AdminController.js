@@ -67,6 +67,18 @@ app.post("/halaman", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addHalaman(req.body));
 });
 
+app.put(
+  "/halaman/edit/:id_tema_halaman",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editHalaman(Number(req.params.id_tema_halaman), req.body)
+    );
+  }
+);
+
 app.patch(
   "/halaman/:id_tema_halaman",
   userSession,
