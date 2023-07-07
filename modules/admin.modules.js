@@ -2,6 +2,7 @@ const { prisma, Prisma, Role } = require("../helpers/database");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
+const { checkDate } = require("../helpers/utils");
 
 class _admin {
   listAdmin = async () => {
@@ -436,6 +437,26 @@ class _admin {
         },
       });
 
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.gelombang.update({
+              where: {
+                id_gelombang: item.id_gelombang,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
+      });
+
       return {
         status: true,
         data: list,
@@ -564,6 +585,18 @@ class _admin {
         };
       }
 
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        body.tgl_mulai &&
+        body.tgl_akhir &&
+        checkDate(body.tgl_mulai, body.tgl_akhir) &&
+        body.status == 0
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.gelombang.update({
         where: {
           id_gelombang,
@@ -574,6 +607,7 @@ class _admin {
           tgl_mulai: body.tgl_mulai ?? null,
           tgl_akhir: body.tgl_akhir ?? null,
           status: body.status ? true : false,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
 
@@ -614,6 +648,8 @@ class _admin {
           id_gelombang,
         },
         select: {
+          tgl_akhir: true,
+          tgl_mulai: true,
           status: true,
         },
       });
@@ -626,12 +662,36 @@ class _admin {
         };
       }
 
+      if (
+        !checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == false
+      ) {
+        return {
+          status: false,
+          code: 403,
+          error: "Gelombang sudah berakhir!",
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == true
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.gelombang.update({
         where: {
           id_gelombang,
         },
         data: {
           status: !check.status,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
 

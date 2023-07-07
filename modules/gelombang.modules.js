@@ -1,5 +1,6 @@
 const { prisma } = require("../helpers/database");
 const Joi = require("joi");
+const { checkDate } = require("../helpers/utils");
 
 class _gelombang {
   listGelombang = async (id_tema, id_halaman) => {
@@ -35,6 +36,26 @@ class _gelombang {
             id_halaman: body.id_halaman,
           },
         },
+      });
+
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.gelombang.update({
+              where: {
+                id_gelombang: item.id_gelombang,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
       });
 
       return {
@@ -111,6 +132,26 @@ class _gelombang {
         },
       });
 
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.gelombang.update({
+              where: {
+                id_gelombang: item.id_gelombang,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
+      });
+
       return {
         status: true,
         data: list,
@@ -185,8 +226,24 @@ class _gelombang {
         },
       });
 
-      list.forEach((item) => {
-        item.jumlah_pendaftaran = item.mahasiswa_kecamatan.length;
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.gelombang.update({
+              where: {
+                id_gelombang: item.id_gelombang,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
       });
 
       return {

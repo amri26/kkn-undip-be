@@ -40,6 +40,8 @@ model tema_halaman {
   id_tema_halaman Int         @id @default(autoincrement())
   id_tema         Int
   id_halaman      Int
+  tgl_mulai       DateTime?   @db.Timestamp(0)
+  tgl_akhir       DateTime?   @db.Timestamp(0)
   status          Boolean     @default(false)
   tema            tema        @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
   halaman         halaman     @relation(fields: [id_halaman], references: [id_halaman], onDelete: Cascade, onUpdate: Cascade)
@@ -53,6 +55,7 @@ model gelombang {
   tgl_mulai           DateTime?             @db.Timestamp(0)
   tgl_akhir           DateTime?             @db.Timestamp(0)
   status              Boolean               @default(false)
+  isStatusEdited      Boolean               @default(false)
   tema_halaman        tema_halaman?         @relation(fields: [id_tema_halaman], references: [id_tema_halaman], onDelete: Cascade, onUpdate: Cascade)
   proposal            proposal[]
   mahasiswa_kecamatan mahasiswa_kecamatan[]
