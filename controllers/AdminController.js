@@ -244,6 +244,18 @@ app.post("/korwil/single", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.addKorwilSingle(req.body));
 });
 
+app.put(
+  "/korwil/:id_korwil",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editKorwil(Number(req.params.id_korwil), req.body)
+    );
+  }
+);
+
 app.delete(
   "/korwil/:id_korwil",
   userSession,
