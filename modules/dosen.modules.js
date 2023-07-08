@@ -21,6 +21,49 @@ class _dosen {
     }
   };
 
+  getDosen = async (id_dosen) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_dosen);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const dosen = await prisma.dosen.findUnique({
+        where: {
+          id_dosen,
+        },
+        select: {
+          id_dosen: true,
+          nama: true,
+          nip: true,
+        },
+      });
+
+      return {
+        status: true,
+        data: dosen,
+      };
+    } catch (error) {
+      console.error("getDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listDosenWilayah = async (id_kecamatan) => {
     try {
       const list = await prisma.proposal.findMany({

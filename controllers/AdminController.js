@@ -200,6 +200,18 @@ app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addDosenSingle(req.body));
 });
 
+app.put(
+  "/dosen/:id_dosen",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editDosen(Number(req.params.id_dosen), req.body)
+    );
+  }
+);
+
 app.delete(
   "/dosen/:id_dosen",
   userSession,

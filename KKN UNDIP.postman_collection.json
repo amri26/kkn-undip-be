@@ -1502,6 +1502,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT DOSEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"dosen a\",\r\n    \"nip\": \"dosen a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/dosen/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"dosen",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_dosen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE DOSEN",
 					"event": [
 						{
@@ -2693,6 +2762,40 @@
 							],
 							"path": [
 								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_dosen",
+									"value": "1"
+								}
 							]
 						}
 					},

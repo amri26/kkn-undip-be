@@ -1240,6 +1240,107 @@ class _admin {
     }
   };
 
+  editDosen = async (id_dosen, body) => {
+    try {
+      body = {
+        id_dosen,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_dosen: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const dosen = await prisma.dosen.findUnique({
+        where: {
+          id_dosen: body.id_dosen,
+        },
+      });
+
+      if (!dosen) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (dosen.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: dosen.nip,
+        },
+        data: {
+          username: body.nip,
+        },
+      });
+
+      await prisma.dosen.update({
+        where: {
+          id_dosen: body.id_dosen,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteDosen = async (id_dosen) => {
     try {
       const checkDosenRegistered = await prisma.proposal.findFirst({
