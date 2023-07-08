@@ -274,6 +274,18 @@ app.post(
   }
 );
 
+app.put(
+  "/bappeda/:id_bappeda",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editBappeda(Number(req.params.id_bappeda), req.body)
+    );
+  }
+);
+
 app.delete(
   "/bappeda/:id_bappeda",
   userSession,

@@ -1757,6 +1757,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT BAPPEDA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"BAPPEDA Semarang\",\r\n    \"nb\": \"090909\",\r\n    \"nama_kabupaten\": \"Kab. Semarang\",\r\n    \"nama_pj\": \"Bupati Semarang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/bappeda/:id_bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"bappeda",
+								":id_bappeda"
+							],
+							"variable": [
+								{
+									"key": "id_bappeda",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE BAPPEDA",
 					"event": [
 						{
@@ -2606,6 +2675,40 @@
 							],
 							"path": [
 								"bappeda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/bappeda/:id_bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bappeda",
+								":id_bappeda"
+							],
+							"variable": [
+								{
+									"key": "id_bappeda",
+									"value": "1"
+								}
 							]
 						}
 					},

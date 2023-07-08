@@ -1709,6 +1709,111 @@ class _admin {
     }
   };
 
+  editBappeda = async (id_bappeda, body) => {
+    try {
+      body = {
+        id_bappeda,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_bappeda: Joi.number().required(),
+        nama: Joi.string().required(),
+        nb: Joi.string().required(),
+        nama_kabupaten: Joi.string().required(),
+        nama_pj: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const bappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+      });
+
+      if (!bappeda) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (bappeda.nb != body.nb) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nb,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, nomor induk sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: bappeda.nb,
+        },
+        data: {
+          username: body.nb,
+        },
+      });
+
+      await prisma.bappeda.update({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+        data: {
+          nama: body.nama,
+          nb: body.nb,
+          nama_kabupaten: body.nama_kabupaten,
+          nama_pj: body.nama_pj,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteBappeda = async (id_bappeda) => {
     try {
       const checkBappedaRegistered = await prisma.kecamatan.findFirst({
