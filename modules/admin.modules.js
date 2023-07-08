@@ -2187,6 +2187,107 @@ class _admin {
     }
   };
 
+  editPimpinan = async (id_pimpinan, body) => {
+    try {
+      body = {
+        id_pimpinan,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_pimpinan: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const pimpinan = await prisma.pimpinan.findUnique({
+        where: {
+          id_pimpinan: body.id_pimpinan,
+        },
+      });
+
+      if (!pimpinan) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (pimpinan.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: pimpinan.nip,
+        },
+        data: {
+          username: body.nip,
+        },
+      });
+
+      await prisma.pimpinan.update({
+        where: {
+          id_pimpinan: body.id_pimpinan,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editPimpinan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deletePimpinan = async (id_pimpinan) => {
     try {
       const pimpinan = await prisma.pimpinan.delete({

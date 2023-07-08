@@ -9,4 +9,11 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listPimpinan());
 });
 
+app.get("/:id_pimpinan", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getPimpinan(Number(req.params.id_pimpinan))
+  );
+});
+
 module.exports = app;

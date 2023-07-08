@@ -348,6 +348,18 @@ app.post(
   }
 );
 
+app.put(
+  "/pimpinan/:id_pimpinan",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editPimpinan(Number(req.params.id_pimpinan), req.body)
+    );
+  }
+);
+
 app.delete(
   "/pimpinan/:id_pimpinan",
   userSession,
