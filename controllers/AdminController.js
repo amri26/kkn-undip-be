@@ -15,6 +15,13 @@ app.get("/", userSession, verifySuperAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listAdmin());
 });
 
+app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getAdmin(Number(req.params.id_admin))
+  );
+});
+
 app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listUser());
 });
