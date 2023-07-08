@@ -317,6 +317,18 @@ app.post(
   }
 );
 
+app.put(
+  "/reviewer/:id_reviewer",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editReviewer(Number(req.params.id_reviewer), req.body)
+    );
+  }
+);
+
 app.delete(
   "/reviewer/:id_reviewer",
   userSession,

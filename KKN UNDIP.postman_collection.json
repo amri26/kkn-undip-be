@@ -2198,6 +2198,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT REVIEWER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Reviewer A\",\r\n    \"nip\": \"1331\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/reviewer/:id_reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"reviewer",
+								":id_reviewer"
+							],
+							"variable": [
+								{
+									"key": "id_reviewer",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE REVIEWER",
 					"event": [
 						{
@@ -4134,6 +4203,40 @@
 							],
 							"path": [
 								"reviewer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reviewer/:id_reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reviewer",
+								":id_reviewer"
+							],
+							"variable": [
+								{
+									"key": "id_reviewer",
+									"value": "1"
+								}
 							]
 						}
 					},

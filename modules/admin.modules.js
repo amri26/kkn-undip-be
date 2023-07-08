@@ -2009,6 +2009,107 @@ class _admin {
     }
   };
 
+  editReviewer = async (id_reviewer, body) => {
+    try {
+      body = {
+        id_reviewer,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_reviewer: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const reviewer = await prisma.reviewer.findUnique({
+        where: {
+          id_reviewer: body.id_reviewer,
+        },
+      });
+
+      if (!reviewer) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (reviewer.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: reviewer.nip,
+        },
+        data: {
+          username: body.nip,
+        },
+      });
+
+      await prisma.reviewer.update({
+        where: {
+          id_reviewer: body.id_reviewer,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editReviewer module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteReviewer = async (id_reviewer) => {
     try {
       const reviewer = await prisma.reviewer.delete({
