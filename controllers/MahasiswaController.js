@@ -44,6 +44,13 @@ app.get("/accepted/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
+app.get("/:id_mahasiswa", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getMahasiswa(Number(req.params.id_mahasiswa))
+  );
+});
+
 app.post(
   "/daftar_lokasi",
   userSession,

@@ -12,6 +12,7 @@ class _mahasiswa {
               fakultas: {
                 select: {
                   nama: true,
+                  singkatan: true,
                 },
               },
             },
@@ -254,6 +255,62 @@ class _mahasiswa {
       };
     } catch (error) {
       console.error("listMahasiswaRegistered module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  getMahasiswa = async (id_mahasiswa) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_mahasiswa);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const mahasiswa = await prisma.mahasiswa.findUnique({
+        where: {
+          id_mahasiswa,
+        },
+        select: {
+          id_mahasiswa: true,
+          id_prodi: true,
+          nama: true,
+          nim: true,
+          prodi: {
+            select: {
+              fakultas: {
+                select: {
+                  id_fakultas: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      mahasiswa.id_fakultas = mahasiswa.prodi.fakultas.id_fakultas;
+      delete mahasiswa.prodi;
+
+      return {
+        status: true,
+        data: mahasiswa,
+      };
+    } catch (error) {
+      console.error("getMahasiswa module error ", error);
 
       return {
         status: false,

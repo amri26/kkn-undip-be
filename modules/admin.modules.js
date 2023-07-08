@@ -944,6 +944,109 @@ class _admin {
     }
   };
 
+  editMahasiswa = async (id_mahasiswa, body) => {
+    try {
+      body = {
+        id_mahasiswa,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_mahasiswa: Joi.number().required(),
+        nama: Joi.string().required(),
+        nim: Joi.string().required(),
+        prodi: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const mhs = await prisma.mahasiswa.findUnique({
+        where: {
+          id_mahasiswa: body.id_mahasiswa,
+        },
+      });
+
+      if (!mhs) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (mhs.nim != body.nim) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nim,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIM sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: mhs.nim,
+        },
+        data: {
+          username: body.nim,
+        },
+      });
+
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: body.id_mahasiswa,
+        },
+        data: {
+          nama: body.nama,
+          nim: body.nim,
+          id_prodi: body.prodi,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteMahasiswa = async (id_mahasiswa) => {
     try {
       const checkMahasiswaRegistered =

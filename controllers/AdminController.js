@@ -162,6 +162,18 @@ app.post(
   }
 );
 
+app.put(
+  "/mahasiswa/:id_mahasiswa",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editMahasiswa(Number(req.params.id_mahasiswa), req.body)
+    );
+  }
+);
+
 app.delete(
   "/mahasiswa/:id_mahasiswa",
   userSession,

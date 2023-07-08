@@ -65,6 +65,7 @@ model gelombang {
 model fakultas {
   id_fakultas Int     @id @default(autoincrement())
   nama        String  @db.VarChar(50)
+  singkatan   String? @db.VarChar(10)
   prodi       prodi[]
 }
 
