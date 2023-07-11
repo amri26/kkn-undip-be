@@ -451,4 +451,32 @@ app.put(
   }
 );
 
+app.post("/event", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addEvent(req.body));
+});
+
+app.put(
+  "/event/:id_event",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editEvent(Number(req.params.id_event), req.body)
+    );
+  }
+);
+
+app.delete(
+  "/event/:id_event",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteEvent(Number(req.params.id_event))
+    );
+  }
+);
+
 module.exports = app;

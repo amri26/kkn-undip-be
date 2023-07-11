@@ -219,9 +219,8 @@ model reviewer {
   no_hp         String?   @db.VarChar(50)
   alamat        String?   @db.VarChar(100)
   foto_profile  String?   @db.VarChar(100)
-
-  created_at DateTime @default(now()) @db.DateTime(0)
-  user       user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  created_at    DateTime  @default(now()) @db.DateTime(0)
+  user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model pimpinan {
@@ -234,25 +233,23 @@ model pimpinan {
   no_hp         String?   @db.VarChar(50)
   alamat        String?   @db.VarChar(100)
   foto_profile  String?   @db.VarChar(100)
-
-  created_at DateTime @default(now()) @db.DateTime(0)
-  user       user?    @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  created_at    DateTime  @default(now()) @db.DateTime(0)
+  user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model dosen {
-  id_dosen      Int       @id @default(autoincrement())
-  id_user       Int?      @unique
-  nama          String    @db.VarChar(50)
-  nip           String    @unique @db.VarChar(50)
-  jenis_kelamin Int?      @db.TinyInt
-  ttl           DateTime? @db.Date()
-  no_hp         String?   @db.VarChar(50)
-  alamat        String?   @db.VarChar(100)
-  foto_profile  String?   @db.VarChar(100)
-
-  created_at DateTime   @default(now()) @db.DateTime(0)
-  user       user?      @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  proposal   proposal[]
+  id_dosen      Int        @id @default(autoincrement())
+  id_user       Int?       @unique
+  nama          String     @db.VarChar(50)
+  nip           String     @unique @db.VarChar(50)
+  jenis_kelamin Int?       @db.TinyInt
+  ttl           DateTime?  @db.Date()
+  no_hp         String?    @db.VarChar(50)
+  alamat        String?    @db.VarChar(100)
+  foto_profile  String?    @db.VarChar(100)
+  created_at    DateTime   @default(now()) @db.DateTime(0)
+  user          user?      @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  proposal      proposal[]
 }
 
 model mahasiswa {
@@ -333,4 +330,23 @@ model reportase {
   komentar       String?   @db.Text
   created_at     DateTime  @default(now()) @db.DateTime(0)
   mahasiswa      mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model pengumuman {
+  id_pengumuman Int      @id @default(autoincrement())
+  judul         String   @db.VarChar(200)
+  isi           String   @db.Text
+  peruntukan    String   @db.VarChar(100)
+  created_at    DateTime @default(now()) @db.DateTime(0)
+}
+
+model event {
+  id_event   Int      @id @default(autoincrement())
+  judul      String   @db.VarChar(200)
+  keterangan String?  @default("") @db.Text
+  tgl_mulai  DateTime @db.DateTime()
+  tgl_akhir  DateTime @db.DateTime()
+  tempat     String   @db.VarChar(100)
+  peruntukan String   @db.VarChar(100)
+  created_at DateTime @default(now()) @db.DateTime(0)
 }

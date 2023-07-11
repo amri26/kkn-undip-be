@@ -17,6 +17,7 @@ const ReportaseController = require("./controllers/ReportaseController");
 const KorwilController = require("./controllers/KorwilController");
 const FakultasController = require("./controllers/FakultasController");
 const NilaiController = require("./controllers/NilaiController");
+const EventController = require("./controllers/EventController");
 const TestController = require("./controllers/TestController");
 
 const _routes = [
@@ -39,6 +40,7 @@ const _routes = [
   ["/korwil", KorwilController],
   ["/fakultas", FakultasController],
   ["/nilai", NilaiController],
+  ["/event", EventController],
   ["/test", TestController],
 ];
 
