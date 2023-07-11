@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1224,6 +1224,206 @@
 					"response": []
 				},
 				{
+					"name": "ADD EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"keterangan\": \"\",\r\n    \"tgl_mulai\": \"2023-07-23T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-07-23T15:06:00.000Z\",\r\n    \"tempat\": \"Stadion Undip\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN Tim 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-07-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-07-21T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event/:id_event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event",
+								":id_event"
+							],
+							"variable": [
+								{
+									"key": "id_event",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN TIm 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event/:id_event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event",
+								":id_event"
+							],
+							"variable": [
+								{
+									"key": "id_event",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD MAHASISWA",
 					"event": [
 						{
@@ -1646,7 +1846,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"dosen a\",\r\n    \"nip\": \"dosen a\"\r\n}",
+							"raw": "{\r\n    \"nama\": \"dosen a\",\r\n    \"nip\": \"1221\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2109,6 +2309,75 @@
 								"admin",
 								"korwil",
 								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT KORWIL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Korwil a\",\r\n    \"nk\": \"909012\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/korwil/:id_korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"korwil",
+								":id_korwil"
+							],
+							"variable": [
+								{
+									"key": "id_korwil",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -5222,6 +5491,40 @@
 							],
 							"path": [
 								"korwil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET KORWIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/korwil/:id_korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"korwil",
+								":id_korwil"
+							],
+							"variable": [
+								{
+									"key": "id_korwil",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -8890,6 +9193,122 @@
 									"key": "id_kecamatan",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EVENT",
+			"item": [
+				{
+					"name": "LIST ALL EVENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"bappeda"
 							]
 						}
 					},
