@@ -1424,6 +1424,206 @@
 					"response": []
 				},
 				{
+					"name": "ADD PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"isi\": \"Upcara dilaksanakan pada bulan juli\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"isi\": \"Upcara dilaksanakan pada bulan Juli dan Agustus\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman/:id_pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman",
+								":id_pengumuman"
+							],
+							"variable": [
+								{
+									"key": "id_pengumuman",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN TIm 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman/:id_pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman",
+								":id_pengumuman"
+							],
+							"variable": [
+								{
+									"key": "id_pengumuman",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD MAHASISWA",
 					"event": [
 						{
@@ -9308,6 +9508,122 @@
 							],
 							"path": [
 								"event",
+								"bappeda"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PENGUMUMAN",
+			"item": [
+				{
+					"name": "LIST ALL PENGUMUMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
 								"bappeda"
 							]
 						}
