@@ -162,6 +162,18 @@ app.patch(
   }
 );
 
+app.delete(
+  "/gelombang/:id_gelombang",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteGelombang(Number(req.params.id_gelombang))
+    );
+  }
+);
+
 app.post(
   "/mahasiswa",
   userSession,

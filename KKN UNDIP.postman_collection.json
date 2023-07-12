@@ -730,6 +730,54 @@
 					"response": []
 				},
 				{
+					"name": "DELETE TEMA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST HALAMAN",
 					"request": {
 						"auth": {
@@ -1189,6 +1237,54 @@
 								{
 									"key": "id_gelombang",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE GELOMBANG",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "20"
 								}
 							]
 						}
