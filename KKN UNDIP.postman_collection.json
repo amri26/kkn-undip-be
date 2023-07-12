@@ -3357,6 +3357,54 @@
 					"response": []
 				},
 				{
+					"name": "DELETE KECAMATAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ACC PROPOSAL",
 					"event": [
 						{
@@ -5927,6 +5975,238 @@
 									"key": "id_nilai",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EVENT",
+			"item": [
+				{
+					"name": "LIST ALL EVENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"bappeda"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PENGUMUMAN",
+			"item": [
+				{
+					"name": "LIST ALL PENGUMUMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"bappeda"
 							]
 						}
 					},
@@ -9489,238 +9769,6 @@
 									"key": "id_kecamatan",
 									"value": "1"
 								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "EVENT",
-			"item": [
-				{
-					"name": "LIST ALL EVENT",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/event",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"event"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST EVENT MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/event/mahasiswa",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"event",
-								"mahasiswa"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST EVENT DOSEN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/event/dosen",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"event",
-								"dosen"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST EVENT BAPPEDA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/event/bappeda",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"event",
-								"bappeda"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "PENGUMUMAN",
-			"item": [
-				{
-					"name": "LIST ALL PENGUMUMAN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/pengumuman",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pengumuman"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST PENGUMUMAN MAHASISWA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/pengumuman/mahasiswa",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pengumuman",
-								"mahasiswa"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST PENGUMUMAN DOSEN",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/pengumuman/dosen",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pengumuman",
-								"dosen"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LIST PENGUMUMAN BAPPEDA",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/pengumuman/bappeda",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pengumuman",
-								"bappeda"
 							]
 						}
 					},

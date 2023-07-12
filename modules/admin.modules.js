@@ -2775,6 +2775,66 @@ class _admin {
     }
   };
 
+  deleteKecamatan = async (id_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.kecamatan.findUnique({
+        where: {
+          id_kecamatan,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      if (check.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Kecamatan masih dalam status aktif!",
+        };
+      }
+
+      await prisma.kecamatan.delete({
+        where: {
+          id_kecamatan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   decKecamatan = async (id_kecamatan) => {
     try {
       const schema = Joi.number().required();
