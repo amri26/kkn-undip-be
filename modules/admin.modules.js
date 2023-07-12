@@ -298,6 +298,72 @@ class _admin {
     }
   };
 
+  deleteTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      if (check.status || check.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Tema masih dalam status aktif!",
+        };
+      }
+
+      await prisma.tema_halaman.deleteMany({
+        where: {
+          id_tema,
+        },
+      });
+
+      await prisma.tema.delete({
+        where: {
+          id_tema,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listHalaman = async (id_tema) => {
     try {
       const schema = Joi.number().required();

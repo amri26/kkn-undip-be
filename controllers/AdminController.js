@@ -58,6 +58,18 @@ app.patch(
   }
 );
 
+app.delete(
+  "/tema/:id_tema",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteTema(Number(req.params.id_tema))
+    );
+  }
+);
+
 app.get(
   "/halaman/:id_tema",
   userSession,
