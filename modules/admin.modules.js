@@ -555,6 +555,8 @@ class _admin {
           id_tema_halaman,
         },
         select: {
+          tgl_akhir: true,
+          tgl_mulai: true,
           status: true,
         },
       });
@@ -567,14 +569,49 @@ class _admin {
         };
       }
 
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        !checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == false
+      ) {
+        return {
+          status: false,
+          code: 403,
+          error: "Halaman sudah berakhir!",
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == true
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.tema_halaman.update({
         where: {
           id_tema_halaman,
         },
         data: {
           status: !check.status,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
+
+      // await prisma.tema_halaman.update({
+      //   where: {
+      //     id_tema_halaman,
+      //   },
+      //   data: {
+      //     status: !check.status,
+      //   },
+      // });
 
       return {
         status: true,
@@ -858,6 +895,8 @@ class _admin {
       }
 
       if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
         !checkDate(check.tgl_mulai, check.tgl_akhir) &&
         check.status == false
       ) {
