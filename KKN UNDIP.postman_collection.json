@@ -6204,6 +6204,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "RESET NILAI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/nilai/reset/:id_nilai",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"nilai",
+								"reset",
+								":id_nilai"
+							],
+							"variable": [
+								{
+									"key": "id_nilai",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

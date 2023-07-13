@@ -113,6 +113,59 @@ class _nilai {
       };
     }
   };
+
+  resetNlai = async (id_nilai) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_nilai);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.nilai.update({
+        where: {
+          id_nilai,
+        },
+        data: {
+          pembekalan: null,
+          upacara: null,
+          kehadiran_dilokasi: null,
+          lrk: null,
+          integritas: null,
+          sosial_kemasyarakatan: null,
+          lpk: null,
+          ujian_akhir: null,
+          tugas: null,
+          uts: null,
+          uas: null,
+          nilai_akhir: null,
+          nilai_huruf: null,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("resetNlai module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _nilai();

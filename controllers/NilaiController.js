@@ -19,4 +19,11 @@ app.get("/:id_nilai", userSession, async (req, res, next) => {
   );
 });
 
+app.put("/reset/:id_nilai", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.resetNlai(Number(req.params.id_nilai))
+  );
+});
+
 module.exports = app;
