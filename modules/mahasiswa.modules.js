@@ -451,6 +451,68 @@ class _mahasiswa {
     }
   };
 
+  deletePendaftaran = async (id_mahasiswa_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_mahasiswa_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const mahasiswaKecamatan = await prisma.mahasiswa_kecamatan.findUnique({
+        where: {
+          id_mahasiswa_kecamatan,
+        },
+      });
+
+      if (!mahasiswaKecamatan) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      console.log(mahasiswaKecamatan);
+
+      if (mahasiswaKecamatan.status == 1) {
+        await prisma.mahasiswa_kecamatan_active.delete({
+          where: {
+            id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+          },
+        });
+      }
+
+      await prisma.mahasiswa_kecamatan.delete({
+        where: {
+          id_mahasiswa_kecamatan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deletePendaftaran module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listLaporan = async (id_user, type) => {
     try {
       const schema = Joi.number().required();

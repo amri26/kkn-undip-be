@@ -73,6 +73,17 @@ app.post(
   }
 );
 
+app.delete(
+  "/daftar_lokasi/:id_mahasiswa_kecamatan",
+  userSession,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deletePendaftaran(Number(req.params.id_mahasiswa_kecamatan))
+    );
+  }
+);
+
 app.get("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
   response.sendResponse(res, await modules.listLaporan(req.user.id, "lrk"));
 });
