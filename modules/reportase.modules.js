@@ -168,6 +168,58 @@ class _reportase {
       };
     }
   };
+
+  deleteReportase = async (id_reportase) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_reportase);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const reportase = await prisma.reportase.findUnique({
+        where: {
+          id_reportase,
+        },
+      });
+
+      if (!reportase) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      await prisma.reportase.delete({
+        where: {
+          id_reportase,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteReportase module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _reportase();
