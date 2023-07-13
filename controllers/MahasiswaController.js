@@ -79,7 +79,10 @@ app.delete(
   async (req, res, next) => {
     response.sendResponse(
       res,
-      await modules.deletePendaftaran(Number(req.params.id_mahasiswa_kecamatan))
+      await modules.deletePendaftaran(
+        req.user.id,
+        Number(req.params.id_mahasiswa_kecamatan)
+      )
     );
   }
 );

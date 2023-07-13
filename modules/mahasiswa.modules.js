@@ -1,4 +1,4 @@
-const { prisma } = require("../helpers/database");
+const { prisma, Role } = require("../helpers/database");
 const Joi = require("joi");
 
 class _mahasiswa {
@@ -451,11 +451,19 @@ class _mahasiswa {
     }
   };
 
-  deletePendaftaran = async (id_mahasiswa_kecamatan) => {
+  deletePendaftaran = async (id_user, id_mahasiswa_kecamatan) => {
     try {
-      const schema = Joi.number().required();
+      const body = {
+        id_user,
+        id_mahasiswa_kecamatan,
+      };
 
-      const validation = schema.validate(id_mahasiswa_kecamatan);
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_mahasiswa_kecamatan: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
 
       if (validation.error) {
         const errorDetails = validation.error.details.map(
@@ -469,6 +477,12 @@ class _mahasiswa {
         };
       }
 
+      const user = await prisma.user.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
       const mahasiswaKecamatan = await prisma.mahasiswa_kecamatan.findUnique({
         where: {
           id_mahasiswa_kecamatan,
@@ -480,6 +494,14 @@ class _mahasiswa {
           status: false,
           code: 404,
           error: "Data not found",
+        };
+      }
+
+      if (user.role === Role.MAHASISWA && mahasiswaKecamatan.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Pendaftaran sudah disetujui",
         };
       }
 
