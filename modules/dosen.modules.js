@@ -217,6 +217,90 @@ class _dosen {
     }
   };
 
+  listAllProposal = async (id_user) => {
+    try {
+      const body = {
+        id_user,
+      };
+
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const checkDosen = await prisma.dosen.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_dosen: true,
+        },
+      });
+
+      if (!checkDosen) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      const list = await prisma.proposal.findMany({
+        where: {
+          id_dosen: checkDosen.id_dosen,
+        },
+        include: {
+          dosen: true,
+          kecamatan: {
+            select: {
+              nama: true,
+              kabupaten: {
+                select: {
+                  tema: {
+                    select: {
+                      periode: true,
+                    },
+                  },
+                  nama: true,
+                },
+              },
+            },
+          },
+          gelombang: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listAllProposal module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listProposal = async (id_user, id_tema) => {
     try {
       const body = {

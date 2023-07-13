@@ -42,6 +42,10 @@ app.get(
   }
 );
 
+app.get("/proposal/all", userSession, verifyDosen, async (req, res, next) => {
+  response.sendResponse(res, await modules.listAllProposal(req.user.id));
+});
+
 app.get(
   "/proposal/:id_tema",
   userSession,

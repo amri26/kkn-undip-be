@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"dosen a\",\r\n    \"password\": \"1221\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin a\",\r\n    \"password\": \"admin a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3866,7 +3866,36 @@
 					"response": []
 				},
 				{
-					"name": "LIST PROPOSAL DOSEN",
+					"name": "LIST ALL PROPOSAL DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/proposal/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"proposal",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PROPOSAL DOSEN TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -4407,12 +4436,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/mahasiswa/:id_mahasiswa",
+							"raw": "{{url}}/mahasiswa/detail/:id_mahasiswa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"mahasiswa",
+								"detail",
 								":id_mahasiswa"
 							],
 							"variable": [
@@ -5749,6 +5779,40 @@
 								{
 									"key": "id_laporan",
 									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan/:id_laporan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan",
+								":id_laporan"
+							],
+							"variable": [
+								{
+									"key": "id_laporan",
+									"value": "6"
 								}
 							]
 						}
