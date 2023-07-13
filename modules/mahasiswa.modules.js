@@ -505,6 +505,20 @@ class _mahasiswa {
         };
       }
 
+      const nilai = await prisma.nilai.findFirst({
+        where: {
+          id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+        },
+      });
+
+      if (nilai) {
+        await prisma.nilai.deleteMany({
+          where: {
+            id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+          },
+        });
+      }
+
       const laporan = await prisma.laporan.findFirst({
         where: {
           id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
