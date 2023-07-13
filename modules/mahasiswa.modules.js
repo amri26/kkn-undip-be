@@ -483,7 +483,19 @@ class _mahasiswa {
         };
       }
 
-      console.log(mahasiswaKecamatan);
+      const laporan = await prisma.laporan.findFirst({
+        where: {
+          id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+        },
+      });
+
+      if (laporan) {
+        await prisma.laporan.deleteMany({
+          where: {
+            id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+          },
+        });
+      }
 
       if (mahasiswaKecamatan.status == 1) {
         await prisma.mahasiswa_kecamatan_active.delete({
