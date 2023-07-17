@@ -28,18 +28,21 @@ class _bappeda {
         },
       });
 
-      let totalKecamatan = 0;
-      let totalDesa = 0;
+      // let totalDesa = 0;
+      // let totalKecamatan = 0;
 
       list.forEach((bappeda) => {
+        let totalKecamatan = 0;
+        let totalDesa = 0;
         bappeda.kabupaten.forEach((kab) => {
           totalKecamatan += kab._count.kecamatan;
           kab.kecamatan.forEach((kec) => {
             totalDesa += kec._count.desa;
           });
+          bappeda.total_desa = totalDesa;
         });
+        if (bappeda.kabupaten.length <= 0) bappeda.total_desa = 0;
         bappeda.total_kecamatan = totalKecamatan;
-        bappeda.total_desa = totalDesa;
       });
 
       return {
