@@ -1,6 +1,6 @@
 {
-    "jwt": {
-        "secret": "aku-anak-sehat",
-        "expired": 1800000
-    }
+  "jwt": {
+    "secret": "aku-anak-sehat",
+    "expired": 3600000
+  }
 }

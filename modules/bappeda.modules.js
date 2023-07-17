@@ -2,235 +2,302 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _bappeda {
-    listBappeda = async () => {
-        try {
-            const list = await prisma.bappeda.findMany({
+  listBappeda = async () => {
+    try {
+      const list = await prisma.bappeda.findMany({
+        include: {
+          kabupaten: {
+            include: {
+              _count: {
+                select: {
+                  kecamatan: true,
+                },
+              },
+              kecamatan: {
                 include: {
-                    kabupaten: {
-                        select: {
-                            _count: {
-                                select: {
-                                    kecamatan: true,
-                                },
-                            },
-                            kecamatan: {
-                                select: {
-                                    _count: {
-                                        select: {
-                                            desa: true,
-                                        },
-                                    },
-                                },
-                            },
-                        },
+                  _count: {
+                    select: {
+                      desa: true,
                     },
+                  },
+                  desa: true,
                 },
-            });
+              },
+            },
+          },
+        },
+      });
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listBappeda module error ", error);
+      // let totalDesa = 0;
+      // let totalKecamatan = 0;
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      list.forEach((bappeda) => {
+        let totalKecamatan = 0;
+        let totalDesa = 0;
+        bappeda.kabupaten.forEach((kab) => {
+          totalKecamatan += kab._count.kecamatan;
+          kab.kecamatan.forEach((kec) => {
+            totalDesa += kec._count.desa;
+          });
+          bappeda.total_desa = totalDesa;
+        });
+        if (bappeda.kabupaten.length <= 0) bappeda.total_desa = 0;
+        bappeda.total_kecamatan = totalKecamatan;
+      });
 
-    addKabupaten = async (id_user, body) => {
-        try {
-            body = {
-                id_user,
-                ...body,
-            };
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listBappeda module error ", error);
 
-            const schema = Joi.object({
-                id_user: Joi.number().required(),
-                id_tema: Joi.number().required(),
-            });
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const validation = schema.validate(body);
+  getBappeda = async (id_bappeda) => {
+    try {
+      const schema = Joi.number().required();
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      const validation = schema.validate(id_bappeda);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            const checkBappeda = await prisma.bappeda.findUnique({
-                where: {
-                    id_user,
-                },
-                select: {
-                    id_bappeda: true,
-                    nama_kabupaten: true,
-                },
-            });
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            if (!checkBappeda) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            }
+      const bappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_bappeda,
+        },
+        select: {
+          id_bappeda: true,
+          nama: true,
+          nb: true,
+          nama_kabupaten: true,
+          nama_pj: true,
+        },
+      });
 
-            const checkTema = await prisma.tema.findUnique({
-                where: {
-                    id_tema: body.id_tema,
-                },
-                select: {
-                    status: true,
-                },
-            });
+      return {
+        status: true,
+        data: bappeda,
+      };
+    } catch (error) {
+      console.error("getBappeda module error ", error);
 
-            if (!checkTema.status) {
-                return {
-                    status: false,
-                    code: 403,
-                    error: "Forbidden, Tema data is not activated",
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const checkKabupaten = await prisma.kabupaten.findFirst({
-                where: {
-                    id_bappeda: checkBappeda.id_bappeda,
-                    id_tema: body.id_tema,
-                },
-                select: {
-                    id_kabupaten: true,
-                },
-            });
+  addKabupaten = async (id_user, body) => {
+    try {
+      body = {
+        id_user,
+        ...body,
+      };
 
-            if (checkKabupaten) {
-                return {
-                    status: false,
-                    code: 403,
-                    error: "Forbidden, Kabupaten data is already created",
-                };
-            }
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_tema: Joi.number().required(),
+      });
 
-            await prisma.kabupaten.create({
-                data: {
-                    id_bappeda: checkBappeda.id_bappeda,
-                    id_tema: body.id_tema,
-                    nama: checkBappeda.nama_kabupaten,
-                },
-            });
+      const validation = schema.validate(body);
 
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addKabupaten module error ", error);
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-    addKecamatan = async (id_user, body) => {
-        try {
-            body = {
-                id_user,
-                ...body,
-            };
+      const checkBappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_bappeda: true,
+          nama_kabupaten: true,
+        },
+      });
 
-            const schema = Joi.object({
-                id_user: Joi.number().required(),
-                id_kabupaten: Joi.number().required(),
-                nama: Joi.string().required(),
-                potensi: Joi.string().required(),
-                desa: Joi.array().items(
-                    Joi.object({
-                        nama: Joi.string().required(),
-                    })
-                ),
-            });
+      if (!checkBappeda) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
 
-            const validation = schema.validate(body);
+      const checkTema = await prisma.tema.findUnique({
+        where: {
+          id_tema: body.id_tema,
+        },
+        select: {
+          status: true,
+        },
+      });
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      if (!checkTema.status) {
+        return {
+          status: false,
+          code: 403,
+          error: "Forbidden, Tema data is not activated",
+        };
+      }
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      const checkKabupaten = await prisma.kabupaten.findFirst({
+        where: {
+          id_bappeda: checkBappeda.id_bappeda,
+          id_tema: body.id_tema,
+        },
+        select: {
+          id_kabupaten: true,
+        },
+      });
 
-            const check = await prisma.kabupaten.findUnique({
-                where: {
-                    id_kabupaten: body.id_kabupaten,
-                },
-                select: {
-                    bappeda: {
-                        select: {
-                            id_user: true,
-                        },
-                    },
-                },
-            });
+      if (checkKabupaten) {
+        return {
+          status: false,
+          code: 403,
+          error: "Forbidden, Kabupaten data is already created",
+        };
+      }
 
-            if (!check) {
-                return {
-                    status: false,
-                    code: 404,
-                    error: "Data not found",
-                };
-            } else if (check.bappeda.id_user !== id_user) {
-                return {
-                    status: false,
-                    code: 403,
-                    error: "Forbidden",
-                };
-            }
+      await prisma.kabupaten.create({
+        data: {
+          id_bappeda: checkBappeda.id_bappeda,
+          id_tema: body.id_tema,
+          nama: checkBappeda.nama_kabupaten,
+        },
+      });
 
-            const add = await prisma.kecamatan.create({
-                data: {
-                    id_kabupaten: body.id_kabupaten,
-                    nama: body.nama,
-                    potensi: body.potensi,
-                },
-                select: {
-                    id_kecamatan: true,
-                },
-            });
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addKabupaten module error ", error);
 
-            body.desa.forEach(async (e) => {
-                await prisma.desa.create({
-                    data: {
-                        id_kecamatan: add.id_kecamatan,
-                        nama: e.nama,
-                    },
-                });
-            });
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            return {
-                status: true,
-                code: 201,
-            };
-        } catch (error) {
-            console.error("addKecamatan module error ", error);
+  addKecamatan = async (id_user, body) => {
+    try {
+      body = {
+        id_user,
+        ...body,
+      };
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_kabupaten: Joi.number().required(),
+        nama: Joi.string().required(),
+        potensi: Joi.string().required(),
+        desa: Joi.array().items(
+          Joi.object({
+            nama: Joi.string().required(),
+          })
+        ),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.kabupaten.findUnique({
+        where: {
+          id_kabupaten: body.id_kabupaten,
+        },
+        select: {
+          bappeda: {
+            select: {
+              id_user: true,
+            },
+          },
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (check.bappeda.id_user !== id_user) {
+        return {
+          status: false,
+          code: 403,
+          error: "Forbidden",
+        };
+      }
+
+      const add = await prisma.kecamatan.create({
+        data: {
+          id_kabupaten: body.id_kabupaten,
+          nama: body.nama,
+          potensi: body.potensi,
+        },
+        select: {
+          id_kecamatan: true,
+        },
+      });
+
+      body.desa.forEach(async (e) => {
+        await prisma.desa.create({
+          data: {
+            id_kecamatan: add.id_kecamatan,
+            nama: e.nama,
+          },
+        });
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _bappeda();

@@ -15,6 +15,13 @@ app.get("/", userSession, verifySuperAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listAdmin());
 });
 
+app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getAdmin(Number(req.params.id_admin))
+  );
+});
+
 app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listUser());
 });
@@ -51,6 +58,18 @@ app.patch(
   }
 );
 
+app.delete(
+  "/tema/:id_tema",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteTema(Number(req.params.id_tema))
+    );
+  }
+);
+
 app.get(
   "/halaman/:id_tema",
   userSession,
@@ -66,6 +85,18 @@ app.get(
 app.post("/halaman", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addHalaman(req.body));
 });
+
+app.put(
+  "/halaman/edit/:id_tema_halaman",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editHalaman(Number(req.params.id_tema_halaman), req.body)
+    );
+  }
+);
 
 app.patch(
   "/halaman/:id_tema_halaman",
@@ -131,6 +162,18 @@ app.patch(
   }
 );
 
+app.delete(
+  "/gelombang/:id_gelombang",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteGelombang(Number(req.params.id_gelombang))
+    );
+  }
+);
+
 app.post(
   "/mahasiswa",
   userSession,
@@ -147,6 +190,18 @@ app.post(
   verifyAdmin,
   async (req, res, next) => {
     response.sendResponse(res, await modules.addMahasiswaSingle(req.body));
+  }
+);
+
+app.put(
+  "/mahasiswa/:id_mahasiswa",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editMahasiswa(Number(req.params.id_mahasiswa), req.body)
+    );
   }
 );
 
@@ -176,6 +231,18 @@ app.post("/dosen/single", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addDosenSingle(req.body));
 });
 
+app.put(
+  "/dosen/:id_dosen",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editDosen(Number(req.params.id_dosen), req.body)
+    );
+  }
+);
+
 app.delete(
   "/dosen/:id_dosen",
   userSession,
@@ -200,6 +267,18 @@ app.post(
 app.post("/korwil/single", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.addKorwilSingle(req.body));
 });
+
+app.put(
+  "/korwil/:id_korwil",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editKorwil(Number(req.params.id_korwil), req.body)
+    );
+  }
+);
 
 app.delete(
   "/korwil/:id_korwil",
@@ -238,6 +317,18 @@ app.post(
   }
 );
 
+app.put(
+  "/bappeda/:id_bappeda",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editBappeda(Number(req.params.id_bappeda), req.body)
+    );
+  }
+);
+
 app.delete(
   "/bappeda/:id_bappeda",
   userSession,
@@ -269,6 +360,18 @@ app.post(
   }
 );
 
+app.put(
+  "/reviewer/:id_reviewer",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editReviewer(Number(req.params.id_reviewer), req.body)
+    );
+  }
+);
+
 app.delete(
   "/reviewer/:id_reviewer",
   userSession,
@@ -297,6 +400,18 @@ app.post(
   verifyAdmin,
   async (req, res, next) => {
     response.sendResponse(res, await modules.addPimpinanSingle(req.body));
+  }
+);
+
+app.put(
+  "/pimpinan/:id_pimpinan",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editPimpinan(Number(req.params.id_pimpinan), req.body)
+    );
   }
 );
 
@@ -336,6 +451,18 @@ app.put(
   }
 );
 
+app.delete(
+  "/kecamatan/:id_kecamatan",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteKecamatan(Number(req.params.id_kecamatan))
+    );
+  }
+);
+
 app.put(
   "/proposal/acc/:id_proposal",
   userSession,
@@ -356,6 +483,62 @@ app.put(
     response.sendResponse(
       res,
       await modules.decProposal(Number(req.params.id_proposal))
+    );
+  }
+);
+
+app.post("/event", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addEvent(req.body));
+});
+
+app.put(
+  "/event/:id_event",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editEvent(Number(req.params.id_event), req.body)
+    );
+  }
+);
+
+app.delete(
+  "/event/:id_event",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteEvent(Number(req.params.id_event))
+    );
+  }
+);
+
+app.post("/pengumuman", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addPengumuman(req.body));
+});
+
+app.put(
+  "/pengumuman/:id_pengumuman",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.editPengumuman(Number(req.params.id_pengumuman), req.body)
+    );
+  }
+);
+
+app.delete(
+  "/pengumuman/:id_pengumuman",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deletePengumuman(Number(req.params.id_pengumuman))
     );
   }
 );

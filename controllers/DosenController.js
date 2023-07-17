@@ -16,6 +16,13 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listDosen());
 });
 
+app.get("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getDosen(Number(req.params.id_dosen))
+  );
+});
+
 app.get("/:id_kecamatan", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
@@ -34,6 +41,10 @@ app.get(
     );
   }
 );
+
+app.get("/proposal/all", userSession, verifyDosen, async (req, res, next) => {
+  response.sendResponse(res, await modules.listAllProposal(req.user.id));
+});
 
 app.get(
   "/proposal/:id_tema",

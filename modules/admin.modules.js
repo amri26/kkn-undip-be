@@ -2,6 +2,7 @@ const { prisma, Prisma, Role } = require("../helpers/database");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
+const { checkDate } = require("../helpers/utils");
 
 class _admin {
   listAdmin = async () => {
@@ -14,6 +15,49 @@ class _admin {
       };
     } catch (error) {
       console.error("listAdmin module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  getAdmin = async (id_admin) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_admin);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const admin = await prisma.admin.findUnique({
+        where: {
+          id_admin,
+        },
+        select: {
+          id_admin: true,
+          nama: true,
+          nip: true,
+        },
+      });
+
+      return {
+        status: true,
+        data: admin,
+      };
+    } catch (error) {
+      console.error("getAdmin module error ", error);
 
       return {
         status: false,
@@ -254,6 +298,72 @@ class _admin {
     }
   };
 
+  deleteTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      if (check.status || check.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Tema masih dalam status aktif!",
+        };
+      }
+
+      await prisma.tema_halaman.deleteMany({
+        where: {
+          id_tema,
+        },
+      });
+
+      await prisma.tema.delete({
+        where: {
+          id_tema,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteTema module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listHalaman = async (id_tema) => {
     try {
       const schema = Joi.number().required();
@@ -280,6 +390,26 @@ class _admin {
           halaman: true,
           tema: true,
         },
+      });
+
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.tema_halaman.update({
+              where: {
+                id_tema_halaman: item.id_tema_halaman,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
       });
 
       return {
@@ -336,6 +466,72 @@ class _admin {
     }
   };
 
+  editHalaman = async (id_tema_halaman, body) => {
+    try {
+      body = {
+        id_tema_halaman,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_tema_halaman: Joi.number().required(),
+        tgl_mulai: Joi.date().allow(null),
+        tgl_akhir: Joi.date().allow(null),
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        body.tgl_mulai &&
+        body.tgl_akhir &&
+        checkDate(body.tgl_mulai, body.tgl_akhir) &&
+        body.status == 0
+      ) {
+        isStatusEdited = 1;
+      }
+
+      await prisma.tema_halaman.update({
+        where: {
+          id_tema_halaman: body.id_tema_halaman,
+        },
+        data: {
+          tgl_mulai: body.tgl_mulai ?? null,
+          tgl_akhir: body.tgl_akhir ?? null,
+          status: body.status ? true : false,
+          isStatusEdited: isStatusEdited ? true : false,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editHalaman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   switchHalaman = async (id_tema_halaman) => {
     try {
       const schema = Joi.number().required();
@@ -359,6 +555,8 @@ class _admin {
           id_tema_halaman,
         },
         select: {
+          tgl_akhir: true,
+          tgl_mulai: true,
           status: true,
         },
       });
@@ -371,14 +569,49 @@ class _admin {
         };
       }
 
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        !checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == false
+      ) {
+        return {
+          status: false,
+          code: 403,
+          error: "Halaman sudah berakhir!",
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == true
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.tema_halaman.update({
         where: {
           id_tema_halaman,
         },
         data: {
           status: !check.status,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
+
+      // await prisma.tema_halaman.update({
+      //   where: {
+      //     id_tema_halaman,
+      //   },
+      //   data: {
+      //     status: !check.status,
+      //   },
+      // });
 
       return {
         status: true,
@@ -434,6 +667,26 @@ class _admin {
             },
           },
         },
+      });
+
+      // check tanggal mulai dan akhir
+      list.forEach(async (item) => {
+        if (item.tgl_mulai && item.tgl_akhir) {
+          let isOpen = checkDate(item.tgl_mulai, item.tgl_akhir);
+
+          if (!(isOpen && item.isStatusEdited)) {
+            item.status = isOpen;
+
+            await prisma.gelombang.update({
+              where: {
+                id_gelombang: item.id_gelombang,
+              },
+              data: {
+                status: item.status,
+              },
+            });
+          }
+        }
       });
 
       return {
@@ -564,6 +817,18 @@ class _admin {
         };
       }
 
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        body.tgl_mulai &&
+        body.tgl_akhir &&
+        checkDate(body.tgl_mulai, body.tgl_akhir) &&
+        body.status == 0
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.gelombang.update({
         where: {
           id_gelombang,
@@ -574,6 +839,7 @@ class _admin {
           tgl_mulai: body.tgl_mulai ?? null,
           tgl_akhir: body.tgl_akhir ?? null,
           status: body.status ? true : false,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
 
@@ -614,6 +880,8 @@ class _admin {
           id_gelombang,
         },
         select: {
+          tgl_akhir: true,
+          tgl_mulai: true,
           status: true,
         },
       });
@@ -626,12 +894,38 @@ class _admin {
         };
       }
 
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        !checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == false
+      ) {
+        return {
+          status: false,
+          code: 403,
+          error: "Gelombang sudah berakhir!",
+        };
+      }
+
+      let isStatusEdited = 0;
+
+      // cek apakah status diubah manual
+      if (
+        check.tgl_mulai &&
+        check.tgl_akhir &&
+        checkDate(check.tgl_mulai, check.tgl_akhir) &&
+        check.status == true
+      ) {
+        isStatusEdited = 1;
+      }
+
       await prisma.gelombang.update({
         where: {
           id_gelombang,
         },
         data: {
           status: !check.status,
+          isStatusEdited: isStatusEdited ? true : false,
         },
       });
 
@@ -641,6 +935,66 @@ class _admin {
       };
     } catch (error) {
       console.error("switchGelombang module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deleteGelombang = async (id_gelombang) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_gelombang);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.gelombang.findUnique({
+        where: {
+          id_gelombang,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      if (check.status || check.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Gelombang masih dalam status aktif!",
+        };
+      }
+
+      await prisma.gelombang.delete({
+        where: {
+          id_gelombang,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteGelombang module error ", error);
 
       return {
         status: false,
@@ -790,6 +1144,110 @@ class _admin {
       }
 
       console.error("addMahasiswaSingle module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editMahasiswa = async (id_mahasiswa, body) => {
+    try {
+      body = {
+        id_mahasiswa,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_mahasiswa: Joi.number().required(),
+        nama: Joi.string().required(),
+        nim: Joi.string().required(),
+        prodi: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const mhs = await prisma.mahasiswa.findUnique({
+        where: {
+          id_mahasiswa: body.id_mahasiswa,
+        },
+      });
+
+      if (!mhs) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (mhs.nim != body.nim) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nim,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIM sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: mhs.nim,
+        },
+        data: {
+          username: body.nim,
+          password: bcrypt.hashSync(body.nim, 10),
+        },
+      });
+
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: body.id_mahasiswa,
+        },
+        data: {
+          nama: body.nama,
+          nim: body.nim,
+          id_prodi: body.prodi,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editMahasiswa module error ", error);
 
       return {
         status: false,
@@ -991,6 +1449,108 @@ class _admin {
     }
   };
 
+  editDosen = async (id_dosen, body) => {
+    try {
+      body = {
+        id_dosen,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_dosen: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const dosen = await prisma.dosen.findUnique({
+        where: {
+          id_dosen: body.id_dosen,
+        },
+      });
+
+      if (!dosen) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (dosen.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: dosen.nip,
+        },
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+        },
+      });
+
+      await prisma.dosen.update({
+        where: {
+          id_dosen: body.id_dosen,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteDosen = async (id_dosen) => {
     try {
       const checkDosenRegistered = await prisma.proposal.findFirst({
@@ -1150,6 +1710,98 @@ class _admin {
       }
 
       console.error("addKorwilSingle module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editKorwil = async (id_korwil, body) => {
+    try {
+      body = {
+        id_korwil,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_korwil: Joi.number().required(),
+        nama: Joi.string().required(),
+        nk: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const korwil = await prisma.korwil.findUnique({
+        where: {
+          id_korwil: body.id_korwil,
+        },
+      });
+
+      if (!korwil) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (korwil.nk != body.nk) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nk,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, nomor induk korwil sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.korwil.update({
+        where: {
+          id_korwil: body.id_korwil,
+        },
+        data: {
+          nama: body.nama,
+          nk: body.nk,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editKorwil module error ", error);
 
       return {
         status: false,
@@ -1359,6 +2011,112 @@ class _admin {
     }
   };
 
+  editBappeda = async (id_bappeda, body) => {
+    try {
+      body = {
+        id_bappeda,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_bappeda: Joi.number().required(),
+        nama: Joi.string().required(),
+        nb: Joi.string().required(),
+        nama_kabupaten: Joi.string().required(),
+        nama_pj: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const bappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+      });
+
+      if (!bappeda) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (bappeda.nb != body.nb) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nb,
+          },
+          select: {
+            username: true,
+            password: bcrypt.hashSync(body.nb, 10),
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, nomor induk sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: bappeda.nb,
+        },
+        data: {
+          username: body.nb,
+        },
+      });
+
+      await prisma.bappeda.update({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+        data: {
+          nama: body.nama,
+          nb: body.nb,
+          nama_kabupaten: body.nama_kabupaten,
+          nama_pj: body.nama_pj,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteBappeda = async (id_bappeda) => {
     try {
       const checkBappedaRegistered = await prisma.kecamatan.findFirst({
@@ -1554,6 +2312,108 @@ class _admin {
     }
   };
 
+  editReviewer = async (id_reviewer, body) => {
+    try {
+      body = {
+        id_reviewer,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_reviewer: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const reviewer = await prisma.reviewer.findUnique({
+        where: {
+          id_reviewer: body.id_reviewer,
+        },
+      });
+
+      if (!reviewer) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (reviewer.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: reviewer.nip,
+        },
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+        },
+      });
+
+      await prisma.reviewer.update({
+        where: {
+          id_reviewer: body.id_reviewer,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editReviewer module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deleteReviewer = async (id_reviewer) => {
     try {
       const reviewer = await prisma.reviewer.delete({
@@ -1732,6 +2592,108 @@ class _admin {
     }
   };
 
+  editPimpinan = async (id_pimpinan, body) => {
+    try {
+      body = {
+        id_pimpinan,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_pimpinan: Joi.number().required(),
+        nama: Joi.string().required(),
+        nip: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const pimpinan = await prisma.pimpinan.findUnique({
+        where: {
+          id_pimpinan: body.id_pimpinan,
+        },
+      });
+
+      if (!pimpinan) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (pimpinan.nip != body.nip) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nip,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NIP sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: pimpinan.nip,
+        },
+        data: {
+          username: body.nip,
+          password: bcrypt.hashSync(body.nip, 10),
+        },
+      });
+
+      await prisma.pimpinan.update({
+        where: {
+          id_pimpinan: body.id_pimpinan,
+        },
+        data: {
+          nama: body.nama,
+          nip: body.nip,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editPimpinan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   deletePimpinan = async (id_pimpinan) => {
     try {
       const pimpinan = await prisma.pimpinan.delete({
@@ -1805,6 +2767,66 @@ class _admin {
       };
     } catch (error) {
       console.error("accKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deleteKecamatan = async (id_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.kecamatan.findUnique({
+        where: {
+          id_kecamatan,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      if (check.status == 1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Kecamatan masih dalam status aktif!",
+        };
+      }
+
+      await prisma.kecamatan.delete({
+        where: {
+          id_kecamatan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteKecamatan module error ", error);
 
       return {
         status: false,
@@ -1929,6 +2951,288 @@ class _admin {
       };
     } catch (error) {
       console.error("decProposal module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addEvent = async (body) => {
+    try {
+      const schema = Joi.object({
+        judul: Joi.string().required(),
+        keterangan: Joi.string().allow(null, ""),
+        tgl_mulai: Joi.date().required(),
+        tgl_akhir: Joi.date().required(),
+        tempat: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.event.create({
+        data: {
+          judul: body.judul,
+          keterangan: body.keterangan,
+          tgl_mulai: body.tgl_mulai,
+          tgl_akhir: body.tgl_akhir,
+          tempat: body.tempat,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addEvent module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editEvent = async (id_event, body) => {
+    try {
+      body = {
+        id_event,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_event: Joi.number().required(),
+        judul: Joi.string().required(),
+        keterangan: Joi.string(),
+        tgl_mulai: Joi.date().required(),
+        tgl_akhir: Joi.date().required(),
+        tempat: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.event.update({
+        where: {
+          id_event: body.id_event,
+        },
+        data: {
+          judul: body.judul,
+          keterangan: body.keterangan,
+          tgl_mulai: body.tgl_mulai,
+          tgl_akhir: body.tgl_akhir,
+          tempat: body.tempat,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editEvent module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deleteEvent = async (id_event) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_event);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.event.delete({
+        where: {
+          id_event,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteEvent module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addPengumuman = async (body) => {
+    try {
+      const schema = Joi.object({
+        judul: Joi.string().required(),
+        isi: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.create({
+        data: {
+          judul: body.judul,
+          isi: body.isi,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addPengumuman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editPengumuman = async (id_pengumuman, body) => {
+    try {
+      body = {
+        id_pengumuman,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_pengumuman: Joi.number().required(),
+        judul: Joi.string().required(),
+        isi: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.update({
+        where: {
+          id_pengumuman: body.id_pengumuman,
+        },
+        data: {
+          judul: body.judul,
+          isi: body.isi,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editPengumuman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deletePengumuman = async (id_pengumuman) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_pengumuman);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.delete({
+        where: {
+          id_pengumuman,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deletePengumuman module error ", error);
 
       return {
         status: false,

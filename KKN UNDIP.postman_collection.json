@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"dosen a\",\r\n    \"password\": \"dosen a\"\r\n}",
+							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,6 +91,222 @@
 						},
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"riwayat_penyakit\": \"Tidak ada\",\r\n    \"nama_ortu\": \"Rudiger\",\r\n    \"no_hp_ortu\": \"09832565\",\r\n    \"alamat_ortu\": \"Jalan Kenanga\",\r\n    \"nama_cp_urgent\": \"Ibu Kos\",\r\n    \"no_hp_cp_urgent\": \"93797324\",\r\n    \"alamat_cp_urgent\": \"Jalan Banyubiru\",\r\n    \"hubungan\": \"Ibu kos\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\",\r\n    \"nama_kabupaten\": \"Kab. Merangin\",\r\n    \"nama_pj\": \"PJ Merangin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE PIMPINAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PROFILE REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Ini nama setelah diedit\",\r\n    \"jenis_kelamin\": 1,\r\n    \"ttl\": \"2023-07-05T07:22:28.000Z\",\r\n    \"no_hp\": \"084924589\",\r\n    \"alamat\": \"Jalan Kuningan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{url}}/auth",
 							"host": [
@@ -169,6 +385,75 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "EDIT ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Admin B\",\r\n    \"nip\": \"admin bc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/superadmin/admin/:id_admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"superadmin",
+								"admin",
+								":id_admin"
+							],
+							"variable": [
+								{
+									"key": "id_admin",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -197,6 +482,40 @@
 							],
 							"path": [
 								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/:id_admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								":id_admin"
+							],
+							"variable": [
+								{
+									"key": "id_admin",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -411,6 +730,54 @@
 					"response": []
 				},
 				{
+					"name": "DELETE TEMA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST HALAMAN",
 					"request": {
 						"auth": {
@@ -502,6 +869,76 @@
 							"path": [
 								"admin",
 								"halaman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT HALAMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-06-22T15:06:00.000Z\",\r\n    \"status\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/halaman/edit/:id_tema_halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"halaman",
+								"edit",
+								":id_tema_halaman"
+							],
+							"variable": [
+								{
+									"key": "id_tema_halaman",
+									"value": "7"
+								}
 							]
 						}
 					},
@@ -807,6 +1244,54 @@
 					"response": []
 				},
 				{
+					"name": "DELETE GELOMBANG",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/gelombang/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"gelombang",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_gelombang",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST USER",
 					"request": {
 						"auth": {
@@ -829,6 +1314,406 @@
 							"path": [
 								"admin",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"keterangan\": \"\",\r\n    \"tgl_mulai\": \"2023-07-23T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-07-23T15:06:00.000Z\",\r\n    \"tempat\": \"Stadion Undip\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN Tim 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-07-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-07-21T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event/:id_event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event",
+								":id_event"
+							],
+							"variable": [
+								{
+									"key": "id_event",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE EVENT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN TIm 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/event/:id_event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"event",
+								":id_event"
+							],
+							"variable": [
+								{
+									"key": "id_event",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"isi\": \"Upcara dilaksanakan pada bulan juli\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Upacara KKN Tim 1 2023\",\r\n    \"isi\": \"Upcara dilaksanakan pada bulan Juli dan Agustus\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman/:id_pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman",
+								":id_pengumuman"
+							],
+							"variable": [
+								{
+									"key": "id_pengumuman",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE PENGUMUMAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"judul\": \"Pembekalan KKN TIm 1 2023\",\r\n    \"keterangan\": \"Edit\",\r\n    \"tgl_mulai\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tgl_akhir\": \"2023-06-20T15:06:00.000Z\",\r\n    \"tempat\": \"Fakultas Hukum\",\r\n    \"peruntukan\": \"MAHASISWA, DOSEN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pengumuman/:id_pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pengumuman",
+								":id_pengumuman"
+							],
+							"variable": [
+								{
+									"key": "id_pengumuman",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -955,6 +1840,75 @@
 								"admin",
 								"mahasiswa",
 								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT MAHASISWA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Wahyu Purnomo Ady\",\r\n    \"nim\": \"240602\",\r\n    \"prodi\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/mahasiswa/:id_mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"mahasiswa",
+								":id_mahasiswa"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -1147,6 +2101,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT DOSEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"dosen a\",\r\n    \"nip\": \"1221\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/dosen/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"dosen",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_dosen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE DOSEN",
 					"event": [
 						{
@@ -1327,6 +2350,75 @@
 								"admin",
 								"bappeda",
 								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT BAPPEDA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"BAPPEDA Semarang\",\r\n    \"nb\": \"090909\",\r\n    \"nama_kabupaten\": \"Kab. Semarang\",\r\n    \"nama_pj\": \"Bupati Semarang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/bappeda/:id_bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"bappeda",
+								":id_bappeda"
+							],
+							"variable": [
+								{
+									"key": "id_bappeda",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -1519,6 +2611,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT KORWIL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Korwil a\",\r\n    \"nk\": \"909012\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/korwil/:id_korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"korwil",
+								":id_korwil"
+							],
+							"variable": [
+								{
+									"key": "id_korwil",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE KORWIL",
 					"event": [
 						{
@@ -1699,6 +2860,75 @@
 								"admin",
 								"reviewer",
 								"single"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT REVIEWER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Reviewer A\",\r\n    \"nip\": \"1331\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/reviewer/:id_reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"reviewer",
+								":id_reviewer"
+							],
+							"variable": [
+								{
+									"key": "id_reviewer",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -1891,6 +3121,75 @@
 					"response": []
 				},
 				{
+					"name": "EDIT PIMPINAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Pimpinan AC\",\r\n    \"nip\": \"7879\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/pimpinan/:id_pimpinan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"pimpinan",
+								":id_pimpinan"
+							],
+							"variable": [
+								{
+									"key": "id_pimpinan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE PIMPINAN",
 					"event": [
 						{
@@ -2058,6 +3357,54 @@
 					"response": []
 				},
 				{
+					"name": "DELETE KECAMATAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ACC PROPOSAL",
 					"event": [
 						{
@@ -2182,6 +3529,40 @@
 							],
 							"path": [
 								"bappeda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/bappeda/:id_bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bappeda",
+								":id_bappeda"
+							],
+							"variable": [
+								{
+									"key": "id_bappeda",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -2344,6 +3725,40 @@
 					"response": []
 				},
 				{
+					"name": "GET DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/:id_dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								":id_dosen"
+							],
+							"variable": [
+								{
+									"key": "id_dosen",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST DOSEN WILAYAH",
 					"request": {
 						"auth": {
@@ -2451,7 +3866,36 @@
 					"response": []
 				},
 				{
-					"name": "LIST PROPOSAL DOSEN",
+					"name": "LIST ALL PROPOSAL DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/proposal/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"proposal",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PROPOSAL DOSEN TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2977,6 +4421,41 @@
 					"response": []
 				},
 				{
+					"name": "GET MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/detail/:id_mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"detail",
+								":id_mahasiswa"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DAFTAR LOKASI",
 					"event": [
 						{
@@ -3033,6 +4512,54 @@
 							"path": [
 								"mahasiswa",
 								"daftar_lokasi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE PENDAFTARAN MAHASISWA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/daftar_lokasi/:id_mahasiswa_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"daftar_lokasi",
+								":id_mahasiswa_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa_kecamatan",
+									"value": "8"
+								}
 							]
 						}
 					},
@@ -3388,7 +4915,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"judul\": \"Kebudayaan Petani dan Peternak Desa ABCD\",\r\n    \"isi\": \"Isi Desa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3476,6 +5003,40 @@
 					"response": []
 				},
 				{
+					"name": "GET REVIEWER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reviewer/:id_reviewer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reviewer",
+								":id_reviewer"
+							],
+							"variable": [
+								{
+									"key": "id_reviewer",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "EVALUATE PROPOSAL",
 					"event": [
 						{
@@ -3552,6 +5113,40 @@
 							],
 							"path": [
 								"pimpinan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PIMPINAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pimpinan/:id_pimpinan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pimpinan",
+								":id_pimpinan"
+							],
+							"variable": [
+								{
+									"key": "id_pimpinan",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -3782,6 +5377,85 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "DELETE PROPOSAL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 201', () => {\r",
+									"   pm.response.to.have.status(201);\r",
+									"}); \r",
+									" \r",
+									"pm.test('response Content-Type header should have application/json value', () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.includes('application/json');\r",
+									"}); \r",
+									" \r",
+									"pm.test('response body should have correct property and value', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									" \r",
+									"    pm.expect(responseJson).to.ownProperty('status');\r",
+									"\r",
+									"    pm.expect(responseJson.status).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ACER NITRO/Desktop/transkrip.pdf"
+								},
+								{
+									"key": "id_kecamatan",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "id_gelombang",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/proposal/:id_proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"proposal",
+								":id_proposal"
+							],
+							"variable": [
+								{
+									"key": "id_proposal",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3914,6 +5588,40 @@
 								},
 								{
 									"key": "id_halaman",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET HALAMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/halaman/:id_tema_halaman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"halaman",
+								":id_tema_halaman"
+							],
+							"variable": [
+								{
+									"key": "id_tema_halaman",
 									"value": "1"
 								}
 							]
@@ -4155,6 +5863,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "DELETE LAPORAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/laporan/:id_laporan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"laporan",
+								":id_laporan"
+							],
+							"variable": [
+								{
+									"key": "id_laporan",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -4256,6 +5998,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "DELETE REPORTASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reportase/:id_reportase",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportase",
+								":id_reportase"
+							],
+							"variable": [
+								{
+									"key": "id_reportase",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -4284,6 +6060,40 @@
 							],
 							"path": [
 								"korwil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET KORWIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/korwil/:id_korwil",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"korwil",
+								":id_korwil"
+							],
+							"variable": [
+								{
+									"key": "id_korwil",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -4390,6 +6200,273 @@
 									"key": "id_nilai",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RESET NILAI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/nilai/reset/:id_nilai",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"nilai",
+								"reset",
+								":id_nilai"
+							],
+							"variable": [
+								{
+									"key": "id_nilai",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EVENT",
+			"item": [
+				{
+					"name": "LIST ALL EVENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST EVENT BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"bappeda"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PENGUMUMAN",
+			"item": [
+				{
+					"name": "LIST ALL PENGUMUMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN MAHASISWA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/mahasiswa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN DOSEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/dosen",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PENGUMUMAN BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/bappeda",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								"bappeda"
 							]
 						}
 					},

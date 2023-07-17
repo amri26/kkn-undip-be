@@ -21,6 +21,49 @@ class _dosen {
     }
   };
 
+  getDosen = async (id_dosen) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_dosen);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const dosen = await prisma.dosen.findUnique({
+        where: {
+          id_dosen,
+        },
+        select: {
+          id_dosen: true,
+          nama: true,
+          nip: true,
+        },
+      });
+
+      return {
+        status: true,
+        data: dosen,
+      };
+    } catch (error) {
+      console.error("getDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listDosenWilayah = async (id_kecamatan) => {
     try {
       const list = await prisma.proposal.findMany({
@@ -166,6 +209,90 @@ class _dosen {
       };
     } catch (error) {
       console.error("listMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  listAllProposal = async (id_user) => {
+    try {
+      const body = {
+        id_user,
+      };
+
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const checkDosen = await prisma.dosen.findUnique({
+        where: {
+          id_user,
+        },
+        select: {
+          id_dosen: true,
+        },
+      });
+
+      if (!checkDosen) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      const list = await prisma.proposal.findMany({
+        where: {
+          id_dosen: checkDosen.id_dosen,
+        },
+        include: {
+          dosen: true,
+          kecamatan: {
+            select: {
+              nama: true,
+              kabupaten: {
+                select: {
+                  tema: {
+                    select: {
+                      periode: true,
+                    },
+                  },
+                  nama: true,
+                },
+              },
+            },
+          },
+          gelombang: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listAllProposal module error ", error);
 
       return {
         status: false,
