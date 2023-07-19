@@ -106,8 +106,6 @@ class _test {
       for (let i = 0; i < result.mahasiswa.length; i++) {
         const e = result.mahasiswa[i];
 
-        console.log(e);
-
         const checkUser = await prisma.user.findUnique({
           where: {
             username: String(e.nim),
