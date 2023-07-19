@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6b5d5f4a-60a4-4dc1-8e6e-ab9a8c614c59",
+		"_postman_id": "479778b7-63fb-48e9-b8b7-34a0f0b52c47",
 		"name": "KKN UNDIP",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18808497"
@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"240601\",\r\n    \"password\": \"240601\"\r\n}",
+							"raw": "{\r\n    \"username\": \"111\",\r\n    \"password\": \"111\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3569,6 +3569,35 @@
 					"response": []
 				},
 				{
+					"name": "LIST KABUPATEN BAPPEDA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/bappeda/kabupaten/list",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bappeda",
+								"kabupaten",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "ADD KABUPATEN",
 					"event": [
 						{
@@ -5192,7 +5221,7 @@
 					"response": []
 				},
 				{
-					"name": "LIST MY WILAYAH",
+					"name": "LIST WILAYAH BAPPEDA TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",

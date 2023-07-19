@@ -104,6 +104,71 @@ class _bappeda {
     }
   };
 
+  listKabupatenBappeda = async (id_user) => {
+    try {
+      const body = {
+        id_user,
+      };
+
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const bappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
+      if (!bappeda) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
+
+      const list = await prisma.kabupaten.findMany({
+        where: {
+          id_bappeda: bappeda.id_bappeda,
+        },
+        include: {
+          kecamatan: {
+            include: {
+              desa: true,
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listKabupatenBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   addKabupaten = async (id_user, body) => {
     try {
       body = {
