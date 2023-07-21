@@ -6,6 +6,39 @@ class _mahasiswa {
     try {
       const list = await prisma.mahasiswa.findMany({
         include: {
+          mahasiswa_kecamatan: {
+            select: {
+              gelombang: {
+                select: {
+                  nama: true,
+                },
+              },
+              kecamatan: {
+                select: {
+                  nama: true,
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          mahasiswa_kecamatan_active: {
+            select: {
+              kecamatan: {
+                select: {
+                  nama: true,
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           prodi: {
             select: {
               nama: true,
@@ -18,6 +51,27 @@ class _mahasiswa {
             },
           },
         },
+      });
+
+      list.forEach((mhs) => {
+        mhs.lokasi = "Belum mendaftar";
+        mhs.gelombang = "Belum mendaftar";
+        if (mhs.status == 1) {
+          let mahasiswa_kecamatan =
+            mhs.mahasiswa_kecamatan[mhs.mahasiswa_kecamatan.length - 1];
+
+          mhs.lokasi = `${mahasiswa_kecamatan?.kecamatan?.nama}, ${mahasiswa_kecamatan?.kecamatan?.kabupaten?.nama}`;
+          mhs.gelombang = mahasiswa_kecamatan?.gelombang?.nama;
+        } else if (mhs.status === 2) {
+          let mahasiswa_kecamatan =
+            mhs.mahasiswa_kecamatan[mhs.mahasiswa_kecamatan.length - 1];
+
+          mhs.lokasi = `${mhs.mahasiswa_kecamatan_active?.kecamatan?.nama}, ${mhs.mahasiswa_kecamatan_active?.kecamatan?.kabupaten?.nama}`;
+          mhs.gelombang = mahasiswa_kecamatan?.gelombang?.nama;
+        }
+
+        delete mhs.mahasiswa_kecamatan;
+        delete mhs.mahasiswa_kecamatan_active;
       });
 
       return {
