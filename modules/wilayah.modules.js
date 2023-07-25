@@ -2,100 +2,144 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _wilayah {
-    listWilayah = async (id_tema) => {
-        try {
-            const schema = Joi.number().required();
+  listAllWilayah = async () => {
+    try {
+      const list = await prisma.kecamatan.findMany({
+        include: {
+          kabupaten: {
+            select: {
+              nama: true,
+              tema: true,
+            },
+          },
+          desa: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
 
-            const validation = schema.validate(id_tema);
+      list.forEach((kecamatan) => {
+        kecamatan.nama_kabupaten = kecamatan.kabupaten.nama;
+        kecamatan.nama_tema = kecamatan.kabupaten.tema.nama;
+        kecamatan.periode = kecamatan.kabupaten.tema.periode;
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+        delete kecamatan.kabupaten;
+      });
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listAllWilayah module error ", error);
 
-            const list = await prisma.kabupaten.findMany({
-                where: {
-                    id_tema,
-                },
-                include: {
-                    kecamatan: {
-                        include: {
-                            desa: true,
-                        },
-                    },
-                },
-            });
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listWilayah module error ", error);
+  listWilayah = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      const validation = schema.validate(id_tema);
 
-    listMyWilayah = async (id_tema, id_bappeda) => {
-        try {
-            const body = {
-                id_tema,
-                id_bappeda,
-            };
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
 
-            const schema = Joi.object({
-                id_tema: Joi.number().required(),
-                id_bappeda: Joi.number().required(),
-            });
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
 
-            const validation = schema.validate(body);
+      const list = await prisma.kabupaten.findMany({
+        where: {
+          id_tema,
+        },
+        include: {
+          kecamatan: {
+            include: {
+              desa: true,
+            },
+          },
+        },
+      });
 
-            if (validation.error) {
-                const errorDetails = validation.error.details.map((detail) => detail.message);
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listWilayah module error ", error);
 
-                return {
-                    status: false,
-                    code: 422,
-                    error: errorDetails.join(", "),
-                };
-            }
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 
-            const list = await prisma.kabupaten.findMany({
-                where: {
-                    id_tema: body.id_tema,
-                    id_bappeda: body.id_bappeda,
-                },
-                include: {
-                    kecamatan: {
-                        include: {
-                            desa: true,
-                        },
-                    },
-                },
-            });
+  listMyWilayah = async (id_tema, id_bappeda) => {
+    try {
+      const body = {
+        id_tema,
+        id_bappeda,
+      };
 
-            return {
-                status: true,
-                data: list,
-            };
-        } catch (error) {
-            console.error("listMyWilayah module error ", error);
+      const schema = Joi.object({
+        id_tema: Joi.number().required(),
+        id_bappeda: Joi.number().required(),
+      });
 
-            return {
-                status: false,
-                error,
-            };
-        }
-    };
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.kabupaten.findMany({
+        where: {
+          id_tema: body.id_tema,
+          id_bappeda: body.id_bappeda,
+        },
+        include: {
+          kecamatan: {
+            include: {
+              desa: true,
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listMyWilayah module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _wilayah();

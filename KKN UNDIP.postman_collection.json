@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"111\",\r\n    \"password\": \"111\"\r\n}",
+							"raw": "{\r\n    \"username\": \"0\",\r\n    \"password\": \"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5187,6 +5187,33 @@
 			"name": "WILAYAH",
 			"item": [
 				{
+					"name": "LIST ALL WILAYAH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/wilayah",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"wilayah"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "LIST WILAYAH",
 					"request": {
 						"auth": {
@@ -6384,6 +6411,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET EVENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event/:id_event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								":id_event"
+							],
+							"variable": [
+								{
+									"key": "id_event",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -6496,6 +6557,40 @@
 							"path": [
 								"pengumuman",
 								"bappeda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PENGUMUMAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pengumuman/:id_pengumuman",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pengumuman",
+								":id_pengumuman"
+							],
+							"variable": [
+								{
+									"key": "id_pengumuman",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -10057,6 +10152,61 @@
 								{
 									"key": "id_kecamatan",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "INSERT DATA",
+			"item": [
+				{
+					"name": "INSERT DATA TIM 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Wahyu Purnomo Ady/Downloads/Compressed/Data KKN TIM 1 Ready Input/Klaten/Kab. Klaten - Kec. Tulung.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/test/mhs/:id_kecamatan/:id_gelombang",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"test",
+								"mhs",
+								":id_kecamatan",
+								":id_gelombang"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "21"
+								},
+								{
+									"key": "id_gelombang",
+									"value": "2"
 								}
 							]
 						}
