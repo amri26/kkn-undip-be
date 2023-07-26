@@ -58,20 +58,4 @@ app.delete("/:id_bappeda", userSession, verifyAdmin, async (req, res, next) => {
   );
 });
 
-app.get(
-  "/kabupaten/list",
-  userSession,
-  verifyBappeda,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listKabupatenBappeda(Number(req.user.id))
-    );
-  }
-);
-
-app.post("/kabupaten", userSession, verifyBappeda, async (req, res, next) => {
-  response.sendResponse(res, await modules.addKabupaten(req.user.id, req.body));
-});
-
 module.exports = app;
