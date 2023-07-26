@@ -97,53 +97,6 @@ app.delete(
   }
 );
 
-app.get("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.listLaporan(req.user.id, "lrk"));
-});
-
-app.post("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LRK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.addLRK(req.user.id, req.body));
-  }
-});
-
-app.put("/lrk/edit", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LRK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.editLRK(req.user.id, req.body));
-  }
-});
-
-app.get("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.listLaporan(req.user.id, "lpk"));
-});
-
-app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LPK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.addLPK(req.user.id, req.body));
-  }
-});
-
 app.get("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
   response.sendResponse(res, await modules.listReportase(req.user.id));
 });

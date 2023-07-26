@@ -63,13 +63,6 @@ app.get("/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
-app.put("/laporan", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(
-    res,
-    await modules.evaluateLaporan(req.user.id, req.body)
-  );
-});
-
 app.get(
   "/reportase/:id_kecamatan",
   userSession,
