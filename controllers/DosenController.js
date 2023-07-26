@@ -63,25 +63,6 @@ app.get("/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
-app.get(
-  "/reportase/:id_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listReportase(req.user.id, Number(req.params.id_kecamatan))
-    );
-  }
-);
-
-app.put("/reportase", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(
-    res,
-    await modules.evaluateReportase(req.user.id, req.body)
-  );
-});
-
 app.put("/nilai", userSession, verifyDosen, async (req, res, next) => {
   response.sendResponse(res, await modules.editNilai(req.user.id, req.body));
 });
