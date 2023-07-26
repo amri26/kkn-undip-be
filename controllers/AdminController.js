@@ -22,10 +22,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
   );
 });
 
-app.get("/user", userSession, verifyAdmin, async (req, res, next) => {
-  response.sendResponse(res, await modules.listUser());
-});
-
 app.get("/tema", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listTema());
 });

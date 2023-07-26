@@ -20,6 +20,7 @@ const NilaiController = require("./controllers/NilaiController");
 const EventController = require("./controllers/EventController");
 const PengumumanController = require("./controllers/PengumumanController");
 const TestController = require("./controllers/TestController");
+const UserController = require("./controllers/UserController");
 
 const _routes = [
   ["/auth", AuthController],
@@ -44,6 +45,7 @@ const _routes = [
   ["/event", EventController],
   ["/pengumuman", PengumumanController],
   ["/test", TestController],
+  ["/user", UserController],
 ];
 
 const routes = (app) => {

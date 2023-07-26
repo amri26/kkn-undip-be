@@ -66,24 +66,6 @@ class _admin {
     }
   };
 
-  listUser = async () => {
-    try {
-      const list = await prisma.user.findMany();
-
-      return {
-        status: true,
-        data: list,
-      };
-    } catch (error) {
-      console.error("listUser module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  };
-
   listTema = async () => {
     try {
       const list = await prisma.tema.findMany();
