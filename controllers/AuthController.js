@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const modules = require("../modules/auth.modules");
 const response = require("../helpers/response");
-const { userSession } = require("../helpers/middleware");
 
 const app = Router();
 
