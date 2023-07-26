@@ -63,18 +63,6 @@ app.get("/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
-app.get(
-  "/mahasiswa/:id_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listMahasiswa(req.user.id, Number(req.params.id_kecamatan))
-    );
-  }
-);
-
 app.put(
   "/mahasiswa/acc/:id_mahasiswa_kecamatan",
   userSession,

@@ -16,7 +16,7 @@ const app = Router();
 app.get("/tema/:id_tema", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
-    await modules.listProposal(Number(req.params.id_tema))
+    await modules.listProposalTema(Number(req.params.id_tema))
   );
 });
 

@@ -23,6 +23,36 @@ class _dosen {
     }
   };
 
+  listDosenWilayah = async (id_kecamatan) => {
+    try {
+      const list = await prisma.proposal.findMany({
+        where: {
+          id_kecamatan,
+          status: 1,
+        },
+        select: {
+          dosen: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listDosenWilayah module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   getDosen = async (id_dosen) => {
     try {
       const schema = Joi.number().required();
@@ -366,159 +396,6 @@ class _dosen {
       };
     } catch (error) {
       console.error("deleteDosen module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  };
-
-  listDosenWilayah = async (id_kecamatan) => {
-    try {
-      const list = await prisma.proposal.findMany({
-        where: {
-          id_kecamatan,
-          status: 1,
-        },
-        select: {
-          dosen: {
-            select: {
-              nama: true,
-            },
-          },
-        },
-      });
-
-      return {
-        status: true,
-        data: list,
-      };
-    } catch (error) {
-      console.error("listDosenWilayah module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  };
-
-  listMahasiswa = async (id_user, id_kecamatan) => {
-    try {
-      const body = {
-        id_user,
-        id_kecamatan,
-      };
-
-      const schema = Joi.object({
-        id_user: Joi.number().required(),
-        id_kecamatan: Joi.number().required(),
-      });
-
-      const validation = schema.validate(body);
-
-      if (validation.error) {
-        const errorDetails = validation.error.details.map(
-          (detail) => detail.message
-        );
-
-        return {
-          status: false,
-          code: 422,
-          error: errorDetails.join(", "),
-        };
-      }
-
-      const checkDosen = await prisma.dosen.findUnique({
-        where: {
-          id_user,
-        },
-        select: {
-          id_dosen: true,
-        },
-      });
-
-      if (!checkDosen) {
-        return {
-          status: false,
-          code: 404,
-          error: "Data not found",
-        };
-      }
-
-      const checkProposal = await prisma.proposal.findFirst({
-        where: {
-          id_dosen: checkDosen.id_dosen,
-          id_kecamatan: body.id_kecamatan,
-        },
-        select: {
-          status: true,
-        },
-      });
-
-      if (!checkProposal) {
-        return {
-          status: false,
-          code: 404,
-          error: "Data not found",
-        };
-      } else if (checkProposal.status !== 1) {
-        return {
-          status: false,
-          code: 403,
-          error: "Forbidden, Kecamatan data is not approved",
-        };
-      }
-
-      const list = await prisma.mahasiswa_kecamatan.findMany({
-        where: {
-          id_kecamatan: body.id_kecamatan,
-        },
-        include: {
-          mahasiswa: {
-            include: {
-              prodi: {
-                select: {
-                  nama: true,
-                  fakultas: {
-                    select: {
-                      nama: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          kecamatan: {
-            select: {
-              nama: true,
-              kabupaten: {
-                select: {
-                  nama: true,
-                  tema: {
-                    select: {
-                      nama: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          gelombang: {
-            select: {
-              nama: true,
-            },
-          },
-        },
-      });
-
-      return {
-        status: true,
-        data: list,
-      };
-    } catch (error) {
-      console.error("listMahasiswa module error ", error);
 
       return {
         status: false,

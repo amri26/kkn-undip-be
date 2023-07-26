@@ -3,7 +3,7 @@ const Joi = require("joi");
 const { uploadDrive } = require("../helpers/upload");
 
 class _proposal {
-  listProposal = async (id_tema) => {
+  listProposalTema = async (id_tema) => {
     try {
       const schema = Joi.number().required();
 

@@ -5,6 +5,7 @@ const {
   userSession,
   verifyAdmin,
   verifyMahasiswa,
+  verifyDosen,
   isActive,
 } = require("../helpers/middleware");
 const multer = require("multer");
@@ -41,6 +42,16 @@ app.get("/accepted/:id_kecamatan", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.listMahasiswaAcceptedByKecamatan(
+      Number(req.params.id_kecamatan)
+    )
+  );
+});
+
+app.get("/:id_kecamatan", userSession, verifyDosen, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listMahasiswaDosen(
+      req.user.id,
       Number(req.params.id_kecamatan)
     )
   );
