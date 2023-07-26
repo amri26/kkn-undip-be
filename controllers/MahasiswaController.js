@@ -7,6 +7,8 @@ const {
   verifyMahasiswa,
   isActive,
 } = require("../helpers/middleware");
+const multer = require("multer");
+const upload = multer();
 
 const app = Router();
 
@@ -50,6 +52,39 @@ app.get("/detail/:id_mahasiswa", userSession, async (req, res, next) => {
     await modules.getMahasiswa(Number(req.params.id_mahasiswa))
   );
 });
+
+app.post(
+  "/import",
+  userSession,
+  verifyAdmin,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(res, await modules.importMahasiswa(req.file));
+  }
+);
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addMahasiswa(req.body));
+});
+
+app.put("/:id_mahasiswa", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editMahasiswa(Number(req.params.id_mahasiswa), req.body)
+  );
+});
+
+app.delete(
+  "/:id_mahasiswa",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteMahasiswa(Number(req.params.id_mahasiswa))
+    );
+  }
+);
 
 app.post(
   "/daftar_lokasi",
