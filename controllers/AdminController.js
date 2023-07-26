@@ -23,49 +23,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
 });
 
 app.post(
-  "/reviewer",
-  userSession,
-  verifyAdmin,
-  upload.single("file"),
-  async (req, res, next) => {
-    response.sendResponse(res, await modules.addReviewer(req.file));
-  }
-);
-
-app.post(
-  "/reviewer/single",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(res, await modules.addReviewerSingle(req.body));
-  }
-);
-
-app.put(
-  "/reviewer/:id_reviewer",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.editReviewer(Number(req.params.id_reviewer), req.body)
-    );
-  }
-);
-
-app.delete(
-  "/reviewer/:id_reviewer",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.deleteReviewer(Number(req.params.id_reviewer))
-    );
-  }
-);
-
-app.post(
   "/pimpinan",
   userSession,
   verifyAdmin,
