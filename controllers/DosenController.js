@@ -16,10 +16,43 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listDosen());
 });
 
-app.get("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
+app.get(
+  "/detail/:id_dosen",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.getDosen(Number(req.params.id_dosen))
+    );
+  }
+);
+
+app.post(
+  "/import",
+  userSession,
+  verifyAdmin,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(res, await modules.importDosen(req.file));
+  }
+);
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addDosen(req.body));
+});
+
+app.put("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(
     res,
-    await modules.getDosen(Number(req.params.id_dosen))
+    await modules.editDosen(Number(req.params.id_dosen), req.body)
+  );
+});
+
+app.delete("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.deleteDosen(Number(req.params.id_dosen))
   );
 });
 
