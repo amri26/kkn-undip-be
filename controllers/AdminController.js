@@ -22,49 +22,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
   );
 });
 
-app.post(
-  "/pimpinan",
-  userSession,
-  verifyAdmin,
-  upload.single("file"),
-  async (req, res, next) => {
-    response.sendResponse(res, await modules.addPimpinan(req.file));
-  }
-);
-
-app.post(
-  "/pimpinan/single",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(res, await modules.addPimpinanSingle(req.body));
-  }
-);
-
-app.put(
-  "/pimpinan/:id_pimpinan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.editPimpinan(Number(req.params.id_pimpinan), req.body)
-    );
-  }
-);
-
-app.delete(
-  "/pimpinan/:id_pimpinan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.deletePimpinan(Number(req.params.id_pimpinan))
-    );
-  }
-);
-
 app.put(
   "/kecamatan/acc/:id_kecamatan",
   userSession,
