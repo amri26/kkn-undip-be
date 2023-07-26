@@ -75,44 +75,6 @@ app.get(
   }
 );
 
-app.get("/proposal/all", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(res, await modules.listAllProposal(req.user.id));
-});
-
-app.get(
-  "/proposal/:id_tema",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listProposal(req.user.id, Number(req.params.id_tema))
-    );
-  }
-);
-
-app.post(
-  "/proposal",
-  userSession,
-  verifyDosen,
-  upload.single("file"),
-  async (req, res, next) => {
-    const check = await isActive(
-      Number(req.body.id_tema),
-      Number(process.env.DOSEN_PROPOSAL)
-    );
-
-    if (!check.status) {
-      response.sendResponse(res, check);
-    } else {
-      response.sendResponse(
-        res,
-        await modules.addProposal(req.file, req.user.id, req.body)
-      );
-    }
-  }
-);
-
 app.put(
   "/mahasiswa/acc/:id_mahasiswa_kecamatan",
   userSession,

@@ -344,52 +344,6 @@ class _reviewer {
       };
     }
   };
-
-  evaluateProposal = async (body) => {
-    try {
-      const schema = Joi.object({
-        id_proposal: Joi.number().required(),
-        komentar: Joi.string(),
-        rekomendasi: Joi.bool(),
-      });
-
-      const validation = schema.validate(body);
-
-      if (validation.error) {
-        const errorDetails = validation.error.details.map(
-          (detail) => detail.message
-        );
-
-        return {
-          status: false,
-          code: 422,
-          error: errorDetails.join(", "),
-        };
-      }
-
-      await prisma.proposal.update({
-        where: {
-          id_proposal: body.id_proposal,
-        },
-        data: {
-          komentar: body.komentar,
-          rekomendasi: body.rekomendasi,
-        },
-      });
-
-      return {
-        status: true,
-        code: 204,
-      };
-    } catch (error) {
-      console.error("evaluateProposal module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  };
 }
 
 module.exports = new _reviewer();

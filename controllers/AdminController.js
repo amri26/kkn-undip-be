@@ -22,30 +22,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
   );
 });
 
-app.put(
-  "/proposal/acc/:id_proposal",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.accProposal(Number(req.params.id_proposal))
-    );
-  }
-);
-
-app.put(
-  "/proposal/dec/:id_proposal",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.decProposal(Number(req.params.id_proposal))
-    );
-  }
-);
-
 app.post("/event", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.addEvent(req.body));
 });

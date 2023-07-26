@@ -60,8 +60,4 @@ app.delete(
   }
 );
 
-app.put("/evaluate", userSession, verifyReviewer, async (req, res, next) => {
-  response.sendResponse(res, await modules.evaluateProposal(req.body));
-});
-
 module.exports = app;
