@@ -5,10 +5,6 @@ const { userSession } = require("../helpers/middleware");
 
 const app = Router();
 
-app.get("/", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listAllWilayah());
-});
-
 app.get("/:id_tema", userSession, async (req, res, next) => {
   response.sendResponse(
     res,

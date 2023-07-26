@@ -74,8 +74,4 @@ app.post("/kabupaten", userSession, verifyBappeda, async (req, res, next) => {
   response.sendResponse(res, await modules.addKabupaten(req.user.id, req.body));
 });
 
-app.post("/kecamatan", userSession, verifyBappeda, async (req, res, next) => {
-  response.sendResponse(res, await modules.addKecamatan(req.user.id, req.body));
-});
-
 module.exports = app;

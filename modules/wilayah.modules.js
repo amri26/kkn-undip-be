@@ -2,46 +2,6 @@ const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 
 class _wilayah {
-  listAllWilayah = async () => {
-    try {
-      const list = await prisma.kecamatan.findMany({
-        include: {
-          kabupaten: {
-            select: {
-              nama: true,
-              tema: true,
-            },
-          },
-          desa: {
-            select: {
-              nama: true,
-            },
-          },
-        },
-      });
-
-      list.forEach((kecamatan) => {
-        kecamatan.nama_kabupaten = kecamatan.kabupaten.nama;
-        kecamatan.nama_tema = kecamatan.kabupaten.tema.nama;
-        kecamatan.periode = kecamatan.kabupaten.tema.periode;
-
-        delete kecamatan.kabupaten;
-      });
-
-      return {
-        status: true,
-        data: list,
-      };
-    } catch (error) {
-      console.error("listAllWilayah module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  };
-
   listWilayah = async (id_tema) => {
     try {
       const schema = Joi.number().required();

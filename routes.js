@@ -14,6 +14,7 @@ const GelombangController = require("./controllers/GelombangController");
 const HalamanController = require("./controllers/HalamanController");
 const LaporanController = require("./controllers/LaporanController");
 const ReportaseController = require("./controllers/ReportaseController");
+const KecamatanController = require("./controllers/KecamatanController");
 const KorwilController = require("./controllers/KorwilController");
 const FakultasController = require("./controllers/FakultasController");
 const NilaiController = require("./controllers/NilaiController");
@@ -39,6 +40,7 @@ const _routes = [
   ["/halaman", HalamanController],
   ["/laporan", LaporanController],
   ["/reportase", ReportaseController],
+  ["/kecamatan", KecamatanController],
   ["/korwil", KorwilController],
   ["/fakultas", FakultasController],
   ["/nilai", NilaiController],

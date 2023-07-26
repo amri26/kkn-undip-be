@@ -23,42 +23,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
 });
 
 app.put(
-  "/kecamatan/acc/:id_kecamatan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.accKecamatan(Number(req.params.id_kecamatan), req.body)
-    );
-  }
-);
-
-app.put(
-  "/kecamatan/dec/:id_kecamatan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.decKecamatan(Number(req.params.id_kecamatan))
-    );
-  }
-);
-
-app.delete(
-  "/kecamatan/:id_kecamatan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.deleteKecamatan(Number(req.params.id_kecamatan))
-    );
-  }
-);
-
-app.put(
   "/proposal/acc/:id_proposal",
   userSession,
   verifyAdmin,
