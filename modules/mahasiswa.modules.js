@@ -1,6 +1,7 @@
 const { prisma, Prisma, Role } = require("../helpers/database");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const excelToJson = require("convert-excel-to-json");
 
 class _mahasiswa {
   listMahasiswa = async () => {

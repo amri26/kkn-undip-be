@@ -23,55 +23,6 @@ app.get("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
 });
 
 app.post(
-  "/bappeda",
-  userSession,
-  verifyAdmin,
-  upload.single("file"),
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.addBappeda(req.user.nama, req.file)
-    );
-  }
-);
-
-app.post(
-  "/bappeda/single",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.addBappedaSingle(req.user.nama, req.body)
-    );
-  }
-);
-
-app.put(
-  "/bappeda/:id_bappeda",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.editBappeda(Number(req.params.id_bappeda), req.body)
-    );
-  }
-);
-
-app.delete(
-  "/bappeda/:id_bappeda",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.deleteBappeda(Number(req.params.id_bappeda))
-    );
-  }
-);
-
-app.post(
   "/reviewer",
   userSession,
   verifyAdmin,

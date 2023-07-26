@@ -2,6 +2,7 @@ const { prisma, Prisma, Role } = require("../helpers/database");
 const { uploadDrive } = require("../helpers/upload");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const excelToJson = require("convert-excel-to-json");
 
 class _dosen {
   listDosen = async () => {

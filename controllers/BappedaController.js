@@ -6,6 +6,8 @@ const {
   verifyAdmin,
   verifyBappeda,
 } = require("../helpers/middleware");
+const multer = require("multer");
+const upload = multer();
 
 const app = Router();
 
@@ -13,10 +15,46 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listBappeda());
 });
 
-app.get("/:id_bappeda", userSession, verifyAdmin, async (req, res, next) => {
+app.get(
+  "/detail/:id_bappeda",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.getBappeda(Number(req.params.id_bappeda))
+    );
+  }
+);
+
+app.post(
+  "/import",
+  userSession,
+  verifyAdmin,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.importBappeda(req.user.nama, req.file)
+    );
+  }
+);
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addBappeda(req.user.nama, req.body));
+});
+
+app.put("/:id_bappeda", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(
     res,
-    await modules.getBappeda(Number(req.params.id_bappeda))
+    await modules.editBappeda(Number(req.params.id_bappeda), req.body)
+  );
+});
+
+app.delete("/:id_bappeda", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.deleteBappeda(Number(req.params.id_bappeda))
   );
 });
 
