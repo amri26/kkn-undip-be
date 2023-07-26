@@ -21,7 +21,7 @@ app.get("/dosen", userSession, verifyDosen, async (req, res, next) => {
   response.sendResponse(res, await modules.listTemaDosen(req.user.id));
 });
 
-app.get("/:id_tema", userSession, async (req, res, next) => {
+app.get("/detail/:id_tema", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.getTema(Number(req.params.id_tema)));
 });
 
