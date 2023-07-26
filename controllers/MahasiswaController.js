@@ -97,42 +97,6 @@ app.delete(
   }
 );
 
-app.post(
-  "/daftar_lokasi",
-  userSession,
-  verifyMahasiswa,
-  async (req, res, next) => {
-    const check = await isActive(
-      Number(req.body.id_tema),
-      Number(process.env.MAHASISWA_DAFTAR_LOKASI)
-    );
-
-    if (!check.status) {
-      response.sendResponse(res, check);
-    } else {
-      req.body.id_tema_halaman = check.data.id_tema_halaman;
-      response.sendResponse(
-        res,
-        await modules.daftarLokasi(req.user.id, req.body)
-      );
-    }
-  }
-);
-
-app.delete(
-  "/daftar_lokasi/:id_mahasiswa_kecamatan",
-  userSession,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.deletePendaftaran(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
-    );
-  }
-);
-
 app.get("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
   response.sendResponse(res, await modules.listLaporan(req.user.id, "lrk"));
 });

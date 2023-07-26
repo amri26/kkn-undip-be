@@ -63,36 +63,6 @@ app.get("/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
-app.put(
-  "/mahasiswa/acc/:id_mahasiswa_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.accMahasiswa(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
-    );
-  }
-);
-
-app.put(
-  "/mahasiswa/dec/:id_mahasiswa_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.decMahasiswa(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
-    );
-  }
-);
-
 app.put("/laporan", userSession, verifyDosen, async (req, res, next) => {
   response.sendResponse(
     res,

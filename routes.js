@@ -20,6 +20,7 @@ const KorwilController = require("./controllers/KorwilController");
 const FakultasController = require("./controllers/FakultasController");
 const NilaiController = require("./controllers/NilaiController");
 const EventController = require("./controllers/EventController");
+const PendafataranController = require("./controllers/PendaftaranController");
 const PengumumanController = require("./controllers/PengumumanController");
 const TestController = require("./controllers/TestController");
 const UserController = require("./controllers/UserController");
@@ -47,6 +48,7 @@ const _routes = [
   ["/fakultas", FakultasController],
   ["/nilai", NilaiController],
   ["/event", EventController],
+  ["/pendaftaran", PendafataranController],
   ["/pengumuman", PengumumanController],
   ["/test", TestController],
   ["/user", UserController],
