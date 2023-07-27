@@ -20,7 +20,7 @@ class _event {
     }
   };
 
-  listMahasiswaEvent = async () => {
+  listEventMahasiswa = async () => {
     try {
       const list = await prisma.event.findMany({
         where: {
@@ -35,7 +35,7 @@ class _event {
         data: list,
       };
     } catch (error) {
-      console.error("listMahasiswaEvent module error ", error);
+      console.error("listEventMahasiswa module error ", error);
 
       return {
         status: false,
@@ -44,7 +44,7 @@ class _event {
     }
   };
 
-  listDosenEvent = async () => {
+  listEventDosen = async () => {
     try {
       const list = await prisma.event.findMany({
         where: {
@@ -59,7 +59,7 @@ class _event {
         data: list,
       };
     } catch (error) {
-      console.error("listDosenEvent module error ", error);
+      console.error("listEventDosen module error ", error);
 
       return {
         status: false,
@@ -68,7 +68,7 @@ class _event {
     }
   };
 
-  listBappedaEvent = async () => {
+  listEventBappeda = async () => {
     try {
       const list = await prisma.event.findMany({
         where: {
@@ -83,7 +83,7 @@ class _event {
         data: list,
       };
     } catch (error) {
-      console.error("listBappedaEvent module error ", error);
+      console.error("listEventBappeda module error ", error);
 
       return {
         status: false,

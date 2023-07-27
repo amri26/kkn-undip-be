@@ -25,4 +25,15 @@ app.get(
   }
 );
 
+app.post("/", userSession, verifySuperAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addAdmin(req.body));
+});
+
+app.put("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editAdmin(Number(req.params.id_admin), req.body)
+  );
+});
+
 module.exports = app;

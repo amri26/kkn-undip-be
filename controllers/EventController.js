@@ -10,15 +10,15 @@ app.get("/", userSession, async (req, res, next) => {
 });
 
 app.get("/mahasiswa", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listMahasiswaEvent());
+  response.sendResponse(res, await modules.listEventMahasiswa());
 });
 
 app.get("/dosen", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listDosenEvent());
+  response.sendResponse(res, await modules.listEventDosen());
 });
 
 app.get("/bappeda", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listBappedaEvent());
+  response.sendResponse(res, await modules.listEventBappeda());
 });
 
 app.get("/detail/:id_event", userSession, async (req, res, next) => {

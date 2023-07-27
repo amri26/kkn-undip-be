@@ -20,7 +20,7 @@ class _pengumuman {
     }
   };
 
-  listMahasiswaPengumuman = async () => {
+  listPengumumanMahasiswa = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -35,7 +35,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listMahasiswaPengumuman module error ", error);
+      console.error("listPengumumanMahasiswa module error ", error);
 
       return {
         status: false,
@@ -44,7 +44,7 @@ class _pengumuman {
     }
   };
 
-  listDosenPengumuman = async () => {
+  listPengumumanDosen = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -59,7 +59,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listDosenPengumuman module error ", error);
+      console.error("listPengumumanDosen module error ", error);
 
       return {
         status: false,
@@ -68,7 +68,7 @@ class _pengumuman {
     }
   };
 
-  listBappedaPengumuman = async () => {
+  listPengumumanBappeda = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -83,7 +83,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listBappedaPengumuman module error ", error);
+      console.error("listPengumumanBappeda module error ", error);
 
       return {
         status: false,
