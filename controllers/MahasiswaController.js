@@ -5,8 +5,11 @@ const {
   userSession,
   verifyAdmin,
   verifyMahasiswa,
+  verifyDosen,
   isActive,
 } = require("../helpers/middleware");
+const multer = require("multer");
+const upload = multer();
 
 const app = Router();
 
@@ -44,6 +47,16 @@ app.get("/accepted/:id_kecamatan", userSession, async (req, res, next) => {
   );
 });
 
+app.get("/:id_kecamatan", userSession, verifyDosen, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listMahasiswaDosen(
+      req.user.id,
+      Number(req.params.id_kecamatan)
+    )
+  );
+});
+
 app.get("/detail/:id_mahasiswa", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
@@ -52,135 +65,36 @@ app.get("/detail/:id_mahasiswa", userSession, async (req, res, next) => {
 });
 
 app.post(
-  "/daftar_lokasi",
+  "/import",
   userSession,
-  verifyMahasiswa,
+  verifyAdmin,
+  upload.single("file"),
   async (req, res, next) => {
-    const check = await isActive(
-      Number(req.body.id_tema),
-      Number(process.env.MAHASISWA_DAFTAR_LOKASI)
-    );
-
-    if (!check.status) {
-      response.sendResponse(res, check);
-    } else {
-      req.body.id_tema_halaman = check.data.id_tema_halaman;
-      response.sendResponse(
-        res,
-        await modules.daftarLokasi(req.user.id, req.body)
-      );
-    }
+    response.sendResponse(res, await modules.importMahasiswa(req.file));
   }
 );
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addMahasiswa(req.body));
+});
+
+app.put("/:id_mahasiswa", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editMahasiswa(Number(req.params.id_mahasiswa), req.body)
+  );
+});
 
 app.delete(
-  "/daftar_lokasi/:id_mahasiswa_kecamatan",
+  "/:id_mahasiswa",
   userSession,
+  verifyAdmin,
   async (req, res, next) => {
     response.sendResponse(
       res,
-      await modules.deletePendaftaran(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
+      await modules.deleteMahasiswa(Number(req.params.id_mahasiswa))
     );
   }
 );
-
-app.get("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.listLaporan(req.user.id, "lrk"));
-});
-
-app.post("/lrk", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LRK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.addLRK(req.user.id, req.body));
-  }
-});
-
-app.put("/lrk/edit", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LRK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.editLRK(req.user.id, req.body));
-  }
-});
-
-app.get("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.listLaporan(req.user.id, "lpk"));
-});
-
-app.post("/lpk", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_LPK)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(res, await modules.addLPK(req.user.id, req.body));
-  }
-});
-
-app.get("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.listReportase(req.user.id));
-});
-
-app.post("/reportase", userSession, verifyMahasiswa, async (req, res, next) => {
-  const check = await isActive(
-    req.body.id_tema,
-    Number(process.env.MAHASISWA_KELOLA_REPORTASE)
-  );
-
-  if (!check.status) {
-    response.sendResponse(res, check);
-  } else {
-    response.sendResponse(
-      res,
-      await modules.addReportase(req.user.id, req.body)
-    );
-  }
-});
-
-app.put(
-  "/reportase/:id_reportase",
-  userSession,
-  verifyMahasiswa,
-  async (req, res, next) => {
-    const check = await isActive(
-      req.body.id_tema,
-      Number(process.env.MAHASISWA_KELOLA_REPORTASE)
-    );
-
-    if (!check.status) {
-      response.sendResponse(res, check);
-    } else {
-      response.sendResponse(
-        res,
-        await modules.editReportase(
-          req.user.id,
-          Number(req.params.id_reportase),
-          req.body
-        )
-      );
-    }
-  }
-);
-
-app.get("/kecamatan", userSession, verifyMahasiswa, async (req, res, next) => {
-  response.sendResponse(res, await modules.getKecamatanMahasiswa(req.user.id));
-});
 
 module.exports = app;

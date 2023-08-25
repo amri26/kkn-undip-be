@@ -20,7 +20,7 @@ class _pengumuman {
     }
   };
 
-  listMahasiswaPengumuman = async () => {
+  listPengumumanMahasiswa = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -35,7 +35,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listMahasiswaPengumuman module error ", error);
+      console.error("listPengumumanMahasiswa module error ", error);
 
       return {
         status: false,
@@ -44,7 +44,7 @@ class _pengumuman {
     }
   };
 
-  listDosenPengumuman = async () => {
+  listPengumumanDosen = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -59,7 +59,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listDosenPengumuman module error ", error);
+      console.error("listPengumumanDosen module error ", error);
 
       return {
         status: false,
@@ -68,7 +68,7 @@ class _pengumuman {
     }
   };
 
-  listBappedaPengumuman = async () => {
+  listPengumumanBappeda = async () => {
     try {
       const list = await prisma.pengumuman.findMany({
         where: {
@@ -83,7 +83,7 @@ class _pengumuman {
         data: list,
       };
     } catch (error) {
-      console.error("listBappedaPengumuman module error ", error);
+      console.error("listPengumumanBappeda module error ", error);
 
       return {
         status: false,
@@ -122,6 +122,141 @@ class _pengumuman {
       };
     } catch (error) {
       console.error("getPengumuman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addPengumuman = async (body) => {
+    try {
+      const schema = Joi.object({
+        judul: Joi.string().required(),
+        isi: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.create({
+        data: {
+          judul: body.judul,
+          isi: body.isi,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addPengumuman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editPengumuman = async (id_pengumuman, body) => {
+    try {
+      body = {
+        id_pengumuman,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_pengumuman: Joi.number().required(),
+        judul: Joi.string().required(),
+        isi: Joi.string().required(),
+        peruntukan: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.update({
+        where: {
+          id_pengumuman: body.id_pengumuman,
+        },
+        data: {
+          judul: body.judul,
+          isi: body.isi,
+          peruntukan: body.peruntukan,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editPengumuman module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deletePengumuman = async (id_pengumuman) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_pengumuman);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.pengumuman.delete({
+        where: {
+          id_pengumuman,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deletePengumuman module error ", error);
 
       return {
         status: false,

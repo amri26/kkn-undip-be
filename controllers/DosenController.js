@@ -16,10 +16,43 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listDosen());
 });
 
-app.get("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
+app.get(
+  "/detail/:id_dosen",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.getDosen(Number(req.params.id_dosen))
+    );
+  }
+);
+
+app.post(
+  "/import",
+  userSession,
+  verifyAdmin,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(res, await modules.importDosen(req.file));
+  }
+);
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addDosen(req.body));
+});
+
+app.put("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(
     res,
-    await modules.getDosen(Number(req.params.id_dosen))
+    await modules.editDosen(Number(req.params.id_dosen), req.body)
+  );
+});
+
+app.delete("/:id_dosen", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.deleteDosen(Number(req.params.id_dosen))
   );
 });
 
@@ -28,116 +61,6 @@ app.get("/:id_kecamatan", userSession, async (req, res, next) => {
     res,
     await modules.listDosenWilayah(Number(req.params.id_kecamatan))
   );
-});
-
-app.get(
-  "/mahasiswa/:id_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listMahasiswa(req.user.id, Number(req.params.id_kecamatan))
-    );
-  }
-);
-
-app.get("/proposal/all", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(res, await modules.listAllProposal(req.user.id));
-});
-
-app.get(
-  "/proposal/:id_tema",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listProposal(req.user.id, Number(req.params.id_tema))
-    );
-  }
-);
-
-app.post(
-  "/proposal",
-  userSession,
-  verifyDosen,
-  upload.single("file"),
-  async (req, res, next) => {
-    const check = await isActive(
-      Number(req.body.id_tema),
-      Number(process.env.DOSEN_PROPOSAL)
-    );
-
-    if (!check.status) {
-      response.sendResponse(res, check);
-    } else {
-      response.sendResponse(
-        res,
-        await modules.addProposal(req.file, req.user.id, req.body)
-      );
-    }
-  }
-);
-
-app.put(
-  "/mahasiswa/acc/:id_mahasiswa_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.accMahasiswa(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
-    );
-  }
-);
-
-app.put(
-  "/mahasiswa/dec/:id_mahasiswa_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.decMahasiswa(
-        req.user.id,
-        Number(req.params.id_mahasiswa_kecamatan)
-      )
-    );
-  }
-);
-
-app.put("/laporan", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(
-    res,
-    await modules.evaluateLaporan(req.user.id, req.body)
-  );
-});
-
-app.get(
-  "/reportase/:id_kecamatan",
-  userSession,
-  verifyDosen,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.listReportase(req.user.id, Number(req.params.id_kecamatan))
-    );
-  }
-);
-
-app.put("/reportase", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(
-    res,
-    await modules.evaluateReportase(req.user.id, req.body)
-  );
-});
-
-app.put("/nilai", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(res, await modules.editNilai(req.user.id, req.body));
 });
 
 module.exports = app;

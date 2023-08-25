@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const modules = require("../modules/pengumuman.modules");
 const response = require("../helpers/response");
-const { userSession } = require("../helpers/middleware");
+const { userSession, verifyAdmin } = require("../helpers/middleware");
 
 const app = Router();
 
@@ -10,22 +10,45 @@ app.get("/", userSession, async (req, res, next) => {
 });
 
 app.get("/mahasiswa", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listMahasiswaPengumuman());
+  response.sendResponse(res, await modules.listPengumumanMahasiswa());
 });
 
 app.get("/dosen", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listDosenPengumuman());
+  response.sendResponse(res, await modules.listPengumumanDosen());
 });
 
 app.get("/bappeda", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.listBappedaPengumuman());
+  response.sendResponse(res, await modules.listPengumumanBappeda());
 });
 
-app.get("/:id_pengumuman", userSession, async (req, res, next) => {
+app.get("/detail/:id_pengumuman", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.getPengumuman(Number(req.params.id_pengumuman))
   );
 });
+
+app.post("/", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addPengumuman(req.body));
+});
+
+app.put("/:id_pengumuman", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editPengumuman(Number(req.params.id_pengumuman), req.body)
+  );
+});
+
+app.delete(
+  "/:id_pengumuman",
+  userSession,
+  verifyAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deletePengumuman(Number(req.params.id_pengumuman))
+    );
+  }
+);
 
 module.exports = app;

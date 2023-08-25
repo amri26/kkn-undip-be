@@ -14,12 +14,16 @@ const GelombangController = require("./controllers/GelombangController");
 const HalamanController = require("./controllers/HalamanController");
 const LaporanController = require("./controllers/LaporanController");
 const ReportaseController = require("./controllers/ReportaseController");
+const KabupatenController = require("./controllers/KabupatenController");
+const KecamatanController = require("./controllers/KecamatanController");
 const KorwilController = require("./controllers/KorwilController");
 const FakultasController = require("./controllers/FakultasController");
 const NilaiController = require("./controllers/NilaiController");
 const EventController = require("./controllers/EventController");
+const PendafataranController = require("./controllers/PendaftaranController");
 const PengumumanController = require("./controllers/PengumumanController");
 const TestController = require("./controllers/TestController");
+const UserController = require("./controllers/UserController");
 
 const _routes = [
   ["/auth", AuthController],
@@ -38,12 +42,16 @@ const _routes = [
   ["/halaman", HalamanController],
   ["/laporan", LaporanController],
   ["/reportase", ReportaseController],
+  ["/kabupaten", KabupatenController],
+  ["/kecamatan", KecamatanController],
   ["/korwil", KorwilController],
   ["/fakultas", FakultasController],
   ["/nilai", NilaiController],
   ["/event", EventController],
+  ["/pendaftaran", PendafataranController],
   ["/pengumuman", PengumumanController],
   ["/test", TestController],
+  ["/user", UserController],
 ];
 
 const routes = (app) => {

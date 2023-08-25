@@ -1,5 +1,7 @@
-const { prisma } = require("../helpers/database");
+const { prisma, Prisma, Role } = require("../helpers/database");
+const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const excelToJson = require("convert-excel-to-json");
 
 class _bappeda {
   listBappeda = async () => {
@@ -104,19 +106,11 @@ class _bappeda {
     }
   };
 
-  addKabupaten = async (id_user, body) => {
+  importBappeda = async (created_by, file) => {
     try {
-      body = {
-        id_user,
-        ...body,
-      };
+      const schema = Joi.string().required();
 
-      const schema = Joi.object({
-        id_user: Joi.number().required(),
-        id_tema: Joi.number().required(),
-      });
-
-      const validation = schema.validate(body);
+      const validation = schema.validate(created_by);
 
       if (validation.error) {
         const errorDetails = validation.error.details.map(
@@ -130,73 +124,84 @@ class _bappeda {
         };
       }
 
-      const checkBappeda = await prisma.bappeda.findUnique({
-        where: {
-          id_user,
+      const result = excelToJson({
+        source: file.buffer,
+        header: {
+          rows: 1,
         },
-        select: {
-          id_bappeda: true,
-          nama_kabupaten: true,
+        sheets: ["bappeda"],
+        columnToKey: {
+          B: "nama",
+          C: "nb",
+          D: "nama_kabupaten",
+          E: "nama_pj",
         },
       });
 
-      if (!checkBappeda) {
-        return {
-          status: false,
-          code: 404,
-          error: "Data not found",
-        };
+      for (let i = 0; i < result.bappeda.length; i++) {
+        const e = result.bappeda[i];
+
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: String(e.nb),
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        const checkBappeda = await prisma.bappeda.findUnique({
+          where: {
+            nb: String(e.nb),
+          },
+          select: {
+            nb: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NB " + checkUser.username,
+          };
+        } else if (checkBappeda) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, NB " + checkBappeda.nb,
+          };
+        }
+
+        const addUser = await prisma.user.create({
+          data: {
+            username: String(e.nb),
+            password: bcrypt.hashSync(String(e.nb), 10),
+            role: Role.BAPPEDA,
+          },
+          select: {
+            id_user: true,
+          },
+        });
+
+        await prisma.bappeda.create({
+          data: {
+            id_user: addUser.id_user,
+            nama: e.nama,
+            nb: String(e.nb),
+            nama_kabupaten: e.nama_kabupaten,
+            nama_pj: e.nama_pj,
+            created_by,
+          },
+        });
       }
-
-      const checkTema = await prisma.tema.findUnique({
-        where: {
-          id_tema: body.id_tema,
-        },
-        select: {
-          status: true,
-        },
-      });
-
-      if (!checkTema.status) {
-        return {
-          status: false,
-          code: 403,
-          error: "Forbidden, Tema data is not activated",
-        };
-      }
-
-      const checkKabupaten = await prisma.kabupaten.findFirst({
-        where: {
-          id_bappeda: checkBappeda.id_bappeda,
-          id_tema: body.id_tema,
-        },
-        select: {
-          id_kabupaten: true,
-        },
-      });
-
-      if (checkKabupaten) {
-        return {
-          status: false,
-          code: 403,
-          error: "Forbidden, Kabupaten data is already created",
-        };
-      }
-
-      await prisma.kabupaten.create({
-        data: {
-          id_bappeda: checkBappeda.id_bappeda,
-          id_tema: body.id_tema,
-          nama: checkBappeda.nama_kabupaten,
-        },
-      });
 
       return {
         status: true,
         code: 201,
       };
     } catch (error) {
-      console.error("addKabupaten module error ", error);
+      console.error("importBappeda module error ", error);
 
       return {
         status: false,
@@ -205,23 +210,19 @@ class _bappeda {
     }
   };
 
-  addKecamatan = async (id_user, body) => {
+  addBappeda = async (created_by, body) => {
     try {
       body = {
-        id_user,
+        created_by,
         ...body,
       };
 
       const schema = Joi.object({
-        id_user: Joi.number().required(),
-        id_kabupaten: Joi.number().required(),
         nama: Joi.string().required(),
-        potensi: Joi.string().required(),
-        desa: Joi.array().items(
-          Joi.object({
-            nama: Joi.string().required(),
-          })
-        ),
+        nb: Joi.string().required(),
+        nama_kabupaten: Joi.string().required(),
+        nama_pj: Joi.string().required(),
+        created_by: Joi.string().required(),
       });
 
       const validation = schema.validate(body);
@@ -238,51 +239,26 @@ class _bappeda {
         };
       }
 
-      const check = await prisma.kabupaten.findUnique({
-        where: {
-          id_kabupaten: body.id_kabupaten,
-        },
-        select: {
-          bappeda: {
-            select: {
-              id_user: true,
-            },
-          },
-        },
-      });
-
-      if (!check) {
-        return {
-          status: false,
-          code: 404,
-          error: "Data not found",
-        };
-      } else if (check.bappeda.id_user !== id_user) {
-        return {
-          status: false,
-          code: 403,
-          error: "Forbidden",
-        };
-      }
-
-      const add = await prisma.kecamatan.create({
+      const addUser = await prisma.user.create({
         data: {
-          id_kabupaten: body.id_kabupaten,
-          nama: body.nama,
-          potensi: body.potensi,
+          username: body.nb,
+          password: bcrypt.hashSync(body.nb, 10),
+          role: Role.BAPPEDA,
         },
         select: {
-          id_kecamatan: true,
+          id_user: true,
         },
       });
 
-      body.desa.forEach(async (e) => {
-        await prisma.desa.create({
-          data: {
-            id_kecamatan: add.id_kecamatan,
-            nama: e.nama,
-          },
-        });
+      await prisma.bappeda.create({
+        data: {
+          id_user: addUser.id_user,
+          nama: body.nama,
+          nb: body.nb,
+          nama_kabupaten: body.nama_kabupaten,
+          nama_pj: body.nama_pj,
+          created_by,
+        },
       });
 
       return {
@@ -290,7 +266,171 @@ class _bappeda {
         code: 201,
       };
     } catch (error) {
-      console.error("addKecamatan module error ", error);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("addBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editBappeda = async (id_bappeda, body) => {
+    try {
+      body = {
+        id_bappeda,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_bappeda: Joi.number().required(),
+        nama: Joi.string().required(),
+        nb: Joi.string().required(),
+        nama_kabupaten: Joi.string().required(),
+        nama_pj: Joi.string().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const bappeda = await prisma.bappeda.findUnique({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+      });
+
+      if (!bappeda) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      } else if (bappeda.nb != body.nb) {
+        const checkUser = await prisma.user.findUnique({
+          where: {
+            username: body.nb,
+          },
+          select: {
+            username: true,
+          },
+        });
+
+        if (checkUser) {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found, nomor induk sudah terdaftar",
+          };
+        }
+      }
+
+      await prisma.user.update({
+        where: {
+          username: bappeda.nb,
+        },
+        data: {
+          username: body.nb,
+          password: bcrypt.hashSync(body.nb, 10),
+        },
+      });
+
+      await prisma.bappeda.update({
+        where: {
+          id_bappeda: body.id_bappeda,
+        },
+        data: {
+          nama: body.nama,
+          nb: body.nb,
+          nama_kabupaten: body.nama_kabupaten,
+          nama_pj: body.nama_pj,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return {
+            status: false,
+            code: 409,
+            error: "Data duplicate found",
+          };
+        }
+      }
+
+      console.error("editBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  deleteBappeda = async (id_bappeda) => {
+    try {
+      const checkBappedaRegistered = await prisma.kecamatan.findFirst({
+        where: {
+          kabupaten: {
+            id_bappeda,
+          },
+          status: 1,
+        },
+      });
+
+      if (checkBappedaRegistered) {
+        return {
+          status: false,
+          code: 403,
+          error: "Bappeda masih mempunyai lokasi yang terdaftar",
+        };
+      }
+
+      const bappeda = await prisma.bappeda.delete({
+        where: {
+          id_bappeda,
+        },
+        select: {
+          id_user: true,
+        },
+      });
+
+      await prisma.user.delete({
+        where: {
+          id_user: bappeda.id_user,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteBappeda module error ", error);
 
       return {
         status: false,
