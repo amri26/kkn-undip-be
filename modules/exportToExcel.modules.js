@@ -160,15 +160,11 @@ class _exportToExcel {
         }
       });
 
-      const tema = list[0].tema.replace(/\//g, "-");
-
-      const nameFile = `Data Peserta Kec. ${list[0].kecamatan}, Kab. ${list[0].kabupaten} - ${tema}.xlsx`;
-
-      await workbook.xlsx.writeFile(`resources/assets/exports/${nameFile}`);
+      await workbook.xlsx.writeFile(`resources/assets/exports/export.xlsx`);
 
       res.download(
-        `resources/assets/exports/${nameFile}`,
-        `${nameFile}`,
+        `resources/assets/exports/export.xlsx`,
+        "export.xlsx",
         (error) => {
           if (error) {
             console.error(
