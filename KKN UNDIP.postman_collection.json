@@ -759,7 +759,7 @@
 							"variable": [
 								{
 									"key": "id_tema",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -10321,6 +10321,41 @@
 								"excel",
 								"pendaftaran",
 								"mahasiswa",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NILAI KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/excel/nilai/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"excel",
+								"nilai",
 								":id_kecamatan"
 							],
 							"variable": [

@@ -16,4 +16,8 @@ app.get(
   }
 );
 
+app.get("/nilai/:id_kecamatan", userSession, async (req, res, next) => {
+  await modules.exportDataNilai(res, Number(req.params.id_kecamatan));
+});
+
 module.exports = app;
