@@ -16,6 +16,13 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listDosen());
 });
 
+app.get("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listDosenTema(Number(req.params.id_tema))
+  );
+});
+
 app.get(
   "/detail/:id_dosen",
   userSession,

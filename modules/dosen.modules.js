@@ -23,8 +23,73 @@ class _dosen {
     }
   };
 
+  listDosenTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.dosen.findMany({
+        where: {
+          proposal: {
+            some: {
+              status: 1,
+              kecamatan: {
+                kabupaten: {
+                  tema: {
+                    id_tema,
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listDosen module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listDosenWilayah = async (id_kecamatan) => {
     try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
       const list = await prisma.proposal.findMany({
         where: {
           id_kecamatan,
