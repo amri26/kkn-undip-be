@@ -61,6 +61,93 @@ class _bappeda {
     }
   };
 
+  listBappedaTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.bappeda.findMany({
+        where: {
+          kabupaten: {
+            some: {
+              tema: {
+                id_tema,
+              },
+              kecamatan: {
+                some: {
+                  status: 1,
+                },
+              },
+            },
+          },
+        },
+        include: {
+          kabupaten: {
+            include: {
+              _count: {
+                select: {
+                  kecamatan: true,
+                },
+              },
+              kecamatan: {
+                include: {
+                  _count: {
+                    select: {
+                      desa: true,
+                    },
+                  },
+                  desa: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // let totalDesa = 0;
+      // let totalKecamatan = 0;
+
+      list.forEach((bappeda) => {
+        let totalKecamatan = 0;
+        let totalDesa = 0;
+        bappeda.kabupaten.forEach((kab) => {
+          totalKecamatan += kab._count.kecamatan;
+          kab.kecamatan.forEach((kec) => {
+            totalDesa += kec._count.desa;
+          });
+          bappeda.total_desa = totalDesa;
+        });
+        if (bappeda.kabupaten.length <= 0) bappeda.total_desa = 0;
+        bappeda.total_kecamatan = totalKecamatan;
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listBappeda module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   getBappeda = async (id_bappeda) => {
     try {
       const schema = Joi.number().required();

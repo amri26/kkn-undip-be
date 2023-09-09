@@ -15,6 +15,13 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listBappeda());
 });
 
+app.get("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listBappedaTema(Number(req.params.id_tema))
+  );
+});
+
 app.get(
   "/detail/:id_bappeda",
   userSession,
