@@ -1,6 +1,7 @@
 const { prisma } = require("../helpers/database");
 const Joi = require("joi");
 const ExcelJS = require("exceljs");
+const { embedLinkDrive } = require("../helpers/upload");
 
 class _exportToExcel {
   exportDataPendaftaranMahasiswa = async (res, id_kecamatan) => {
@@ -181,6 +182,158 @@ class _exportToExcel {
       );
     } catch (error) {
       console.error("exportDataPendaftaranMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  exportDataPendaftaranDosen = async (res, id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const tema = await prisma.tema.findUnique({
+        where: {
+          id_tema,
+        },
+      });
+
+      const list = await prisma.proposal.findMany({
+        where: {
+          status: 1,
+        },
+        include: {
+          dosen: true,
+          dokumen: {
+            select: {
+              id_drive: true,
+            },
+          },
+          kecamatan: {
+            select: {
+              nama: true,
+              kabupaten: {
+                select: {
+                  nama: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      list.forEach((item, i) => {
+        item.no = i + 1;
+
+        item.nama = item.dosen.nama;
+        item.nip = item.dosen.nip;
+        item.jenis_kelamin =
+          item.dosen.jenis_kelamin == 1 ? "Laki-laki" : "Perempuan";
+        item.no_hp = item.dosen.no_hp;
+        item.kabupaten = item.kecamatan.kabupaten.nama;
+        let namaKecamatan = item.kecamatan.nama;
+        item.kecamatan = namaKecamatan;
+
+        delete item.dosen;
+      });
+
+      await Promise.all(
+        list.map(async (item) => {
+          item.link_proposal = (
+            await embedLinkDrive(item.dokumen.id_drive)
+          ).data.embedLink;
+          delete item.dokumen;
+        })
+      );
+
+      console.log(list);
+
+      const workbook = new ExcelJS.Workbook();
+
+      await workbook.xlsx.readFile(
+        "resources/assets/templates/Template Ekspor Data Dosen.xlsx"
+      );
+
+      const worksheet = workbook.worksheets[0];
+
+      // judul
+      worksheet.getCell("A2").value = tema.nama + " UNIVERSITAS DIPONEGORO";
+
+      // style
+      const style = {
+        font: {
+          name: "Roboto",
+          size: 12,
+        },
+        alignment: {
+          vertical: "middle",
+        },
+      };
+
+      worksheet.columns = [
+        { key: "no", width: 5, style },
+        { key: "nip", width: 22, style },
+        { key: "nama", width: 46, style },
+        { key: "jenis_kelamin", width: 13, style },
+        { key: "no_hp", width: 23, style },
+        { key: "kabupaten", width: 28, style },
+        { key: "kecamatan", width: 28, style },
+        { key: "link_proposal", width: 37, style },
+      ];
+
+      let startRow = 6;
+      list.forEach((item, i) => {
+        const row = worksheet.getRow(startRow + i);
+
+        row.values = item;
+
+        for (let i = 1; i <= 8; i++) {
+          row.getCell(i).border = {
+            top: { style: "thin" },
+            left: { style: "thin" },
+            bottom: { style: "thin" },
+            right: { style: "thin" },
+          };
+        }
+      });
+
+      await workbook.xlsx.writeFile(`resources/assets/exports/export.xlsx`);
+
+      res.download(
+        `resources/assets/exports/export.xlsx`,
+        "export.xlsx",
+        (error) => {
+          if (error) {
+            console.error(
+              "exportDataPendaftaranMahasiswa module error ",
+              error
+            );
+
+            return {
+              status: false,
+              error,
+            };
+          }
+        }
+      );
+    } catch (error) {
+      console.error("exportDataPendaftaranDosen module error ", error);
 
       return {
         status: false,

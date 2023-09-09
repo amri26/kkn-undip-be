@@ -16,6 +16,10 @@ app.get(
   }
 );
 
+app.get("/pendaftaran/dosen/:id_tema", userSession, async (req, res, next) => {
+  await modules.exportDataPendaftaranDosen(res, Number(req.params.id_tema));
+});
+
 app.get("/nilai/:id_kecamatan", userSession, async (req, res, next) => {
   await modules.exportDataNilai(res, Number(req.params.id_kecamatan));
 });

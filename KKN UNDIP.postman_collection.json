@@ -759,7 +759,7 @@
 							"variable": [
 								{
 									"key": "id_tema",
-									"value": "2"
+									"value": "1"
 								}
 							]
 						}
@@ -10327,6 +10327,42 @@
 								{
 									"key": "id_kecamatan",
 									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PENDAFTARAN DOSEN TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/excel/pendaftaran/dosen/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"excel",
+								"pendaftaran",
+								"dosen",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
 								}
 							]
 						}
