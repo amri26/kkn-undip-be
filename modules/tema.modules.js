@@ -217,11 +217,36 @@ class _tema {
           id_tema,
         },
         include: {
-          kabupaten: {
+          _count: {
             select: {
+              kabupaten: true,
+            },
+          },
+          kabupaten: {
+            where: {
+              kecamatan: {
+                some: {
+                  status: 1,
+                },
+              },
+            },
+            select: {
+              _count: {
+                select: {
+                  kecamatan: true,
+                },
+              },
               nama: true,
               kecamatan: {
+                where: {
+                  status: 1,
+                },
                 select: {
+                  _count: {
+                    select: {
+                      desa: true,
+                    },
+                  },
                   nama: true,
                   desa: {
                     select: {
@@ -233,6 +258,19 @@ class _tema {
             },
           },
         },
+      });
+
+      tema.jml_kabupaten = tema._count.kabupaten;
+      delete tema._count;
+      tema.jml_kecamatan = 0;
+      tema.jml_desa = 0;
+      tema.kabupaten.forEach((kab) => {
+        tema.jml_kecamatan += kab._count.kecamatan;
+        delete kab._count;
+        kab.kecamatan.forEach((kec) => {
+          tema.jml_desa += kec._count.desa;
+          delete kec._count;
+        });
       });
 
       return {
