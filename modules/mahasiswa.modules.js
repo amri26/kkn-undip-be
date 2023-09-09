@@ -90,6 +90,122 @@ class _mahasiswa {
     }
   };
 
+  listMahasiswaTema = async (id_tema) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_tema);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.mahasiswa.findMany({
+        where: {
+          mahasiswa_kecamatan: {
+            some: {
+              status: 1,
+              kecamatan: {
+                kabupaten: {
+                  tema: {
+                    id_tema,
+                  },
+                },
+              },
+            },
+          },
+        },
+        include: {
+          mahasiswa_kecamatan: {
+            select: {
+              gelombang: {
+                select: {
+                  nama: true,
+                },
+              },
+              kecamatan: {
+                select: {
+                  nama: true,
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          mahasiswa_kecamatan_active: {
+            select: {
+              kecamatan: {
+                select: {
+                  nama: true,
+                  kabupaten: {
+                    select: {
+                      nama: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          prodi: {
+            select: {
+              nama: true,
+              fakultas: {
+                select: {
+                  nama: true,
+                  singkatan: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      list.forEach((mhs) => {
+        mhs.lokasi = "Belum mendaftar";
+        mhs.gelombang = "Belum mendaftar";
+        if (mhs.status == 1) {
+          let mahasiswa_kecamatan =
+            mhs.mahasiswa_kecamatan[mhs.mahasiswa_kecamatan.length - 1];
+
+          mhs.lokasi = `${mahasiswa_kecamatan?.kecamatan?.nama}, ${mahasiswa_kecamatan?.kecamatan?.kabupaten?.nama}`;
+          mhs.gelombang = mahasiswa_kecamatan?.gelombang?.nama;
+        } else if (mhs.status === 2) {
+          let mahasiswa_kecamatan =
+            mhs.mahasiswa_kecamatan[mhs.mahasiswa_kecamatan.length - 1];
+
+          mhs.lokasi = `${mhs.mahasiswa_kecamatan_active?.kecamatan?.nama}, ${mhs.mahasiswa_kecamatan_active?.kecamatan?.kabupaten?.nama}`;
+          mhs.gelombang = mahasiswa_kecamatan?.gelombang?.nama;
+        }
+
+        delete mhs.mahasiswa_kecamatan;
+        delete mhs.mahasiswa_kecamatan_active;
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   listMahasiswaUnregistered = async () => {
     try {
       const list = await prisma.mahasiswa.findMany({

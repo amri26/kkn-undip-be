@@ -253,7 +253,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"24060119120028\",\r\n    \"password\": \"24060119120028\"\r\n}",
+							"raw": "{\r\n    \"username\": \"0\",\r\n    \"password\": \"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,6 +299,41 @@
 							],
 							"path": [
 								"bappeda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST BAPPEDA TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/bappeda/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"bappeda",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -691,6 +726,41 @@
 							],
 							"path": [
 								"dosen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST DOSEN TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/dosen/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dosen",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -3303,6 +3373,41 @@
 							],
 							"path": [
 								"mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST MAHASISWA TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/mahasiswa/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"mahasiswa",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "5"
+								}
 							]
 						}
 					},
@@ -10180,6 +10285,47 @@
 								},
 								{
 									"key": "id_gelombang",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EXCEL",
+			"item": [
+				{
+					"name": "PENDAFTARAN MHS KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/excel/pendaftaran/mahasiswa/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"excel",
+								"pendaftaran",
+								"mahasiswa",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
 									"value": "2"
 								}
 							]

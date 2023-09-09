@@ -17,6 +17,13 @@ app.get("/", userSession, verifyAdmin, async (req, res, next) => {
   response.sendResponse(res, await modules.listMahasiswa());
 });
 
+app.get("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.listMahasiswaTema(Number(req.params.id_tema))
+  );
+});
+
 app.get("/unregistered", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listMahasiswaUnregistered());
 });
