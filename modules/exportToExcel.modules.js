@@ -468,8 +468,8 @@ class _exportToExcel {
         { key: "nama", width: 46, style },
         { key: "jenis_kelamin", width: 13, style },
         { key: "no_hp", width: 23, style },
+        { key: "prodi", width: 26, style },
         { key: "fakultas", width: 27, style },
-        { key: "jurusan", width: 26, style },
         {
           key: "pembekalan",
           width: 14,
