@@ -27,10 +27,22 @@ class _kabupaten {
         include: {
           kecamatan: {
             include: {
+              _count: {
+                select: {
+                  mahasiswa_kecamatan: true,
+                },
+              },
               desa: true,
             },
           },
         },
+      });
+
+      list.forEach((kabupaten) => {
+        kabupaten.kecamatan.forEach((kecamatan) => {
+          kecamatan.jumlah_pendaftar = kecamatan._count.mahasiswa_kecamatan;
+          delete kecamatan._count;
+        });
       });
 
       return {
