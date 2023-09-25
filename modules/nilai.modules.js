@@ -588,10 +588,12 @@ class _nilai {
             sosial_kemasyarakatan: nilai.sosial_kemasyarakatan ?? 0,
             lpk: nilai.lpk ?? 0,
             ujian_akhir: nilai.ujian_akhir ?? 0,
-            tugas: Math.round(nilai.tugas) ?? 0,
-            uts: Math.round(nilai.uts) ?? 0,
-            uas: Math.round(nilai.uas) ?? 0,
-            nilai_akhir: Number(nilai.nilai_akhir.toFixed(2)) ?? 0,
+            tugas: nilai.tugas ? Math.round(nilai.tugas) : 0,
+            uts: nilai.uts ? Math.round(nilai.uts) : 0,
+            uas: nilai.uas ? Math.round(nilai.uas) : 0,
+            nilai_akhir: nilai.nilai_akhir
+              ? Number(Number(nilai.nilai_akhir).toFixed(2))
+              : 0,
             nilai_huruf: nilai.nilai_huruf,
           },
         });
