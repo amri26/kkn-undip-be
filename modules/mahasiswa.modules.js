@@ -617,21 +617,30 @@ class _mahasiswa {
   };
 
   importMahasiswa = async (file) => {
+    console.log("importMahasiswa module");
     try {
       const result = excelToJson({
         source: file.buffer,
         header: {
           rows: 1,
         },
-        sheets: ["mahasiswa"],
+        sheets: ["Sheet1"],
         columnToKey: {
           B: "nama",
           C: "nim",
+          D: "prodi",
         },
       });
 
-      for (let i = 0; i < result.mahasiswa.length; i++) {
-        const e = result.mahasiswa[i];
+      const prodis = await prisma.prodi.findMany({
+        select: {
+          id_prodi: true,
+          nama: true,
+        },
+      });
+
+      for (let i = 0; i < result.Sheet1.length; i++) {
+        const e = result.Sheet1[i];
 
         const checkUser = await prisma.user.findUnique({
           where: {
@@ -676,11 +685,15 @@ class _mahasiswa {
           },
         });
 
+        const prodiMhs = prodis.find((p) => p.nama === e.prodi);
+        console.log(prodiMhs);
+
         await prisma.mahasiswa.create({
           data: {
             nama: e.nama,
             nim: String(e.nim),
             id_user: addUser.id_user,
+            id_prodi: prodiMhs.id_prodi,
           },
         });
       }
