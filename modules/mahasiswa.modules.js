@@ -2,6 +2,8 @@ const { prisma, Prisma, Role } = require("../helpers/database");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
+const ExcelJS = require("exceljs");
+const { del } = require("express/lib/application");
 
 class _mahasiswa {
   listMahasiswa = async () => {
@@ -905,6 +907,73 @@ class _mahasiswa {
       };
     } catch (error) {
       console.error("deleteMahasiswa module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  downloadFormatImport = async (res) => {
+    try {
+      const prodis = await prisma.prodi.findMany({
+        select: {
+          nama: true,
+        },
+      });
+
+      const workbook = new ExcelJS.Workbook();
+
+      await workbook.xlsx.readFile(
+        "resources/assets/templates/Template Impor Data Mahasiswa.xlsx"
+      );
+
+      const worksheet = workbook.worksheets[0];
+
+      let startRow = 3;
+      prodis.forEach((prodi, i) => {
+        let idRow = startRow + i;
+        const row = worksheet.getRow(idRow);
+
+        row.getCell("F").value = prodi.nama;
+      });
+
+      for (let i = 2; i <= 1000; i++) {
+        const row = worksheet.getRow(i);
+
+        row.getCell("D").dataValidation = {
+          type: "list",
+          allowBlank: false,
+          formulae: ["$F$3:$F$" + (prodis.length + 2)],
+          showInputMessage: true,
+          promptTitle: "Pilih Prodi",
+          prompt: "Pilih salah satu prodi",
+          showErrorMessage: true,
+          errorStyle: "error",
+          errorTitle: "Data tidak valid",
+          error: "Pilih salah satu prodi yang telah disediakan!",
+        };
+      }
+
+      await workbook.xlsx.writeFile("resources/assets/imports/import.xlsx");
+
+      res.download(
+        `resources/assets/imports/import.xlsx`,
+        "import.xlsx",
+        (error) => {
+          if (error) {
+            console.error("downloadFormatImport module error ", error);
+
+            return {
+              status: false,
+              error,
+            };
+          }
+        }
+      );
+    } catch (error) {
+      console.error("downloadFormatImport module error ", error);
 
       return {
         status: false,
