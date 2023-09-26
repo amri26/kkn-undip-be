@@ -686,7 +686,6 @@ class _mahasiswa {
         });
 
         const prodiMhs = prodis.find((p) => p.nama === e.prodi);
-        console.log(prodiMhs);
 
         await prisma.mahasiswa.create({
           data: {
