@@ -296,6 +296,8 @@ class _tema {
         kab: Joi.string().allow(null, ""),
         kec: Joi.string().allow(null, ""),
         desa: Joi.string().allow(null, ""),
+        tgl_mulai: Joi.date().allow(null, ""),
+        tgl_akhir: Joi.date().allow(null, ""),
       });
 
       const validation = schema.validate(body);
@@ -320,6 +322,8 @@ class _tema {
           kab: body.kab,
           kec: body.kec,
           desa: body.desa,
+          tgl_mulai: body.tgl_mulai,
+          tgl_akhir: body.tgl_akhir,
         },
         select: {
           id_tema: true,
@@ -360,6 +364,8 @@ class _tema {
         kab: Joi.string().required(),
         kec: Joi.string().required(),
         desa: Joi.string().required(),
+        tgl_mulai: Joi.date().allow(null, ""),
+        tgl_akhir: Joi.date().allow(null, ""),
       });
 
       const validation = schema.validate(body);
@@ -384,6 +390,8 @@ class _tema {
           kab: body.kab,
           kec: body.kec,
           desa: body.desa,
+          tgl_mulai: body.tgl_mulai,
+          tgl_akhir: body.tgl_akhir,
         },
         select: {
           id_tema: true,
@@ -448,6 +456,8 @@ class _tema {
         kab: Joi.string().allow(null),
         kec: Joi.string().allow(null),
         desa: Joi.string().allow(null),
+        tgl_mulai: Joi.date().allow(null, ""),
+        tgl_akhir: Joi.date().allow(null, ""),
       });
 
       const validation = schema.validate(body);
@@ -491,6 +501,8 @@ class _tema {
           kab: body.kab,
           kec: body.kec,
           desa: body.desa,
+          tgl_mulai: body.tgl_mulai,
+          tgl_akhir: body.tgl_akhir,
         },
       });
 

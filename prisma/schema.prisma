@@ -26,6 +26,8 @@ model tema {
   kec          String?        @db.VarChar(50)
   desa         String?        @db.VarChar(50)
   status       Boolean        @default(false)
+  tgl_mulai    DateTime?      @db.Timestamp(0)
+  tgl_akhir    DateTime?      @db.Timestamp(0)
   kabupaten    kabupaten[]
   tema_halaman tema_halaman[]
 }
@@ -102,6 +104,8 @@ model kecamatan {
   potensi                    String                       @db.Text
   status                     Int                          @default(0) @db.TinyInt
   is_full                    Boolean                      @default(false)
+  longitude                  Float?                       @db.Float()
+  latitude                   Float?                       @db.Float()
   kabupaten                  kabupaten                    @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
   korwil                     korwil?                      @relation(fields: [id_korwil], references: [id_korwil], onDelete: Cascade, onUpdate: Cascade)
   desa                       desa[]
@@ -271,6 +275,8 @@ model mahasiswa {
   alamat_cp_urgent           String?                     @db.VarChar(100)
   foto_profile               String?                     @db.VarChar(100)
   hubungan                   String?                     @db.VarChar(50)
+  khs                        String?                     @db.VarChar(100)
+  surat_pernyataan           String?                     @db.VarChar(100)
   status                     Int                         @default(0) @db.TinyInt
   created_at                 DateTime                    @default(now()) @db.DateTime(0)
   user                       user?                       @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
@@ -280,6 +286,7 @@ model mahasiswa {
   nilai                      nilai?
   laporan                    laporan[]
   reportase                  reportase[]
+  presensi                   presensi[]
 }
 
 model nilai {
@@ -344,9 +351,18 @@ model event {
   id_event   Int      @id @default(autoincrement())
   judul      String   @db.VarChar(200)
   keterangan String?  @default("") @db.Text
-  tgl_mulai  DateTime @db.DateTime()
-  tgl_akhir  DateTime @db.DateTime()
+  tgl_mulai  DateTime @db.DateTime(0)
+  tgl_akhir  DateTime @db.DateTime(0)
   tempat     String   @db.VarChar(100)
   peruntukan String   @db.VarChar(100)
   created_at DateTime @default(now()) @db.DateTime(0)
+}
+
+model presensi {
+  id_presensi  Int       @id @default(autoincrement())
+  id_mahasiswa Int
+  tgl          DateTime  @db.DateTime(0)
+  status       Int       @default(0) @db.TinyInt
+  updated_at   DateTime? @db.DateTime(0)
+  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }
