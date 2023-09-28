@@ -106,6 +106,7 @@ model kecamatan {
   is_full                    Boolean                      @default(false)
   longitude                  Float?                       @db.Float()
   latitude                   Float?                       @db.Float()
+  radius                     Float?                       @db.Float()
   kabupaten                  kabupaten                    @relation(fields: [id_kabupaten], references: [id_kabupaten], onDelete: Cascade, onUpdate: Cascade)
   korwil                     korwil?                      @relation(fields: [id_korwil], references: [id_korwil], onDelete: Cascade, onUpdate: Cascade)
   desa                       desa[]

@@ -163,6 +163,9 @@ class _kecamatan {
             nama: Joi.string().required(),
           })
         ),
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required(),
+        radius: Joi.number().required(),
       });
 
       const validation = schema.validate(body);
@@ -211,6 +214,9 @@ class _kecamatan {
           id_kabupaten: body.id_kabupaten,
           nama: body.nama,
           potensi: body.potensi,
+          latitude: body.latitude,
+          longitude: body.longitude,
+          radius: body.radius,
         },
         select: {
           id_kecamatan: true,
