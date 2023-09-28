@@ -823,7 +823,7 @@
 							"variable": [
 								{
 									"key": "id_desa",
-									"value": "4"
+									"value": "6"
 								}
 							]
 						}
@@ -872,7 +872,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_kabupaten\": 1,\r\n    \"nama\": \"Gandrungmangu\",\r\n    \"potensi\": \"Banyak UMKM di sekitar lapangan\",\r\n    \"desa\": [\r\n        {\r\n            \"nama\": \"Gandrungmanis\"\r\n        },\r\n        {\r\n            \"nama\": \"Sidaurip\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"id_kecamatan\": 1,\r\n    \"nama\": \"Desa XYZ\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -880,12 +880,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/kecamatan",
+							"raw": "{{url}}/desa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"kecamatan"
+								"desa"
 							]
 						}
 					},
@@ -921,7 +921,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\": \"Kecamatan 2\",\r\n    \"potensi\": \"Ini potensi baru\",\r\n    \"latitude\": -8.03622,\r\n    \"longitude\": 110.935,\r\n    \"radius\": 700\r\n}",
+							"raw": "{\r\n    \"nama\": \"Desa XYZ\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -929,18 +929,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/kecamatan/:id_kecamatan",
+							"raw": "{{url}}/desa/:id_desa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"kecamatan",
-								":id_kecamatan"
+								"desa",
+								":id_desa"
 							],
 							"variable": [
 								{
-									"key": "id_kecamatan",
-									"value": "36"
+									"key": "id_desa",
+									"value": "5"
 								}
 							]
 						}
@@ -976,18 +976,18 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/kecamatan/:id_kecamatan",
+							"raw": "{{url}}/desa/:id_desa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"kecamatan",
-								":id_kecamatan"
+								"desa",
+								":id_desa"
 							],
 							"variable": [
 								{
-									"key": "id_kecamatan",
-									"value": "33"
+									"key": "id_desa",
+									"value": ""
 								}
 							]
 						}

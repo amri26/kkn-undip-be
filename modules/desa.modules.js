@@ -254,9 +254,26 @@ class _desa {
         };
       }
 
-      await prisma.desa.update({
+      const check = await prisma.desa.findUnique({
         where: {
           id_desa,
+        },
+        select: {
+          id_desa: true,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data desa not found",
+        };
+      }
+
+      await prisma.desa.update({
+        where: {
+          id_desa: check.id_desa,
         },
         data: {
           nama: body.nama,
