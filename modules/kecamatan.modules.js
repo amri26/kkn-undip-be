@@ -42,6 +42,65 @@ class _kecamatan {
     }
   };
 
+  listKecamatanKabupaten = async (id_kabupaten) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validate = schema.validate(id_kabupaten);
+
+      if (validate.error) {
+        const errorDetails = validate.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.kecamatan.findMany({
+        where: {
+          id_kabupaten,
+        },
+        include: {
+          kabupaten: {
+            select: {
+              nama: true,
+              tema: true,
+            },
+          },
+          desa: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
+
+      list.forEach((kecamatan) => {
+        kecamatan.nama_kabupaten = kecamatan.kabupaten.nama;
+        kecamatan.nama_tema = kecamatan.kabupaten.tema.nama;
+        kecamatan.periode = kecamatan.kabupaten.tema.periode;
+
+        delete kecamatan.kabupaten;
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listKecamatanKabupaten module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   getKecamatan = async (id_kecamatan) => {
     try {
       const schema = Joi.number().required();
@@ -83,6 +142,14 @@ class _kecamatan {
           },
         },
       });
+
+      if (!kecamatan) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data not found",
+        };
+      }
 
       kecamatan.nama_kabupaten = kecamatan.kabupaten.nama;
       kecamatan.id_tema = kecamatan.kabupaten.tema.id_tema;

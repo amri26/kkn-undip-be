@@ -1,6 +1,7 @@
 const AdminController = require("./controllers/AdminController");
 const AuthController = require("./controllers/AuthController");
 const BappedaController = require("./controllers/BappedaController");
+const DesaController = require("./controllers/DesaController");
 const DokumenController = require("./controllers/DokumenController");
 const DosenController = require("./controllers/DosenController");
 const EventController = require("./controllers/EventController");
@@ -30,6 +31,7 @@ const _routes = [
   ["/admin", AdminController],
   ["/auth", AuthController],
   ["/bappeda", BappedaController],
+  ["/desa", DesaController],
   ["/dokumen", DokumenController],
   ["/dosen", DosenController],
   ["/event", EventController],
