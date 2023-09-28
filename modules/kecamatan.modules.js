@@ -42,6 +42,64 @@ class _kecamatan {
     }
   };
 
+  getKecamatan = async (id_kecamatan) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const kecamatan = await prisma.kecamatan.findUnique({
+        where: {
+          id_kecamatan,
+        },
+        include: {
+          kabupaten: {
+            select: {
+              nama: true,
+              tema: true,
+            },
+          },
+          desa: {
+            select: {
+              nama: true,
+            },
+          },
+        },
+      });
+
+      kecamatan.nama_kabupaten = kecamatan.kabupaten.nama;
+      kecamatan.id_tema = kecamatan.kabupaten.tema.id_tema;
+      kecamatan.nama_tema = kecamatan.kabupaten.tema.nama;
+      kecamatan.periode = kecamatan.kabupaten.tema.periode;
+
+      delete kecamatan.kabupaten;
+
+      return {
+        status: true,
+        data: kecamatan,
+      };
+    } catch (error) {
+      console.error("getKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
   getKecamatanMahasiswa = async (id_user) => {
     try {
       const schema = Joi.number().required();
@@ -238,6 +296,63 @@ class _kecamatan {
       };
     } catch (error) {
       console.error("addKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  editKecamatan = async (id_kecamatan, body) => {
+    try {
+      body = {
+        id_kecamatan,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_kecamatan: Joi.number().required(),
+        nama: Joi.string().required(),
+        potensi: Joi.string().required(),
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required(),
+        radius: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      await prisma.kecamatan.update({
+        where: {
+          id_kecamatan,
+        },
+        data: {
+          nama: body.nama,
+          potensi: body.potensi,
+          latitude: body.latitude,
+          longitude: body.longitude,
+          radius: body.radius,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editKecamatan module error ", error);
 
       return {
         status: false,

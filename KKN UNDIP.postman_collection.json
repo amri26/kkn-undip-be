@@ -2414,6 +2414,41 @@
 					"response": []
 				},
 				{
+					"name": "GET KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/kecamatan/detail/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kecamatan",
+								"detail",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GET KECAMATAN MAHASISWA",
 					"request": {
 						"auth": {
@@ -2497,6 +2532,62 @@
 							],
 							"path": [
 								"kecamatan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT KECAMATAN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status code should be 204', () => {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Kecamatan 2\",\r\n    \"potensi\": \"Ini potensi baru\",\r\n    \"latitude\": -8.03622,\r\n    \"longitude\": 110.935,\r\n    \"radius\": 700\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "36"
+								}
 							]
 						}
 					},
@@ -3739,7 +3830,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/C:/Users/Wahyu Purnomo Ady/Downloads/Format Impor Mahasiswa - KKN UNDIP.xlsx"
 								}
 							]
 						},
