@@ -76,6 +76,11 @@ class _kecamatan {
               nama: true,
             },
           },
+          korwil: {
+            select: {
+              nama: true,
+            },
+          },
         },
       });
 
@@ -83,8 +88,10 @@ class _kecamatan {
       kecamatan.id_tema = kecamatan.kabupaten.tema.id_tema;
       kecamatan.nama_tema = kecamatan.kabupaten.tema.nama;
       kecamatan.periode = kecamatan.kabupaten.tema.periode;
+      kecamatan.nama_korwil = kecamatan.korwil?.nama ?? "-";
 
       delete kecamatan.kabupaten;
+      delete kecamatan.korwil;
 
       return {
         status: true,
