@@ -5458,6 +5458,107 @@
 			]
 		},
 		{
+			"name": "PRESENSI",
+			"item": [
+				{
+					"name": "LIST ALL PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LIST PRESENSI TEMA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi/tema/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"tema",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi/:id_tema",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								":id_tema"
+							],
+							"variable": [
+								{
+									"key": "id_tema",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "PROPOSAL",
 			"item": [
 				{

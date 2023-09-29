@@ -18,6 +18,7 @@ const NilaiController = require("./controllers/NilaiController");
 const PendafataranController = require("./controllers/PendaftaranController");
 const PengumumanController = require("./controllers/PengumumanController");
 const PimpinanController = require("./controllers/PimpinanController");
+const PresensiController = require("./controllers/PresensiController");
 const ProposalController = require("./controllers/ProposalController");
 const ReportaseController = require("./controllers/ReportaseController");
 const ReviewerController = require("./controllers/ReviewerController");
@@ -48,6 +49,7 @@ const _routes = [
   ["/pendaftaran", PendafataranController],
   ["/pengumuman", PengumumanController],
   ["/pimpinan", PimpinanController],
+  ["/presensi", PresensiController],
   ["/proposal", ProposalController],
   ["/reportase", ReportaseController],
   ["/reviewer", ReviewerController],

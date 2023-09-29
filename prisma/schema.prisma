@@ -30,6 +30,7 @@ model tema {
   tgl_akhir    DateTime?      @db.Timestamp(0)
   kabupaten    kabupaten[]
   tema_halaman tema_halaman[]
+  presensi     presensi[]
 }
 
 model halaman {
@@ -287,7 +288,7 @@ model mahasiswa {
   nilai                      nilai?
   laporan                    laporan[]
   reportase                  reportase[]
-  presensi                   presensi[]
+  riwayat_presensi           riwayat_presensi[]
 }
 
 model nilai {
@@ -360,10 +361,20 @@ model event {
 }
 
 model presensi {
-  id_presensi  Int       @id @default(autoincrement())
-  id_mahasiswa Int
-  tgl          DateTime  @db.DateTime(0)
-  status       Int       @default(0) @db.TinyInt
-  updated_at   DateTime? @db.DateTime(0)
-  mahasiswa    mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+  id_presensi      Int                @id @default(autoincrement())
+  id_tema          Int
+  tgl              DateTime           @unique @db.Date()
+  status           Int                @default(0) @db.TinyInt
+  tema             tema               @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
+  riwayat_presensi riwayat_presensi[]
+}
+
+model riwayat_presensi {
+  id_riwayat_presensi Int       @id @default(autoincrement())
+  id_presensi         Int
+  id_mahasiswa        Int
+  status              Int       @default(0) @db.TinyInt
+  updated_at          DateTime  @default(now()) @db.DateTime(0)
+  presensi            presensi  @relation(fields: [id_presensi], references: [id_presensi], onDelete: Cascade, onUpdate: Cascade)
+  mahasiswa           mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
 }
