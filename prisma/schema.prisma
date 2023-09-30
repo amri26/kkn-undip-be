@@ -26,8 +26,8 @@ model tema {
   kec          String?        @db.VarChar(50)
   desa         String?        @db.VarChar(50)
   status       Boolean        @default(false)
-  tgl_mulai    DateTime?      @db.Timestamp(0)
-  tgl_akhir    DateTime?      @db.Timestamp(0)
+  tgl_mulai    DateTime?      @db.Date()
+  tgl_akhir    DateTime?      @db.Date()
   kabupaten    kabupaten[]
   tema_halaman tema_halaman[]
   presensi     presensi[]
@@ -363,7 +363,7 @@ model event {
 model presensi {
   id_presensi      Int                @id @default(autoincrement())
   id_tema          Int
-  tgl              DateTime           @unique @db.Date()
+  tgl              DateTime           @db.Date()
   status           Int                @default(0) @db.TinyInt
   tema             tema               @relation(fields: [id_tema], references: [id_tema], onDelete: Cascade, onUpdate: Cascade)
   riwayat_presensi riwayat_presensi[]

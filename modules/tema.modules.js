@@ -1,5 +1,6 @@
 const { prisma } = require("../helpers/database");
 const Joi = require("joi");
+const moment = require("moment");
 
 class _tema {
   listTema = async () => {
@@ -327,9 +328,42 @@ class _tema {
         },
         select: {
           id_tema: true,
+          tgl_mulai: true,
+          tgl_akhir: true,
         },
       });
 
+      // presensi
+      moment.locale("id");
+
+      const startDate = moment(add.tgl_mulai);
+      const endDate = moment(add.tgl_akhir);
+
+      const duration = endDate.diff(startDate, "days");
+
+      const tgl = startDate;
+      for (let i = 0; i <= duration; i++) {
+        const check = await prisma.presensi.findFirst({
+          where: {
+            id_tema: add.id_tema,
+            tgl: new Date(tgl.format("YYYY-MM-DD")),
+          },
+        });
+
+        if (!check) {
+          await prisma.presensi.create({
+            data: {
+              id_tema: add.id_tema,
+              tgl: tgl.toDate(),
+              status: 0,
+            },
+          });
+        }
+
+        tgl.add(1, "days");
+      }
+
+      // halaman
       const list = await prisma.halaman.findMany();
 
       for (let i = 0; i < list.length; i++) {
@@ -474,21 +508,48 @@ class _tema {
         };
       }
 
-      const check = await prisma.tema.findUnique({
+      const tema = await prisma.tema.findUnique({
         where: {
           id_tema,
         },
-        select: {
-          status: true,
-        },
       });
 
-      if (!check) {
+      if (!tema) {
         return {
           status: false,
           code: 404,
           error: "Data not found",
         };
+      }
+
+      // presensi
+      moment.locale("id");
+
+      const startDate = moment(body.tgl_mulai);
+      const endDate = moment(body.tgl_akhir);
+
+      const duration = endDate.diff(startDate, "days");
+
+      const tgl = startDate;
+      for (let i = 0; i <= duration; i++) {
+        const check = await prisma.presensi.findFirst({
+          where: {
+            id_tema,
+            tgl: new Date(tgl.format("YYYY-MM-DD")),
+          },
+        });
+
+        if (!check) {
+          await prisma.presensi.create({
+            data: {
+              id_tema,
+              tgl: tgl.toDate(),
+              status: 0,
+            },
+          });
+        }
+
+        tgl.add(1, "days");
       }
 
       await prisma.tema.update({
