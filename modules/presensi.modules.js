@@ -5,7 +5,14 @@ const moment = require("moment");
 class _presensi {
   async listJadwalPresensi() {
     try {
-      const list = await prisma.presensi.findMany();
+      const list = await prisma.presensi.findMany({
+        include: {
+          tema: true,
+        },
+        orderBy: {
+          tgl: "asc",
+        },
+      });
 
       return {
         status: true,
@@ -42,6 +49,12 @@ class _presensi {
       const list = await prisma.presensi.findMany({
         where: {
           id_tema,
+        },
+        include: {
+          tema: true,
+        },
+        orderBy: {
+          tgl: "asc",
         },
       });
 
