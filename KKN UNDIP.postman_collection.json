@@ -5744,6 +5744,50 @@
 					"response": []
 				},
 				{
+					"name": "EDIT JADWAL PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tgl\": \"2023-10-06T15:06:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presensi/jadwal/:id_presensi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"jadwal",
+								":id_presensi"
+							],
+							"variable": [
+								{
+									"key": "id_presensi",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "EDIT PRESENSI",
 					"request": {
 						"auth": {

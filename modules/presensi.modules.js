@@ -413,6 +413,64 @@ class _presensi {
     }
   }
 
+  async editJadwalPresensi(id_presensi, body) {
+    try {
+      const schema = Joi.object({
+        id_presensi: Joi.number().required(),
+        tgl: Joi.date().required(),
+      });
+
+      const validation = schema.validate({ id_presensi, ...body });
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.presensi.findUnique({
+        where: {
+          id_presensi,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data presensi not found",
+        };
+      }
+
+      await prisma.presensi.update({
+        where: {
+          id_presensi,
+        },
+        data: {
+          tgl: body.tgl,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editJadwalPresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
   async editPresensi(id_riwayat_presensi, body) {
     try {
       const schema = Joi.object({

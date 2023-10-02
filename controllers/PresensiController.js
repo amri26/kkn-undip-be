@@ -76,6 +76,14 @@ app.post(
   }
 );
 
+app.put("/jadwal/:id_presensi", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editJadwalPresensi(Number(req.params.id_presensi), req.body)
+  );
+  await modules.updateStatusJadwalPresensi();
+});
+
 app.put("/:id_riwayat_presensi", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
