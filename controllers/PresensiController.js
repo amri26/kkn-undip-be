@@ -9,48 +9,53 @@ const {
 
 const app = Router();
 
-app.get("/", userSession, async (req, res, next) => {
-  await modules.updateStatusPresensi();
-  response.sendResponse(res, await modules.listPresensi());
+app.get("/jadwal", userSession, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
+  response.sendResponse(res, await modules.listJadwalPresensi());
 });
 
-app.get("/tema/:id_tema", userSession, async (req, res, next) => {
-  await modules.updateStatusPresensi();
+app.get("/jadwal/tema/:id_tema", userSession, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
   response.sendResponse(
     res,
-    await modules.listPresensiTema(Number(req.params.id_tema))
+    await modules.listJadwalPresensiTema(Number(req.params.id_tema))
   );
 });
 
-app.get(
-  "/riwayat/mahasiswa",
-  userSession,
-  verifyMahasiswa,
-  async (req, res, next) => {
-    await modules.updateStatusPresensi();
-    response.sendResponse(
-      res,
-      await modules.listRiwayatPresensiMahasiswa(Number(req.user.id))
-    );
-  }
-);
-
-app.get("/riwayat/:id_mahasiswa/:tgl", userSession, async (req, res, next) => {
-  await modules.updateStatusPresensi();
+app.get("/mahasiswa", userSession, verifyMahasiswa, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
   response.sendResponse(
     res,
-    await modules.getRiwayatPresensi(
-      Number(req.params.id_mahasiswa),
-      req.params.tgl
-    )
+    await modules.listPresensiMahasiswa(Number(req.user.id))
   );
 });
 
-app.post("/:id_tema", userSession, async (req, res, next) => {
-  await modules.updateStatusPresensi();
+app.get("/kecamatan/:id_kecamatan", userSession, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
   response.sendResponse(
     res,
-    await modules.addPresensi(Number(req.params.id_tema))
+    await modules.listPresensiKecamatan(Number(req.params.id_kecamatan))
+  );
+});
+
+app.get("/detail/:id_mahasiswa/:tgl", userSession, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
+  response.sendResponse(
+    res,
+    await modules.getPresensi(Number(req.params.id_mahasiswa), req.params.tgl)
+  );
+});
+
+app.post("/jadwal", userSession, verifyAdmin, async (req, res, next) => {
+  response.sendResponse(res, await modules.addJadwalPresensi(req.body));
+  await modules.updateStatusJadwalPresensi();
+});
+
+app.post("/jadwal/:id_tema", userSession, async (req, res, next) => {
+  await modules.updateStatusJadwalPresensi();
+  response.sendResponse(
+    res,
+    await modules.setupJadwalPresensiTema(Number(req.params.id_tema))
   );
 });
 
@@ -59,7 +64,7 @@ app.post(
   userSession,
   verifyMahasiswa,
   async (req, res, next) => {
-    await modules.updateStatusPresensi();
+    await modules.updateStatusJadwalPresensi();
     response.sendResponse(
       res,
       await modules.submitPresensi(
@@ -71,8 +76,16 @@ app.post(
   }
 );
 
-app.put("/status", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.updateStatusPresensi());
+app.put("/:id_riwayat_presensi", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.editPresensi(Number(req.params.id_riwayat_presensi), req.body)
+  );
+  await modules.updateStatusJadwalPresensi();
+});
+
+app.put("/jadwal/status", userSession, async (req, res, next) => {
+  response.sendResponse(res, await modules.updateStatusJadwalPresensi());
 });
 
 module.exports = app;

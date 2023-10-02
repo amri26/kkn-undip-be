@@ -3,7 +3,7 @@ const Joi = require("joi");
 const moment = require("moment");
 
 class _presensi {
-  async listPresensi() {
+  async listJadwalPresensi() {
     try {
       const list = await prisma.presensi.findMany();
 
@@ -12,7 +12,7 @@ class _presensi {
         data: list,
       };
     } catch (error) {
-      console.error("listPresensi module error ", error);
+      console.error("listJadwalPresensi module error ", error);
 
       return {
         status: false,
@@ -21,7 +21,7 @@ class _presensi {
     }
   }
 
-  async listPresensiTema(id_tema) {
+  async listJadwalPresensiTema(id_tema) {
     try {
       const schema = Joi.number().required();
 
@@ -50,7 +50,7 @@ class _presensi {
         data: list,
       };
     } catch (error) {
-      console.error("listPresensiTema module error ", error);
+      console.error("listJadwalPresensiTema module error ", error);
 
       return {
         status: false,
@@ -59,7 +59,7 @@ class _presensi {
     }
   }
 
-  async listRiwayatPresensiMahasiswa(id_user) {
+  async listPresensiMahasiswa(id_user) {
     try {
       const schema = Joi.number().required();
 
@@ -107,7 +107,58 @@ class _presensi {
     }
   }
 
-  async getRiwayatPresensi(id_mahasiswa, tgl) {
+  async listPresensiKecamatan(id_kecamatan) {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_kecamatan);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const list = await prisma.riwayat_presensi.findMany({
+        where: {
+          mahasiswa: {
+            mahasiswa_kecamatan_active: {
+              id_kecamatan,
+            },
+          },
+        },
+        include: {
+          presensi: true,
+          mahasiswa: true,
+        },
+        orderBy: {
+          presensi: {
+            tgl: "desc",
+          },
+        },
+      });
+
+      return {
+        status: true,
+        data: list,
+      };
+    } catch (error) {
+      console.error("listPresensiKecamatan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
+  async getPresensi(id_mahasiswa, tgl) {
     try {
       const schema = Joi.object({
         id_mahasiswa: Joi.number().required(),
@@ -180,7 +231,101 @@ class _presensi {
     }
   }
 
-  async addPresensi(id_tema) {
+  async addJadwalPresensi(body) {
+    try {
+      const schema = Joi.object({
+        id_tema: Joi.number().required(),
+        tgl: Joi.date().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const tema = await prisma.tema.findUnique({
+        where: {
+          id_tema: body.id_tema,
+        },
+      });
+
+      const presensis = await prisma.presensi.findMany({
+        where: {
+          id_tema: body.id_tema,
+        },
+      });
+
+      moment.locale("id");
+
+      const temaDuration =
+        moment(tema.tgl_akhir).diff(moment(tema.tgl_mulai), "days") + 1;
+
+      if (presensis.length >= temaDuration) {
+        return {
+          status: false,
+          code: 403,
+          error: "Jadwal presensi sudah penuh",
+        };
+      }
+
+      const today = moment();
+      const tglSubmitted = moment(body.tgl);
+
+      const check = await prisma.presensi.findFirst({
+        where: {
+          id_tema: body.id_tema,
+          tgl: new Date(tglSubmitted.format("YYYY-MM-DD")),
+        },
+      });
+
+      if (check) {
+        return {
+          status: false,
+          code: 403,
+          error: "Jadwal presensi sudah ada",
+        };
+      }
+
+      let status = 0;
+
+      if (tglSubmitted.isBefore(today)) {
+        status = -1;
+      } else if (tglSubmitted.isSame(today)) {
+        status = 1;
+      }
+
+      await prisma.presensi.create({
+        data: {
+          id_tema: body.id_tema,
+          tgl: body.tgl,
+          status,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addJadwalPresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
+  async setupJadwalPresensiTema(id_tema) {
     try {
       const schema = Joi.number().required();
 
@@ -247,6 +392,64 @@ class _presensi {
       };
     } catch (error) {
       console.error("addPresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
+  async editPresensi(id_riwayat_presensi, body) {
+    try {
+      const schema = Joi.object({
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.riwayat_presensi.findUnique({
+        where: {
+          id_riwayat_presensi,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data presensi not found",
+        };
+      }
+
+      await prisma.riwayat_presensi.update({
+        where: {
+          id_riwayat_presensi,
+        },
+        data: {
+          status: body.status,
+          updated_at: new Date(),
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("editPresensi module error ", error);
 
       return {
         status: false,
@@ -370,7 +573,7 @@ class _presensi {
     }
   }
 
-  async updateStatusPresensi() {
+  async updateStatusJadwalPresensi() {
     try {
       const todayDate = new Date(moment().format("YYYY-MM-DD"));
 
@@ -417,7 +620,7 @@ class _presensi {
         code: 204,
       };
     } catch (error) {
-      console.error("updateStatusPresensi module error ", error);
+      console.error("updateStatusJadwalPresensi module error ", error);
 
       return {
         status: false,
