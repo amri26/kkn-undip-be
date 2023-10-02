@@ -282,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"0\",\r\n    \"password\": \"0\"\r\n}",
+							"raw": "{\r\n    \"username\": \"24060119120028\",\r\n    \"password\": \"24060119120028\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5461,7 +5461,7 @@
 			"name": "PRESENSI",
 			"item": [
 				{
-					"name": "LIST ALL PRESENSI",
+					"name": "LIST ALL JADWAL PRESENSI",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5476,19 +5476,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi",
+							"raw": "{{url}}/presensi/jadwal",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"presensi"
+								"presensi",
+								"jadwal"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "LIST PRESENSI TEMA",
+					"name": "LIST JADWAL PRESENSI TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5503,12 +5504,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi/tema/:id_tema",
+							"raw": "{{url}}/presensi/jadwal/tema/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"presensi",
+								"jadwal",
 								"tema",
 								":id_tema"
 							],
@@ -5523,7 +5525,7 @@
 					"response": []
 				},
 				{
-					"name": "LIST RIWAYAT PRESENSI MAHASISWA",
+					"name": "LIST PRESENSI MAHASISWA",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5538,13 +5540,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi/riwayat/mahasiswa",
+							"raw": "{{url}}/presensi/mahasiswa",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"presensi",
-								"riwayat",
 								"mahasiswa"
 							]
 						}
@@ -5552,7 +5553,119 @@
 					"response": []
 				},
 				{
-					"name": "ADD PRESENSI",
+					"name": "LIST PRESENSI KECAMATAN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi/kecamatan/:id_kecamatan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"kecamatan",
+								":id_kecamatan"
+							],
+							"variable": [
+								{
+									"key": "id_kecamatan",
+									"value": "32"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi/detail/:id_mahasiswa/:tgl",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"detail",
+								":id_mahasiswa",
+								":tgl"
+							],
+							"variable": [
+								{
+									"key": "id_mahasiswa",
+									"value": "619"
+								},
+								{
+									"key": "tgl",
+									"value": "2023-09-30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD JADWAL PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_tema\": 1,\r\n    \"tgl\": \"2023-10-06T15:06:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presensi/jadwal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"jadwal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SETUP JADWAL PRESENSI TEMA",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5567,18 +5680,19 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi/:id_tema",
+							"raw": "{{url}}/presensi/jadwal/:id_tema",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"presensi",
+								"jadwal",
 								":id_tema"
 							],
 							"variable": [
 								{
 									"key": "id_tema",
-									"value": "7"
+									"value": "1"
 								}
 							]
 						}
@@ -5602,7 +5716,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tgl\": \"2023-09-30T15:06:00.000Z\",\r\n    \"status\": 1\r\n}",
+							"raw": "{\r\n    \"tgl\": \"2023-10-02T15:06:00.000Z\",\r\n    \"status\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5630,7 +5744,50 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE STATUS PRESENSI",
+					"name": "EDIT PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": -1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presensi/:id_riwayat_presensi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								":id_riwayat_presensi"
+							],
+							"variable": [
+								{
+									"key": "id_riwayat_presensi",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE STATUS JADWAL PRESENSI",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5645,12 +5802,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi/status",
+							"raw": "{{url}}/presensi/jadwal/status",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"presensi",
+								"jadwal",
 								"status"
 							]
 						}
@@ -5658,7 +5816,7 @@
 					"response": []
 				},
 				{
-					"name": "GET RIWAYAT PRESENSI",
+					"name": "DELETE PRESENSI",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -5670,27 +5828,56 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/presensi/riwayat/:id_mahasiswa/:tgl",
+							"raw": "{{url}}/presensi/:id_riwayat_presensi",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"presensi",
-								"riwayat",
-								":id_mahasiswa",
-								":tgl"
+								":id_riwayat_presensi"
 							],
 							"variable": [
 								{
-									"key": "id_mahasiswa",
-									"value": "619"
-								},
+									"key": "id_riwayat_presensi",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE JADWAL PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "tgl",
-									"value": "2023-09-30"
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/presensi/jadwal/:id_presensi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi",
+								"jadwal",
+								":id_presensi"
+							],
+							"variable": [
+								{
+									"key": "id_presensi",
+									"value": ""
 								}
 							]
 						}

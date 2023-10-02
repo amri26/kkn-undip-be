@@ -88,6 +88,14 @@ app.put("/jadwal/status", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.updateStatusJadwalPresensi());
 });
 
+app.delete("/jadwal/:id_presensi", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.deleteJadwalPresensi(Number(req.params.id_presensi))
+  );
+  await modules.updateStatusJadwalPresensi();
+});
+
 app.delete("/:id_riwayat_presensi", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
