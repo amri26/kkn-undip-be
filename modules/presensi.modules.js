@@ -628,6 +628,57 @@ class _presensi {
       };
     }
   }
+
+  async deletePresensi(id_riwayat_presensi) {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_riwayat_presensi);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.riwayat_presensi.findUnique({
+        where: {
+          id_riwayat_presensi,
+        },
+      });
+
+      if (!check) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data presensi not found",
+        };
+      }
+
+      await prisma.riwayat_presensi.delete({
+        where: {
+          id_riwayat_presensi,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deletePresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
 }
 
 module.exports = new _presensi();

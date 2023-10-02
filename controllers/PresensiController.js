@@ -88,4 +88,12 @@ app.put("/jadwal/status", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.updateStatusJadwalPresensi());
 });
 
+app.delete("/:id_riwayat_presensi", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.deletePresensi(Number(req.params.id_riwayat_presensi))
+  );
+  await modules.updateStatusJadwalPresensi();
+});
+
 module.exports = app;
