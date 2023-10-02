@@ -282,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"24060119120028\",\r\n    \"password\": \"24060119120028\"\r\n}",
+							"raw": "{\r\n    \"username\": \"0\",\r\n    \"password\": \"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5659,6 +5659,42 @@
 							"path": [
 								"presensi",
 								"jadwal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD PRESENSI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_mahasiswa\": 1,\r\n    \"id_presensi\": 4,\r\n    \"status\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presensi",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presensi"
 							]
 						}
 					},

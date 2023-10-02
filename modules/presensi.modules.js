@@ -338,6 +338,195 @@ class _presensi {
     }
   }
 
+  async addPresensi(id_user, body) {
+    try {
+      body = {
+        id_user,
+        ...body,
+      };
+
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_mahasiswa: Joi.number().required(),
+        id_presensi: Joi.number().required(),
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const check = await prisma.riwayat_presensi.findFirst({
+        where: {
+          id_mahasiswa: body.id_mahasiswa,
+          id_presensi: body.id_presensi,
+        },
+      });
+
+      if (check) {
+        return {
+          status: false,
+          code: 403,
+          error: "Presensi sudah diisi",
+        };
+      }
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
+      await prisma.riwayat_presensi.create({
+        data: {
+          id_mahasiswa: body.id_mahasiswa,
+          id_presensi: body.id_presensi,
+          status: body.status,
+          by: user.role.toString(),
+          updated_at: new Date(),
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addPresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
+  async submitPresensi(id_user, id_tema, body) {
+    try {
+      body = {
+        id_user,
+        id_tema,
+        ...body,
+      };
+      const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_tema: Joi.number().required(),
+        tgl: Joi.date().required(),
+        status: Joi.number().required(),
+      });
+
+      const validation = schema.validate(body);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const mahasiswa = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user: Number(id_user),
+        },
+        include: {
+          mahasiswa_kecamatan: {
+            where: {
+              status: 1,
+            },
+            select: {
+              id_mahasiswa_kecamatan: true,
+            },
+          },
+        },
+      });
+
+      const tgl = moment(body.tgl).format("YYYY-MM-DD");
+
+      const presensi = await prisma.presensi.findFirst({
+        where: {
+          id_tema,
+          tgl: new Date(tgl),
+        },
+      });
+
+      if (!presensi) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data presensi not found",
+        };
+      }
+
+      if (presensi.status == 0) {
+        return {
+          status: false,
+          code: 403,
+          error: "Presensi belum dibuka",
+        };
+      }
+
+      if (presensi.status == -1) {
+        return {
+          status: false,
+          code: 403,
+          error: "Presensi sudah ditutup",
+        };
+      }
+
+      const check = await prisma.riwayat_presensi.findFirst({
+        where: {
+          id_mahasiswa: mahasiswa.id_mahasiswa,
+          id_presensi: presensi.id_presensi,
+        },
+      });
+
+      if (check) {
+        return {
+          status: false,
+          code: 403,
+          error: "Presensi sudah diisi",
+        };
+      }
+
+      await prisma.riwayat_presensi.create({
+        data: {
+          id_mahasiswa: mahasiswa.id_mahasiswa,
+          id_presensi: presensi.id_presensi,
+          status: body.status,
+          by: "MAHASISWA",
+          updated_at: new Date(),
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("submitPresensi module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  }
+
   async setupJadwalPresensiTema(id_tema) {
     try {
       const schema = Joi.number().required();
@@ -471,9 +660,17 @@ class _presensi {
     }
   }
 
-  async editPresensi(id_riwayat_presensi, body) {
+  async editPresensi(id_user, id_riwayat_presensi, body) {
     try {
+      body = {
+        id_user,
+        id_riwayat_presensi,
+        ...body,
+      };
+
       const schema = Joi.object({
+        id_user: Joi.number().required(),
+        id_riwayat_presensi: Joi.number().required(),
         status: Joi.number().required(),
       });
 
@@ -505,12 +702,19 @@ class _presensi {
         };
       }
 
+      const user = await prisma.user.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
       await prisma.riwayat_presensi.update({
         where: {
           id_riwayat_presensi,
         },
         data: {
           status: body.status,
+          by: user.role.toString(),
           updated_at: new Date(),
         },
       });
@@ -521,121 +725,6 @@ class _presensi {
       };
     } catch (error) {
       console.error("editPresensi module error ", error);
-
-      return {
-        status: false,
-        error,
-      };
-    }
-  }
-
-  async submitPresensi(id_user, id_tema, body) {
-    try {
-      body = {
-        id_user,
-        id_tema,
-        ...body,
-      };
-      const schema = Joi.object({
-        id_user: Joi.number().required(),
-        id_tema: Joi.number().required(),
-        tgl: Joi.date().required(),
-        status: Joi.number().required(),
-      });
-
-      const validation = schema.validate(body);
-
-      if (validation.error) {
-        const errorDetails = validation.error.details.map(
-          (detail) => detail.message
-        );
-
-        return {
-          status: false,
-          code: 422,
-          error: errorDetails.join(", "),
-        };
-      }
-
-      const mahasiswa = await prisma.mahasiswa.findUnique({
-        where: {
-          id_user: Number(id_user),
-        },
-        include: {
-          mahasiswa_kecamatan: {
-            where: {
-              status: 1,
-            },
-            select: {
-              id_mahasiswa_kecamatan: true,
-            },
-          },
-        },
-      });
-
-      const tgl = moment(body.tgl).format("YYYY-MM-DD");
-
-      const presensi = await prisma.presensi.findFirst({
-        where: {
-          id_tema,
-          tgl: new Date(tgl),
-        },
-      });
-
-      if (!presensi) {
-        return {
-          status: false,
-          code: 404,
-          error: "Data presensi not found",
-        };
-      }
-
-      if (presensi.status == 0) {
-        return {
-          status: false,
-          code: 403,
-          error: "Presensi belum dibuka",
-        };
-      }
-
-      if (presensi.status == -1) {
-        return {
-          status: false,
-          code: 403,
-          error: "Presensi sudah ditutup",
-        };
-      }
-
-      const check = await prisma.riwayat_presensi.findFirst({
-        where: {
-          id_mahasiswa: mahasiswa.id_mahasiswa,
-          id_presensi: presensi.id_presensi,
-        },
-      });
-
-      if (check) {
-        return {
-          status: false,
-          code: 403,
-          error: "Presensi sudah diisi",
-        };
-      }
-
-      await prisma.riwayat_presensi.create({
-        data: {
-          id_mahasiswa: mahasiswa.id_mahasiswa,
-          id_presensi: presensi.id_presensi,
-          status: body.status,
-          updated_at: new Date(),
-        },
-      });
-
-      return {
-        status: true,
-        code: 201,
-      };
-    } catch (error) {
-      console.error("submitPresensi module error ", error);
 
       return {
         status: false,

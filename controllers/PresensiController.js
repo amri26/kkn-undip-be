@@ -5,6 +5,7 @@ const {
   userSession,
   verifyAdmin,
   verifyMahasiswa,
+  verifyDosen,
 } = require("../helpers/middleware");
 
 const app = Router();
@@ -51,6 +52,14 @@ app.post("/jadwal", userSession, verifyAdmin, async (req, res, next) => {
   await modules.updateStatusJadwalPresensi();
 });
 
+app.post("/", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.addPresensi(Number(req.user.id), req.body)
+  );
+  await modules.updateStatusJadwalPresensi();
+});
+
 app.post("/jadwal/:id_tema", userSession, async (req, res, next) => {
   await modules.updateStatusJadwalPresensi();
   response.sendResponse(
@@ -76,6 +85,10 @@ app.post(
   }
 );
 
+app.put("/jadwal/status", userSession, async (req, res, next) => {
+  response.sendResponse(res, await modules.updateStatusJadwalPresensi());
+});
+
 app.put("/jadwal/:id_presensi", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
@@ -87,13 +100,13 @@ app.put("/jadwal/:id_presensi", userSession, async (req, res, next) => {
 app.put("/:id_riwayat_presensi", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
-    await modules.editPresensi(Number(req.params.id_riwayat_presensi), req.body)
+    await modules.editPresensi(
+      Number(req.user.id),
+      Number(req.params.id_riwayat_presensi),
+      req.body
+    )
   );
   await modules.updateStatusJadwalPresensi();
-});
-
-app.put("/jadwal/status", userSession, async (req, res, next) => {
-  response.sendResponse(res, await modules.updateStatusJadwalPresensi());
 });
 
 app.delete("/jadwal/:id_presensi", userSession, async (req, res, next) => {

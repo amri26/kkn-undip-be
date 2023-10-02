@@ -374,6 +374,7 @@ model riwayat_presensi {
   id_presensi         Int
   id_mahasiswa        Int
   status              Int       @default(0) @db.TinyInt
+  by                  String?   @db.VarChar(50)
   updated_at          DateTime  @default(now()) @db.DateTime(0)
   presensi            presensi  @relation(fields: [id_presensi], references: [id_presensi], onDelete: Cascade, onUpdate: Cascade)
   mahasiswa           mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
