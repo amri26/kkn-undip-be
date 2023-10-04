@@ -6416,7 +6416,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://api.qrserver.com/v1/create-qr-code/?data=HelloWorld!&size=300x300",
+							"raw": "http://api.qrserver.com/v1/create-qr-code/?data=HelloWorld!&size=200x200",
 							"protocol": "http",
 							"host": [
 								"api",
@@ -6435,7 +6435,7 @@
 								},
 								{
 									"key": "size",
-									"value": "300x300"
+									"value": "200x200"
 								}
 							]
 						}
