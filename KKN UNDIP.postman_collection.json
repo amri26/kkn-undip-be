@@ -6408,6 +6408,43 @@
 			]
 		},
 		{
+			"name": "QR",
+			"item": [
+				{
+					"name": "GENERATE QR",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.qrserver.com/v1/create-qr-code/?data=HelloWorld!&size=300x300",
+							"protocol": "http",
+							"host": [
+								"api",
+								"qrserver",
+								"com"
+							],
+							"path": [
+								"v1",
+								"create-qr-code",
+								""
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "HelloWorld!"
+								},
+								{
+									"key": "size",
+									"value": "300x300"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REPORTASE",
 			"item": [
 				{
