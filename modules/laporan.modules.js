@@ -389,7 +389,7 @@ class _laporan {
         hambatan: Joi.string().required(),
         kelanjutan: Joi.string().required(),
         metode: Joi.string().required(),
-        dokumentasi: Joi.string().required(),
+        dokumentasi: Joi.string().allow("", null).default(""),
       });
 
       const validation = schema.validate(body);
