@@ -413,6 +413,7 @@ class _reportase {
         id_user: Joi.number().required(),
         id_reportase: Joi.number().required(),
         id_tema: Joi.number().required(),
+        kategori: Joi.number().required(),
         judul: Joi.string().required(),
         link_publikasi: Joi.string().required(),
         isi: Joi.string().required(),
@@ -461,6 +462,7 @@ class _reportase {
           id_reportase: body.id_reportase,
         },
         data: {
+          kategori: parseInt(body.kategori),
           judul: body.judul,
           link_publikasi: body.link_publikasi,
           isi: body.isi,
