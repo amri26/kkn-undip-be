@@ -171,6 +171,7 @@ model user {
   dosen      dosen?
   reviewer   reviewer?
   pimpinan   pimpinan?
+  berita     berita[]
 }
 
 model admin {
@@ -230,17 +231,18 @@ model reviewer {
 }
 
 model pimpinan {
-  id_pimpinan   Int       @id @default(autoincrement())
-  id_user       Int?      @unique
-  nama          String    @db.VarChar(50)
-  nip           String    @unique @db.VarChar(50)
-  jenis_kelamin Int?      @db.TinyInt
-  ttl           DateTime? @db.Date()
-  no_hp         String?   @db.VarChar(50)
-  alamat        String?   @db.VarChar(100)
-  foto_profile  String?   @db.VarChar(100)
-  created_at    DateTime  @default(now()) @db.DateTime(0)
-  user          user?     @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  id_pimpinan   Int                 @id @default(autoincrement())
+  id_user       Int?                @unique
+  nama          String              @db.VarChar(50)
+  nip           String              @unique @db.VarChar(50)
+  jenis_kelamin Int?                @db.TinyInt
+  ttl           DateTime?           @db.Date()
+  no_hp         String?             @db.VarChar(50)
+  alamat        String?             @db.VarChar(100)
+  foto_profile  String?             @db.VarChar(100)
+  created_at    DateTime            @default(now()) @db.DateTime(0)
+  user          user?               @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  koordinator   p2kkn_koordinator[]
 }
 
 model dosen {
@@ -378,4 +380,55 @@ model riwayat_presensi {
   updated_at          DateTime  @default(now()) @db.DateTime(0)
   presensi            presensi  @relation(fields: [id_presensi], references: [id_presensi], onDelete: Cascade, onUpdate: Cascade)
   mahasiswa           mahasiswa @relation(fields: [id_mahasiswa], references: [id_mahasiswa], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model berita {
+  id_berita   Int       @id @default(autoincrement())
+  id_kategori Int?
+  status      Int       @default(1)
+  thumbnail   String?
+  judul       String
+  body        String
+  id_author   Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  kategori    kategori? @relation(fields: [id_kategori], references: [id_kategori])
+  user        user      @relation(fields: [id_author], references: [id_user])
+}
+
+model kategori {
+  id_kategori Int      @id @default(autoincrement())
+  nama        String
+  berita      berita[]
+}
+
+model p2kkn_profile {
+  id_profile Int    @id @default(autoincrement())
+  profile    String
+  visi       String
+  misi       String
+}
+
+model p2kkn_struktur {
+  id_struktur    Int               @id @default(autoincrement())
+  periode        String
+  kepala         Int
+  sekretaris     Int
+  id_koordinator Int
+  koordinator    p2kkn_koordinator @relation(fields: [id_koordinator], references: [id_koordinator])
+}
+
+model p2kkn_koordinator {
+  id_koordinator Int              @id @default(autoincrement())
+  id_pimpinan    Int
+  pimpinan       pimpinan         @relation(fields: [id_pimpinan], references: [id_pimpinan])
+  struktur       p2kkn_struktur[]
+}
+
+model galeri {
+  id_foto    Int      @id @default(autoincrement())
+  nama       String
+  keterangan String
+  path       String
+  created_at DateTime @default(now())
 }
