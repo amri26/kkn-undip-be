@@ -8,7 +8,44 @@ const moment = require("moment");
 class _berita {
   async listBerita() {
     try {
-      const list = await prisma.berita.findMany();
+      const list = await prisma.berita.findMany({
+        include: {
+          kategori: {
+            select: {
+              nama: true,
+            },
+          },
+          user: {
+            select: {
+              dosen: {
+                select: {
+                  nama: true,
+                },
+              },
+              pimpinan: {
+                select: {
+                  nama: true,
+                },
+              },
+              reviewer: {
+                select: {
+                  nama: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      list.map((berita) => {
+        berita.kategori = berita.kategori.nama;
+        berita.author =
+          berita.user.dosen?.nama ??
+          berita.user.pimpinan?.nama ??
+          berita.user.reviewer?.nama ??
+          "Administrator";
+        delete berita.user;
+      });
 
       return {
         status: true,
@@ -67,6 +104,7 @@ class _berita {
       const schema = Joi.object({
         judul: Joi.string().required(),
         body: Joi.string().required(),
+        id_kategori: Joi.number().required(),
         id_user: Joi.number().required(),
       });
 
@@ -119,7 +157,7 @@ class _berita {
           judul: body.judul,
           body: body.body,
           id_author: user.id_user,
-          id_kategori: 1,
+          id_kategori: parseInt(body.id_kategori),
           thumbnail: pathFile,
         },
       });
@@ -151,6 +189,7 @@ class _berita {
         id_berita: Joi.number().required(),
         judul: Joi.string().required(),
         body: Joi.string().required(),
+        id_kategori: Joi.number().required(),
       });
 
       const validation = schema.validate(body);
@@ -194,11 +233,11 @@ class _berita {
         };
       }
 
-      if (berita.thumbnail) {
-        fs.unlinkSync(berita.thumbnail);
-      }
-
       if (thumbnail) {
+        if (berita.thumbnail) {
+          fs.unlinkSync(berita.thumbnail);
+        }
+
         const fileExtension = path
           .extname(thumbnail.originalname)
           .toLowerCase();
@@ -213,7 +252,6 @@ class _berita {
               error: err.message,
             };
           }
-          console.log("The file was saved!");
         });
       }
 
@@ -224,6 +262,7 @@ class _berita {
         data: {
           judul: body.judul,
           body: body.body,
+          id_kategori: parseInt(body.id_kategori),
           thumbnail: berita.thumbnail,
         },
       });
