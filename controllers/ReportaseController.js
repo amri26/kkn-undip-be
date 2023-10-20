@@ -63,6 +63,13 @@ app.post("/", userSession, verifyMahasiswa, async (req, res, next) => {
   }
 });
 
+app.put("/evaluate", userSession, verifyDosen, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.evaluateReportase(req.user.id, req.body)
+  );
+});
+
 app.put(
   "/:id_reportase",
   userSession,
@@ -92,13 +99,6 @@ app.delete("/:id_reportase", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.deleteReportase(Number(req.params.id_reportase))
-  );
-});
-
-app.put("/evaluate", userSession, verifyDosen, async (req, res, next) => {
-  response.sendResponse(
-    res,
-    await modules.evaluateReportase(req.user.id, req.body)
   );
 });
 

@@ -545,7 +545,7 @@ class _reportase {
       const schema = Joi.object({
         id_user: Joi.number().required(),
         id_reportase: Joi.number().required(),
-        komentar: Joi.string(),
+        komentar: Joi.string().allow("", null),
       });
 
       const validation = schema.validate(body);
