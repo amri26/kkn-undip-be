@@ -18,6 +18,10 @@ app.get("/detail/:id_berita", userSession, async (req, res, next) => {
   );
 });
 
+app.get("/thumbnail/:id_berita", userSession, async (req, res, next) => {
+  await modules.getThumbnailPicture(res, parseInt(req.params.id_berita));
+});
+
 app.post(
   "/",
   userSession,

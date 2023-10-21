@@ -282,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"0\",\r\n    \"password\": \"0\"\r\n}",
+							"raw": "{\r\n    \"username\": \"199008082022101000\",\r\n    \"password\": \"199008082022101000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -648,6 +648,243 @@
 								{
 									"key": "id_bappeda",
 									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BERITA",
+			"item": [
+				{
+					"name": "LIST BERITA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BERITA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/berita/detail/:id_berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita",
+								"detail",
+								":id_berita"
+							],
+							"variable": [
+								{
+									"key": "id_berita",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET THUMBNAIL PICTURE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/berita/thumbnail/:id_berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita",
+								"thumbnail",
+								":id_berita"
+							],
+							"variable": [
+								{
+									"key": "id_berita",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD BERITA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "judul",
+									"value": "DFADFASD",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "Ini body",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Wahyu Purnomo Ady/Downloads/18.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT BERITA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "judul",
+									"value": "Ini Judul Setelah Update",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "ini body setelah update",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Wahyu Purnomo Ady/Downloads/—Pngtree—men suit with white shirt_8532336.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/berita/:id_berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita",
+								":id_berita"
+							],
+							"variable": [
+								{
+									"key": "id_berita",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE BERITA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/berita/:id_berita",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"berita",
+								":id_berita"
+							],
+							"variable": [
+								{
+									"key": "id_berita",
+									"value": "19"
 								}
 							]
 						}
@@ -2642,6 +2879,186 @@
 							],
 							"path": [
 								"kabupaten"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "KATEGORI",
+			"item": [
+				{
+					"name": "LIST KATEGORI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/kategori",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kategori"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET KATEGORI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/kategori/detail/:id_kategori",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kategori",
+								"detail",
+								":id_kategori"
+							],
+							"variable": [
+								{
+									"key": "id_kategori",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD KATEGORI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Pelaksanaan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/kategori",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kategori"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT KATEGORI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"Pengumuman Edited\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/kategori/:id_kategori",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kategori",
+								":id_kategori"
+							],
+							"variable": [
+								{
+									"key": "id_kategori",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE KATEGORI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/kategori/:id_kategori",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kategori",
+								":id_kategori"
+							],
+							"variable": [
+								{
+									"key": "id_kategori",
+									"value": "12"
+								}
 							]
 						}
 					},

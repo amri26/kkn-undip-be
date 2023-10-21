@@ -386,9 +386,9 @@ model berita {
   id_berita   Int       @id @default(autoincrement())
   id_kategori Int?
   status      Int       @default(1)
-  thumbnail   String?
+  thumbnail   String?   @db.Text
   judul       String
-  body        String
+  body        String    @db.LongText
   id_author   Int
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
@@ -405,30 +405,30 @@ model kategori {
 model p2kkn_profile {
   id_profile Int    @id @default(autoincrement())
   profile    String
-  visi       String
-  misi       String
+  visi       String @db.Text
+  misi       String @db.Text
 }
 
 model p2kkn_struktur {
-  id_struktur    Int               @id @default(autoincrement())
-  periode        String
-  kepala         Int
-  sekretaris     Int
-  id_koordinator Int
-  koordinator    p2kkn_koordinator @relation(fields: [id_koordinator], references: [id_koordinator])
+  id_struktur Int                 @id @default(autoincrement())
+  periode     String
+  kepala      Int
+  sekretaris  Int
+  koordinator p2kkn_koordinator[]
 }
 
 model p2kkn_koordinator {
-  id_koordinator Int              @id @default(autoincrement())
+  id_koordinator Int            @id @default(autoincrement())
   id_pimpinan    Int
-  pimpinan       pimpinan         @relation(fields: [id_pimpinan], references: [id_pimpinan])
-  struktur       p2kkn_struktur[]
+  pimpinan       pimpinan       @relation(fields: [id_pimpinan], references: [id_pimpinan])
+  id_struktur    Int
+  struktur       p2kkn_struktur @relation(fields: [id_struktur], references: [id_struktur])
 }
 
 model galeri {
   id_foto    Int      @id @default(autoincrement())
   nama       String
-  keterangan String
+  keterangan String   @db.Text
   path       String
   created_at DateTime @default(now())
 }

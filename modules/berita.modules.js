@@ -83,7 +83,42 @@ class _berita {
         where: {
           id_berita,
         },
+        include: {
+          kategori: {
+            select: {
+              nama: true,
+            },
+          },
+          user: {
+            select: {
+              dosen: {
+                select: {
+                  nama: true,
+                },
+              },
+              pimpinan: {
+                select: {
+                  nama: true,
+                },
+              },
+              reviewer: {
+                select: {
+                  nama: true,
+                },
+              },
+            },
+          },
+        },
       });
+
+      berita.kategori = berita.kategori.nama;
+
+      berita.author =
+        berita.user.dosen?.nama ??
+        berita.user.pimpinan?.nama ??
+        berita.user.reviewer?.nama ??
+        "Administrator";
+      delete berita.user;
 
       return {
         status: true,
@@ -336,6 +371,86 @@ class _berita {
         status: false,
         error,
       };
+    }
+  }
+
+  async getThumbnailPicture(res, id_berita) {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_berita);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        res.writeHead(422, {
+          "Content-Type": "application/json",
+        });
+
+        res.end(
+          JSON.stringify({
+            status: false,
+            error: errorDetails.join(", "),
+          })
+        );
+      }
+
+      const berita = await prisma.berita.findUnique({
+        where: {
+          id_berita,
+        },
+      });
+
+      if (!berita) {
+        res.writeHead(404, {
+          "Content-Type": "application/json",
+        });
+
+        res.end(
+          JSON.stringify({
+            status: false,
+            error: "Berita not found!",
+          })
+        );
+      }
+
+      if (!berita.thumbnail) {
+        res.writeHead(404, {
+          "Content-Type": "application/json",
+        });
+
+        res.end(
+          JSON.stringify({
+            status: false,
+            error: "Thumbnail not found!",
+          })
+        );
+      }
+
+      const file = fs.readFileSync(berita.thumbnail);
+      var img = Buffer.from(file, "base64");
+
+      res.writeHead(200, {
+        "Content-Type": "image/png",
+        "Content-Length": img.length,
+      });
+
+      res.end(img);
+    } catch (error) {
+      console.error("getThumbnailPicture module error ", error);
+
+      res.writeHead(500, {
+        "Content-Type": "application/json",
+      });
+
+      res.end(
+        JSON.stringify({
+          status: false,
+          error: error.message,
+        })
+      );
     }
   }
 }
