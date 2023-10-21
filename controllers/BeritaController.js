@@ -7,18 +7,18 @@ const upload = multer();
 
 const app = Router();
 
-app.get("/", userSession, async (req, res, next) => {
+app.get("/", async (req, res, next) => {
   response.sendResponse(res, await modules.listBerita());
 });
 
-app.get("/detail/:id_berita", userSession, async (req, res, next) => {
+app.get("/detail/:id_berita", async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.getBerita(parseInt(req.params.id_berita))
   );
 });
 
-app.get("/thumbnail/:id_berita", userSession, async (req, res, next) => {
+app.get("/thumbnail/:id_berita", async (req, res, next) => {
   await modules.getThumbnailPicture(res, parseInt(req.params.id_berita));
 });
 
