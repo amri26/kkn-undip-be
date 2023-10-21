@@ -403,10 +403,19 @@ model kategori {
 }
 
 model p2kkn_profile {
-  id_profile Int    @id @default(autoincrement())
-  profile    String
-  visi       String @db.Text
-  misi       String @db.Text
+  id_profile Int      @id @default(autoincrement())
+  profile    String   @db.Text
+  visi       String   @db.Text
+  misi       String   @db.Text
+  alamat     String   @db.Text
+  email      String   @db.VarChar(50)
+  no_hp      String?  @db.VarChar(50)
+  facebook   String?  @db.VarChar(50)
+  instagram  String?  @db.VarChar(50)
+  twitter    String?  @db.VarChar(50)
+  youtube    String?  @db.VarChar(50)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model p2kkn_struktur {
