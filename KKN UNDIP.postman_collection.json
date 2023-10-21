@@ -5046,7 +5046,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"profile\": \"P2KKN atau Pusat Pelayanan Kuliah Kerja Nyata Universitas Diponegoro adalah sebuah lembaga di Universitas Diponegoro yang bertanggung jawab atas pelaksanaan Kuliah Kerja Nyata (KKN). KKN adalah bentuk pendidikan yang memberikan pengalaman belajar kepada mahasiswa untuk berinteraksi dengan masyarakat di luar kampus, dan secara langsung mengidentifikasikan masalah-masalah serta membantu menangani permasalahan yang dihadapi masyarakat dalam pembangunan wilayah di lokasi KKN\",\r\n    \"visi\": \"Mewujudkan program KKN yang berkualitas, inovatif, dan berdaya saing tinggi dalam rangka pengabdian kepada masyarakat\",\r\n    \"misi\": \"Meningkatkan kualitas program KKN melalui penerapan prinsip-prinsip pembangunan berkelanjutan dan pengembangan potensi daerah\",\r\n    \"alamat\": \"Gedung Pusat Pelayanan KKN (ex Lab Obat alam) Universitas Diponegoro, Tembalang, Semarang, Jawa Tengah 50275\",\r\n    \"no_hp\": \"0823232302387\",\r\n    \"email\": \"p2kkn@live.undip.ac.id\",\r\n    \"facebook\": \"Pusatpelayanan Kuliahkerjanyata\",\r\n    \"instagram\": \"@p2kkn\",\r\n    \"twitter\": \"@p2kknundip\",\r\n    \"youtube\": \"p2kkn undip\"\r\n}",
+							"raw": "{\r\n    \"profile\": \"P2KKN atau Pusat Pelayanan Kuliah Kerja Nyata Universitas Diponegoro adalah sebuah lembaga di Universitas Diponegoro yang bertanggung jawab atas pelaksanaan Kuliah Kerja Nyata (KKN). KKN adalah bentuk pendidikan yang memberikan pengalaman belajar kepada mahasiswa untuk berinteraksi dengan masyarakat di luar kampus, dan secara langsung mengidentifikasikan masalah-masalah serta membantu menangani permasalahan yang dihadapi masyarakat dalam pembangunan wilayah di lokasi KKN\",\r\n    \"visi\": \"Mewujudkan program KKN yang berkualitas, inovatif, dan berdaya saing tinggi dalam rangka pengabdian kepada masyarakat\",\r\n    \"misi\": \"Meningkatkan kualitas program KKN melalui penerapan prinsip-prinsip pembangunan berkelanjutan dan pengembangan potensi daerah\",\r\n    \"alamat\": \"Gedung Pusat Pelayanan KKN (ex Lab Obat alam) Universitas Diponegoro, Tembalang, Semarang, Jawa Tengah 50275\",\r\n    \"no_hp\": \"082323230238\",\r\n    \"email\": \"p2kkn@live.undip.ac.id\",\r\n    \"facebook\": \"Pusatpelayanan Kuliahkerjanyata\",\r\n    \"instagram\": \"@p2kkn\",\r\n    \"twitter\": \"@p2kknundip\",\r\n    \"youtube\": \"p2kkn undip\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5060,6 +5060,74 @@
 							],
 							"path": [
 								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "P2KKN STRUKTUR",
+			"item": [
+				{
+					"name": "GET STRUKTUR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/struktur",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"struktur"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT STRUKTUR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_kepala\": 1,\r\n    \"id_sekretaris\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/struktur",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"struktur"
 							]
 						}
 					},

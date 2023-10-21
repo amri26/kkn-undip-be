@@ -26,6 +26,7 @@ const ProposalController = require("./controllers/ProposalController");
 const ReportaseController = require("./controllers/ReportaseController");
 const ReviewerController = require("./controllers/ReviewerController");
 const SuperAdminController = require("./controllers/SuperAdminController");
+const StrukturController = require("./controllers/StrukturController");
 const TemaController = require("./controllers/TemaController");
 const TestController = require("./controllers/TestController");
 const UserController = require("./controllers/UserController");
@@ -60,6 +61,7 @@ const _routes = [
   ["/reportase", ReportaseController],
   ["/reviewer", ReviewerController],
   ["/superadmin", SuperAdminController],
+  ["/struktur", StrukturController],
   ["/tema", TemaController],
   ["/test", TestController],
   ["/user", UserController],
