@@ -231,18 +231,20 @@ model reviewer {
 }
 
 model pimpinan {
-  id_pimpinan   Int                 @id @default(autoincrement())
-  id_user       Int?                @unique
-  nama          String              @db.VarChar(50)
-  nip           String              @unique @db.VarChar(50)
-  jenis_kelamin Int?                @db.TinyInt
-  ttl           DateTime?           @db.Date()
-  no_hp         String?             @db.VarChar(50)
-  alamat        String?             @db.VarChar(100)
-  foto_profile  String?             @db.VarChar(100)
-  created_at    DateTime            @default(now()) @db.DateTime(0)
-  user          user?               @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
-  koordinator   p2kkn_koordinator[]
+  id_pimpinan               Int                 @id @default(autoincrement())
+  id_user                   Int?                @unique
+  nama                      String              @db.VarChar(50)
+  nip                       String              @unique @db.VarChar(50)
+  jenis_kelamin             Int?                @db.TinyInt
+  ttl                       DateTime?           @db.Date()
+  no_hp                     String?             @db.VarChar(50)
+  alamat                    String?             @db.VarChar(100)
+  foto_profile              String?             @db.VarChar(100)
+  created_at                DateTime            @default(now()) @db.DateTime(0)
+  user                      user?               @relation(fields: [id_user], references: [id_user], onDelete: SetNull, onUpdate: Cascade)
+  koordinator               p2kkn_koordinator[]
+  p2kkn_struktur_kepala     p2kkn_struktur[]    @relation(name: "pimpinan_kepala")
+  p2kkn_struktur_sekretaris p2kkn_struktur[]    @relation(name: "pimpinan_sekretaris")
 }
 
 model dosen {
@@ -419,18 +421,19 @@ model p2kkn_profile {
 }
 
 model p2kkn_struktur {
-  id_struktur Int                 @id @default(autoincrement())
-  periode     String
-  kepala      Int
-  sekretaris  Int
-  koordinator p2kkn_koordinator[]
+  id_struktur         Int                 @id @default(autoincrement())
+  kepala              Int
+  sekretaris          Int
+  koordinator         p2kkn_koordinator[]
+  pimpinan_kepala     pimpinan            @relation(name: "pimpinan_kepala", fields: [kepala], references: [id_pimpinan])
+  pimpinan_sekretaris pimpinan            @relation(name: "pimpinan_sekretaris", fields: [sekretaris], references: [id_pimpinan])
 }
 
 model p2kkn_koordinator {
   id_koordinator Int            @id @default(autoincrement())
   id_pimpinan    Int
-  pimpinan       pimpinan       @relation(fields: [id_pimpinan], references: [id_pimpinan])
   id_struktur    Int
+  pimpinan       pimpinan       @relation(fields: [id_pimpinan], references: [id_pimpinan])
   struktur       p2kkn_struktur @relation(fields: [id_struktur], references: [id_struktur])
 }
 
