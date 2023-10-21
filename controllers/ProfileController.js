@@ -10,7 +10,7 @@ const {
 
 const app = Router();
 
-app.get("/", userSession, async (req, res, next) => {
+app.get("/", async (req, res, next) => {
   response.sendResponse(res, await modules.getProfile());
 });
 
