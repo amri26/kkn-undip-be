@@ -65,7 +65,7 @@ class _profile {
         };
       }
 
-      const updateProfile = await prisma.p2kkn_profile.update({
+      await prisma.p2kkn_profile.update({
         where: {
           id_profile: profile.id_profile,
         },
