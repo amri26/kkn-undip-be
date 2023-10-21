@@ -269,7 +269,7 @@ class _berita {
       }
 
       if (thumbnail) {
-        if (berita.thumbnail) {
+        if (berita.thumbnail && fs.existsSync(berita.thumbnail)) {
           fs.unlinkSync(berita.thumbnail);
         }
 
@@ -353,6 +353,10 @@ class _berita {
 
       if (user.role !== "ADMIN" && user.id_user != berita.id_author)
         return { status: false, code: 403, error: "Not authorized" };
+
+      if (berita.thumbnail && fs.existsSync(berita.thumbnail)) {
+        fs.unlinkSync(berita.thumbnail);
+      }
 
       await prisma.berita.delete({
         where: {
