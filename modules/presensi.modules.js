@@ -223,6 +223,14 @@ class _presensi {
         },
       });
 
+      if (!presensi) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data presensi not found",
+        };
+      }
+
       const riwayat = await prisma.riwayat_presensi.findFirst({
         where: {
           id_mahasiswa,
