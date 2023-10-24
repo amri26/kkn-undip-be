@@ -8,7 +8,11 @@ class _struktur {
         include: {
           pimpinan_kepala: true,
           pimpinan_sekretaris: true,
-          koordinator: true,
+          koordinator: {
+            include: {
+              pimpinan: true,
+            },
+          },
         },
       });
 

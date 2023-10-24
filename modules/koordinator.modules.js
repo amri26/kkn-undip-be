@@ -7,6 +7,7 @@ class _koordinator {
       const koordinator = await prisma.p2kkn_koordinator.findMany({
         include: {
           struktur: true,
+          pimpinan: true,
         },
       });
 
@@ -32,6 +33,7 @@ class _koordinator {
         },
         include: {
           struktur: true,
+          pimpinan: true,
         },
       });
 
