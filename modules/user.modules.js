@@ -32,6 +32,13 @@ class _user {
             },
           });
           break;
+        case Role.PIMPINAN:
+          get = await prisma.pimpinan.findUnique({
+            where: {
+              id_user,
+            },
+          });
+          break;
         case Role.BAPPEDA:
           get = await prisma.bappeda.findUnique({
             where: {
