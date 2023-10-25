@@ -11,17 +11,12 @@ app.get("/", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listPimpinan());
 });
 
-app.get(
-  "/detail/:id_pimpinan",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.getPimpinan(Number(req.params.id_pimpinan))
-    );
-  }
-);
+app.get("/detail/:id_pimpinan", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getPimpinan(Number(req.params.id_pimpinan))
+  );
+});
 
 app.post(
   "/import",

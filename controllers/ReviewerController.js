@@ -15,17 +15,12 @@ app.get("/", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listReviewer());
 });
 
-app.get(
-  "/detail/:id_reviewer",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.getReviewer(Number(req.params.id_reviewer))
-    );
-  }
-);
+app.get("/detail/:id_reviewer", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getReviewer(Number(req.params.id_reviewer))
+  );
+});
 
 app.post(
   "/import",

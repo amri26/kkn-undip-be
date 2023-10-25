@@ -21,7 +21,7 @@ app.get("/import", userSession, async (req, res, next) => {
   await modules.downloadFormatImport(res);
 });
 
-app.get("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+app.get("/tema/:id_tema", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.listMahasiswaTema(Number(req.params.id_tema))

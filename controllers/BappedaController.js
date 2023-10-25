@@ -15,24 +15,19 @@ app.get("/", userSession, async (req, res, next) => {
   response.sendResponse(res, await modules.listBappeda());
 });
 
-app.get("/tema/:id_tema", userSession, verifyAdmin, async (req, res, next) => {
+app.get("/tema/:id_tema", userSession, async (req, res, next) => {
   response.sendResponse(
     res,
     await modules.listBappedaTema(Number(req.params.id_tema))
   );
 });
 
-app.get(
-  "/detail/:id_bappeda",
-  userSession,
-  verifyAdmin,
-  async (req, res, next) => {
-    response.sendResponse(
-      res,
-      await modules.getBappeda(Number(req.params.id_bappeda))
-    );
-  }
-);
+app.get("/detail/:id_bappeda", userSession, async (req, res, next) => {
+  response.sendResponse(
+    res,
+    await modules.getBappeda(Number(req.params.id_bappeda))
+  );
+});
 
 app.post(
   "/import",
