@@ -528,6 +528,15 @@ class _pendaftaran {
         },
       });
 
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: mahasiswaKecamatan.id_mahasiswa,
+        },
+        data: {
+          status: 0,
+        },
+      });
+
       return {
         status: true,
         code: 204,
