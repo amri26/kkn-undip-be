@@ -19,7 +19,7 @@ class _profile {
         data: profile,
       };
     } catch (error) {
-      console.error("getProfle module error ", error);
+      console.error("getProfile module error ", error);
 
       return {
         status: false,
