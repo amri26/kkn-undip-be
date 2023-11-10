@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const excelToJson = require("convert-excel-to-json");
 const ExcelJS = require("exceljs");
-const { del } = require("express/lib/application");
+const { uploadDrive, deleteDrive } = require("../helpers/upload");
 
 class _mahasiswa {
   listMahasiswa = async () => {
@@ -617,7 +617,6 @@ class _mahasiswa {
   };
 
   importMahasiswa = async (file) => {
-    console.log("importMahasiswa module");
     try {
       const result = excelToJson({
         source: file.buffer,
@@ -986,6 +985,270 @@ class _mahasiswa {
       );
     } catch (error) {
       console.error("downloadFormatImport module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addKHS = async (file, id_user) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_user);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const user = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
+      if (!user) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data mahasiswa not found!",
+        };
+      }
+
+      if (user.khs != null) {
+        const dokumen = await prisma.dokumen.findUnique({
+          where: {
+            id_dokumen: parseInt(user.khs),
+          },
+        });
+
+        if (dokumen) {
+          await deleteDrive(dokumen.id_drive);
+
+          await prisma.dokumen.delete({
+            where: {
+              id_dokumen: parseInt(dokumen.id_dokumen),
+            },
+          });
+        }
+      }
+
+      const fileDrive = await uploadDrive(
+        file,
+        `KHS_${user.nim}_${user.nama}`,
+        process.env.KHS_FOLDER_ID
+      );
+
+      const add = await prisma.dokumen.create({
+        data: {
+          id_drive: fileDrive.data.id,
+        },
+        select: {
+          id_dokumen: true,
+        },
+      });
+
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: parseInt(user.id_mahasiswa),
+        },
+        data: {
+          khs: add.id_dokumen,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addKHS module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addSuratPernyataan = async (file, id_user) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_user);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const user = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
+      if (!user) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data mahasiswa not found!",
+        };
+      }
+
+      if (user.surat_pernyataan != null) {
+        const dokumen = await prisma.dokumen.findUnique({
+          where: {
+            id_dokumen: parseInt(user.surat_pernyataan),
+          },
+        });
+
+        if (dokumen) {
+          await deleteDrive(dokumen.id_drive);
+
+          await prisma.dokumen.delete({
+            where: {
+              id_dokumen: parseInt(dokumen.id_dokumen),
+            },
+          });
+        }
+      }
+
+      const fileDrive = await uploadDrive(
+        file,
+        `Surat Pernyataan_${user.nim}_${user.nama}`,
+        process.env.SURAT_PERNYATAAN_FOLDER_ID
+      );
+
+      const add = await prisma.dokumen.create({
+        data: {
+          id_drive: fileDrive.data.id,
+        },
+        select: {
+          id_dokumen: true,
+        },
+      });
+
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: parseInt(user.id_mahasiswa),
+        },
+        data: {
+          surat_pernyataan: add.id_dokumen,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addSuratPernyataan module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
+
+  addFoto = async (file, id_user) => {
+    try {
+      const schema = Joi.number().required();
+
+      const validation = schema.validate(id_user);
+
+      if (validation.error) {
+        const errorDetails = validation.error.details.map(
+          (detail) => detail.message
+        );
+
+        return {
+          status: false,
+          code: 422,
+          error: errorDetails.join(", "),
+        };
+      }
+
+      const user = await prisma.mahasiswa.findUnique({
+        where: {
+          id_user,
+        },
+      });
+
+      if (!user) {
+        return {
+          status: false,
+          code: 404,
+          error: "Data mahasiswa not found!",
+        };
+      }
+
+      if (user.foto_profile != null) {
+        const dokumen = await prisma.dokumen.findUnique({
+          where: {
+            id_dokumen: parseInt(user.foto_profile),
+          },
+        });
+
+        if (dokumen) {
+          await deleteDrive(dokumen.id_drive);
+
+          await prisma.dokumen.delete({
+            where: {
+              id_dokumen: parseInt(dokumen.id_dokumen),
+            },
+          });
+        }
+      }
+
+      const fileDrive = await uploadDrive(
+        file,
+        `Foto_${user.nim}_${user.nama}`,
+        process.env.FOTO_FOLDER_ID
+      );
+
+      const add = await prisma.dokumen.create({
+        data: {
+          id_drive: fileDrive.data.id,
+        },
+        select: {
+          id_dokumen: true,
+        },
+      });
+
+      await prisma.mahasiswa.update({
+        where: {
+          id_mahasiswa: parseInt(user.id_mahasiswa),
+        },
+        data: {
+          foto_profile: add.id_dokumen,
+        },
+      });
+
+      return {
+        status: true,
+        code: 201,
+      };
+    } catch (error) {
+      console.error("addFoto module error ", error);
 
       return {
         status: false,

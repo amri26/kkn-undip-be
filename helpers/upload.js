@@ -78,4 +78,25 @@ const embedLinkDrive = async (fileId) => {
   }
 };
 
-module.exports = { uploadDrive, downloadDrive, embedLinkDrive };
+const deleteDrive = async (fileId) => {
+  try {
+    const file = await google.drive({ version: "v3", auth }).files.get({
+      fileId,
+      fields: "webContentLink", //"webContentLink,name,id"
+    });
+
+    if (file.status === 200) {
+      const deleted = await google.drive({ version: "v3", auth }).files.delete({
+        fileId,
+      });
+
+      return deleted;
+    } else {
+      return;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { uploadDrive, downloadDrive, embedLinkDrive, deleteDrive };

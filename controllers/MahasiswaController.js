@@ -108,4 +108,43 @@ app.delete(
   }
 );
 
+app.post(
+  "/surat_pernyataan",
+  userSession,
+  verifyMahasiswa,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.addSuratPernyataan(req.file, Number(req.user.id))
+    );
+  }
+);
+
+app.post(
+  "/khs",
+  userSession,
+  verifyMahasiswa,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.addKHS(req.file, Number(req.user.id))
+    );
+  }
+);
+
+app.post(
+  "/foto",
+  userSession,
+  verifyMahasiswa,
+  upload.single("file"),
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.addFoto(req.file, Number(req.user.id))
+    );
+  }
+);
+
 module.exports = app;
