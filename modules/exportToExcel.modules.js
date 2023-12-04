@@ -262,8 +262,6 @@ class _exportToExcel {
         })
       );
 
-      console.log(list);
-
       const workbook = new ExcelJS.Workbook();
 
       await workbook.xlsx.readFile(
