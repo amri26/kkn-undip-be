@@ -36,4 +36,16 @@ app.put("/:id_admin", userSession, verifySuperAdmin, async (req, res, next) => {
   );
 });
 
+app.delete(
+  "/:id_admin",
+  userSession,
+  verifySuperAdmin,
+  async (req, res, next) => {
+    response.sendResponse(
+      res,
+      await modules.deleteAdmin(Number(req.params.id_admin))
+    );
+  }
+);
+
 module.exports = app;

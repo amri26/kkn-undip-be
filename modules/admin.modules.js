@@ -228,6 +228,42 @@ class _admin {
       };
     }
   };
+
+  deleteAdmin = async (id_admin) => {
+    try {
+      const admin = await prisma.admin.findUnique({
+        where: {
+          id_admin,
+        },
+      });
+
+      if (!admin) {
+        return {
+          status: false,
+          code: 404,
+          error: "Admin not found",
+        };
+      }
+
+      await prisma.admin.delete({
+        where: {
+          id_admin,
+        },
+      });
+
+      return {
+        status: true,
+        code: 204,
+      };
+    } catch (error) {
+      console.error("deleteAdmin module error ", error);
+
+      return {
+        status: false,
+        error,
+      };
+    }
+  };
 }
 
 module.exports = new _admin();
